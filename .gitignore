@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs/StarfieldPlus/v16
+/StarfieldPlus/bin/Debug
+/StarfieldPlus/obj/Debug
