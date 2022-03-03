@@ -86,7 +86,7 @@ namespace my
             my.myObject.Count = 3;
             staticStarsCnt = 2;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 666; i++)
             {
                 list.Add(new myObj_000_c());
             }
@@ -302,13 +302,14 @@ namespace my
             int y0 = rand.Next(Height);
             int speed = rand.Next(30) + 50;
 
-            speed = 10;
+            speed = 20;
 
-            while (X != x0 && Y != y0)
+            do
             {
                 X = rand.Next(Width);
                 Y = rand.Next(Height);
             }
+            while (X == x0 && Y == y0);
 
             double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
             double sp_dist = speed / dist;
@@ -328,7 +329,7 @@ namespace my
             {
                 if (cnt-- == 0)
                 {
-                    Size++;
+                    Size += 1;
                     cnt = 5;
                 }
 
