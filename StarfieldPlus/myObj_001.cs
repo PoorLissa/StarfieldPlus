@@ -58,18 +58,26 @@ namespace my
                 list.Add(new myObj_001());
             }
 
-            while (isAlive)
+            int alpha = rand.Next(255);
+            int R     = rand.Next(255);
+            int G     = rand.Next(255);
+            int B     = rand.Next(255);
+
+            using (Brush br = new SolidBrush(Color.FromArgb(alpha, R, G, B)))
             {
-                g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-
-                foreach (var s in list)
+                while (isAlive)
                 {
-                    g.FillRectangle(Brushes.Red, s.X, s.Y, s.Size, s.Size);
-                    s.Move();
-                }
+                    g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-                form.Invalidate();
-                System.Threading.Thread.Sleep(50);
+                    foreach (var s in list)
+                    {
+                        g.FillRectangle(br, s.X, s.Y, s.Size, s.Size);
+                        s.Move();
+                    }
+
+                    form.Invalidate();
+                    System.Threading.Thread.Sleep(50);
+                }
             }
 
             g.Dispose();

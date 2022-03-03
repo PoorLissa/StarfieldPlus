@@ -67,29 +67,35 @@ namespace StarfieldPlus
 
         private void RunScreensaver()
         {
-            int id = 100;
+            // Starfield has slight priority over the others
+            int id = new Random().Next(7);
+
+            id = 0;
 
             isAlive = true;
-
             my.myObject.Count = 333;
 
             new System.Threading.Tasks.Task(() => {
 
                 switch (id)
                 {
+                    // Stars
                     case 0:
                         my.myObj_000.Process(this, ref isAlive);
                         break;
 
+                    // Random roaming
                     case 1:
                         my.myObj_001.Process(this, ref isAlive);
                         break;
 
+                    // Lines
                     case 2:
-                        my.myObj_002.Process(this, ref isAlive);
+                        my.myObj_004.Process(this, ref isAlive);
                         break;
 
-                    case 100:
+                    // Circle
+                    case 3:
                         my.myObj_100.Process(this, ref isAlive);
                         break;
 

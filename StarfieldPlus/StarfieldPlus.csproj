@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>IDE1006;</NoWarn>
+    <NoWarn>IDE1006;IDE0055;</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,7 +56,6 @@
     <Compile Include="myObject.cs" />
     <Compile Include="myObj_000.cs" />
     <Compile Include="myObj_001.cs" />
-    <Compile Include="myObj_002.cs" />
     <Compile Include="myObj_004_test.cs" />
     <Compile Include="myObj_100_test.cs" />
     <Compile Include="Program.cs" />

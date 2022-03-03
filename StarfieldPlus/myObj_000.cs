@@ -83,6 +83,14 @@ namespace my
             // Add static stars
             Count += staticStarsCnt;
 
+            my.myObject.Count = 3;
+            staticStarsCnt = 2;
+
+            for (int i = 0; i < 3; i++)
+            {
+                list.Add(new myObj_000_c());
+            }
+
             for (int i = 0; i < staticStarsCnt; i++)
             {
                 list.Add(new myObj_000_b());
@@ -102,7 +110,7 @@ namespace my
                 form.Invalidate();
 
                 // Gradually increase number of moving stars, until the limit is reached
-                if (list.Count != Count)
+                if (list.Count < Count)
                 {
                     list.Add(new myObj_000_a());
                 }
@@ -119,7 +127,7 @@ namespace my
     // ===========================================================================================================
 
     // Moving stars
-    public class myObj_000_a : myObj_000
+    class myObj_000_a : myObj_000
     {
         protected override void generateNew()
         {
@@ -271,6 +279,88 @@ namespace my
             br.Color = Color.FromArgb(alpha, 0, 0, 0);
             g.FillRectangle(br, X, Y, Size, Size);
         }
+    };
+
+    // ===========================================================================================================
+    // ===========================================================================================================
+
+    // Comets
+    public class myObj_000_c : myObj_000
+    {
+        private int lifeCounter = 0;
+        private int cnt = 0;
+
+        protected override void generateNew()
+        {
+            //lifeCounter = (rand.Next(500) + 500) * factor;
+            //lifeCounter = rand.Next(500) + 500;
+
+            lifeCounter = 100;
+            cnt = 5;
+
+            int x0 = rand.Next(Width);
+            int y0 = rand.Next(Height);
+            int speed = rand.Next(30) + 50;
+
+            speed = 10;
+
+            while (X != x0 && Y != y0)
+            {
+                X = rand.Next(Width);
+                Y = rand.Next(Height);
+            }
+
+            double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
+            double sp_dist = speed / dist;
+
+            dx = (float)((X - x0) * sp_dist);
+            dy = (float)((Y - y0) * sp_dist);
+
+            x = X;
+            y = Y;
+
+            Size = 1;
+        }
+
+        public override void Move()
+        {
+            if (X != -11)
+            {
+                if (cnt-- == 0)
+                {
+                    Size++;
+                    cnt = 5;
+                }
+
+                x += dx;
+                y += dy;
+
+                X = (int)x;
+                Y = (int)y;
+
+                if (X < 0 || X > Width || Y < 0 || Y > Height)
+                {
+                    X = -11;
+                    Y = -11;
+                }
+            }
+            else
+            {
+                if (lifeCounter-- == 0)
+                {
+                    generateNew();
+                }
+            }
+
+            return;
+        }
+
+        protected override void Show(Graphics g)
+        {
+            g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
+            //g.FillRectangle(Brushes.OrangeRed, X, Y, Size, Size);
+        }
+
     };
 
 };

@@ -41,17 +41,17 @@ namespace my
                 X = rand.Next(Width);
                 Y = rand.Next(Height);
 
-                int speed = rand.Next(20) + 1;
-
-                speed = 2;
+                int speed = 5;
 
                 int x0 = Width  / 2;
                 int y0 = Height / 2;
 
-                int dist = (int)Math.Sqrt((X - x0)* (X - x0) + (Y - y0) * (Y - y0));
+                //int dist = (int)Math.Sqrt((X - x0)*(X - x0) + (Y - y0)*(Y - y0));
 
-                dx = (X - x0) * speed / dist;
-                dy = (Y - y0) * speed / dist;
+                double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
+
+                dx = (int)((X - x0) * speed / dist);
+                dy = (int)((Y - y0) * speed / dist);
 
                 Size = 3;
             }
@@ -88,8 +88,7 @@ namespace my
                 }
 
                 form.Invalidate();
-                //System.Threading.Thread.Sleep(50);
-                System.Threading.Thread.Sleep(5);
+                System.Threading.Thread.Sleep(33);
             }
 
             g.Dispose();
