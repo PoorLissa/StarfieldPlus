@@ -99,31 +99,39 @@ namespace my
                 lifeCounter = rand.Next(100) + 100;
             }
 
+            Size = rand.Next(13) + 1;
+            alpha = rand.Next(256);
             X = rand.Next(Width);
-            Y = 11;
+            Y = 1;
 
             x = X;
             y = Y;
 
             dx = 0;
             dy = 0;
-
-            Size = rand.Next(10) + 1;
-            alpha = rand.Next(256);
         }
 
         public override void Move()
         {
             if (dy != 0)
             {
+                x += dx;
                 y += dy;
+                X = (int)x;
                 Y = (int)y;
 
                 dy += (1.0f + Size / 10.0f);
 
                 if (Y >= Height)
                 {
-                    generateNew();
+                    dy *= -0.025f * (rand.Next(11) + 1);
+
+                    dx += 0.5f * (rand.Next(10)) * (rand.Next(3) - 1);
+
+                    if (dy > -1)
+                    {
+                        generateNew();
+                    }
                 }
             }
             else
@@ -141,7 +149,21 @@ namespace my
         {
             br.Color = Color.FromArgb(alpha, br.Color.R, br.Color.G, br.Color.B);
 
-            g.FillRectangle(br, X, Y, Size, Size);
+            if (Size < 3)
+            {
+                g.FillRectangle(br, X, Y, Size, Size);
+            }
+            else
+            {
+                if (Y == 1)
+                {
+                    g.FillEllipse(br, X, Y - Size / 2, Size, Size);
+                }
+                else
+                {
+                    g.FillEllipse(br, X, Y, Size, Size);
+                }
+            }
         }
 
     };
