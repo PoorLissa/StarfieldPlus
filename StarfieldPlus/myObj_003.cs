@@ -99,7 +99,14 @@ namespace my
                 lifeCounter = rand.Next(100) + 100;
             }
 
-            Size = rand.Next(13) + 1;
+            int maxSize = 13;
+
+            if (rand.Next(100) == 0)
+            {
+                maxSize = 33;
+            }
+
+            Size = rand.Next(maxSize) + 1;
             alpha = rand.Next(256);
             X = rand.Next(Width);
             Y = 1;
