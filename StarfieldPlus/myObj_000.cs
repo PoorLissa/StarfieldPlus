@@ -7,7 +7,7 @@ namespace my
 {
     public class myObj_000 : myObject
     {
-        protected float x, y, dx, dy;
+        protected float x, y, dx, dy, acceleration = 1.0f;
         protected int cnt = 0;
         protected int max = 0;
         protected int color = 0;
@@ -128,6 +128,7 @@ namespace my
             max = rand.Next(75) + 20;
             cnt = 0;
             color = rand.Next(50);
+            acceleration = 1.005f + (rand.Next(100) * 0.0005f);
 
             x = X;
             y = Y;
@@ -161,16 +162,15 @@ namespace my
             {
                 cnt = 0;
                 Size++;
+
+                // Accelerate acceleration rate
+                acceleration *= (1.0f + (Size * 0.001f));
             }
 
-#if false
-            float dAcc = 1.0f + (1.0f * acc / 1000.0f);
-            dx *= dAcc;
-            dy *= dAcc;
-#else
-            dx *= 1.005f;
-            dy *= 1.005f;
-#endif
+            // Accelerate our moving stars
+            dx *= acceleration;
+            dy *= acceleration;
+
             if (X < 0 || X > Width || Y < 0 || Y > Height)
             {
                 generateNew();
@@ -214,7 +214,7 @@ namespace my
                 int y0 = Height / 2;
 
                 double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
-                double sp_dist = 0.25 / dist;
+                double sp_dist = 0.1f / dist;
 
                 dx = (float)((X - x0) * sp_dist);
                 dy = (float)((Y - y0) * sp_dist);
