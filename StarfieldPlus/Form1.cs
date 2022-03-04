@@ -70,7 +70,7 @@ namespace StarfieldPlus
             // Starfield has slight priority over the others
             int id = new Random().Next(7);
 
-            id = 0;
+            //id = 2;
 
             isAlive = true;
             my.myObject.Count = 333;
@@ -89,13 +89,18 @@ namespace StarfieldPlus
                         my.myObj_001.Process(this, ref isAlive);
                         break;
 
-                    // Lines
+                    // Circles
                     case 2:
+                        my.myObj_002.Process(this, ref isAlive);
+                        break;
+
+                    // Lines
+                    case 3:
                         my.myObj_004.Process(this, ref isAlive);
                         break;
 
                     // Circle
-                    case 3:
+                    case 5:
                         my.myObj_100.Process(this, ref isAlive);
                         break;
 

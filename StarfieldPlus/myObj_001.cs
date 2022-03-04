@@ -58,10 +58,15 @@ namespace my
                 list.Add(new myObj_001());
             }
 
-            int alpha = rand.Next(255);
-            int R     = rand.Next(255);
-            int G     = rand.Next(255);
-            int B     = rand.Next(255);
+            int alpha = 0, R = 0, G = 0, B = 0, max = 256;
+
+            while (alpha + R + G + B < 100)
+            {
+                alpha = rand.Next(max-75) + 75;
+                R = rand.Next(max);
+                G = rand.Next(max);
+                B = rand.Next(max);
+            }
 
             using (Brush br = new SolidBrush(Color.FromArgb(alpha, R, G, B)))
             {
@@ -72,6 +77,15 @@ namespace my
                     foreach (var s in list)
                     {
                         g.FillRectangle(br, s.X, s.Y, s.Size, s.Size);
+
+                        if (s.Size > 3)
+                        {
+                            g.FillRectangle(Brushes.Black, s.X,              s.Y,              1, 1);
+                            g.FillRectangle(Brushes.Black, s.X + s.Size - 1, s.Y,              1, 1);
+                            g.FillRectangle(Brushes.Black, s.X,              s.Y + s.Size - 1, 1, 1);
+                            g.FillRectangle(Brushes.Black, s.X + s.Size - 1, s.Y + s.Size - 1, 1, 1);
+                        }
+
                         s.Move();
                     }
 

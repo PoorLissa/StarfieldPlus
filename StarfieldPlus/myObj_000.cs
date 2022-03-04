@@ -83,14 +83,6 @@ namespace my
             // Add static stars
             Count += staticStarsCnt;
 
-            my.myObject.Count = 3;
-            staticStarsCnt = 2;
-
-            for (int i = 0; i < 666; i++)
-            {
-                list.Add(new myObj_000_c());
-            }
-
             for (int i = 0; i < staticStarsCnt; i++)
             {
                 list.Add(new myObj_000_b());

@@ -7,39 +7,26 @@ namespace my
 {
     public class myObj_002 : myObject
     {
-        private int dx, dy;
+        protected float x, y, dx, dy;
+        protected int cnt = 0;
+        protected int max = 0;
+        protected int color = 0;
 
         public myObj_002()
         {
-            X = rand.Next(Width);
-            Y = rand.Next(Height);
-
-            int speed = 20;
-
-            dx = (rand.Next(speed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
-            dy = (rand.Next(speed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
-
-            Size = rand.Next(11) + 1;
+            generateNew();
         }
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected virtual void generateNew()
         {
-            X += dx;
-            Y += dy;
+        }
 
-            if (X < 0 || X > Width)
-            {
-                dx *= -1;
-            }
+        // -------------------------------------------------------------------------
 
-            if (Y < 0 || Y > Height)
-            {
-                dy *= -1;
-            }
-
-            return;
+        protected virtual void Show(Graphics g)
+        {
         }
 
         // -------------------------------------------------------------------------
@@ -52,11 +39,7 @@ namespace my
             form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
 
             var list = new System.Collections.Generic.List<myObj_002>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(new myObj_002());
-            }
+            list.Add(new myObj_002_a());
 
             int alpha = rand.Next(255);
             int R     = rand.Next(255);
@@ -71,12 +54,18 @@ namespace my
 
                     foreach (var s in list)
                     {
-                        g.FillRectangle(br, s.X, s.Y, s.Size, s.Size);
+                        s.Show(g);
                         s.Move();
                     }
 
                     form.Invalidate();
                     System.Threading.Thread.Sleep(50);
+
+                    // Gradually increase number of moving stars, until the limit is reached
+                    if (list.Count < Count)
+                    {
+                        list.Add(new myObj_002_a());
+                    }
                 }
             }
 
@@ -85,5 +74,85 @@ namespace my
 
             return;
         }
+    };
+
+    // ===========================================================================================================
+    // ===========================================================================================================
+
+    public class myObj_002_a : myObj_002
+    {
+        private int lifeCounter = 0;
+        private int cnt = 0;
+
+        protected override void generateNew()
+        {
+            lifeCounter = rand.Next(100) + 100;
+            cnt = 5;
+
+            int x0 = rand.Next(Width);
+            int y0 = rand.Next(Height);
+            int speed = rand.Next(30) + 50;
+
+            speed = rand.Next(20) + 10;
+
+            do
+            {
+                X = rand.Next(Width);
+                Y = rand.Next(Height);
+            }
+            while (X == x0 && Y == y0);
+
+            double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
+            double sp_dist = speed / dist;
+
+            dx = (float)((X - x0) * sp_dist);
+            dy = (float)((Y - y0) * sp_dist);
+
+            x = X;
+            y = Y;
+
+            Size = 1;
+        }
+
+        public override void Move()
+        {
+            if (X != -111)
+            {
+                if (cnt-- == 0)
+                {
+                    Size += 3;
+                    cnt = 5;
+                }
+
+                x += dx;
+                y += dy;
+
+                X = (int)x;
+                Y = (int)y;
+
+                if (X < -10 || X > Width || Y < -10 || Y > Height)
+                {
+                    X = -111;
+                    Y = -111;
+                }
+            }
+            else
+            {
+                if (lifeCounter-- == 0)
+                {
+                    generateNew();
+                }
+            }
+
+            return;
+        }
+
+        protected override void Show(Graphics g)
+        {
+            g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
+
+            g.DrawEllipse(Pens.DarkOrange, X, Y, Size + 2, Size + 2);
+        }
+
     };
 };
