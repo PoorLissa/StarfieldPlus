@@ -83,6 +83,9 @@ namespace my
     {
         private int lifeCounter = 0;
         private int cnt = 0;
+        private int growSpeed = 1;
+        private int alpha = 0;
+        private static Pen p = null;
 
         protected override void generateNew()
         {
@@ -92,6 +95,7 @@ namespace my
             int x0 = rand.Next(Width);
             int y0 = rand.Next(Height);
             int speed = rand.Next(30) + 50;
+            growSpeed = rand.Next(3) + 1;
 
             speed = rand.Next(20) + 10;
 
@@ -112,6 +116,23 @@ namespace my
             y = Y;
 
             Size = 1;
+
+            int R = 0, G = 0, B = 0, max = 256;
+            alpha = rand.Next(max - 75) + 75;
+
+            if (p == null)
+            {
+                p = new Pen(Color.Black);
+
+                while (R + G + B < 100)
+                {
+                    R = rand.Next(max);
+                    G = rand.Next(max);
+                    B = rand.Next(max);
+                }
+
+                p.Color = Color.FromArgb(255, R, G, B);
+            }
         }
 
         public override void Move()
@@ -120,8 +141,8 @@ namespace my
             {
                 if (cnt-- == 0)
                 {
-                    Size += 3;
-                    cnt = 5;
+                    Size += growSpeed;
+                    cnt = 2;
                 }
 
                 x += dx;
@@ -149,9 +170,10 @@ namespace my
 
         protected override void Show(Graphics g)
         {
-            g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
+            p.Color = Color.FromArgb(alpha, p.Color.R, p.Color.G, p.Color.B);
+            g.DrawEllipse(p, X, Y, Size, Size);
 
-            g.DrawEllipse(Pens.DarkOrange, X, Y, Size + 2, Size + 2);
+//            g.DrawEllipse(Pens.DarkOrange, X, Y, Size + 2, Size + 2);
         }
 
     };

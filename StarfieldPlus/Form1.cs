@@ -68,9 +68,9 @@ namespace StarfieldPlus
         private void RunScreensaver()
         {
             // Starfield has slight priority over the others
-            int id = new Random().Next(7);
+            int id = new Random().Next(8);
 
-            //id = 3;
+            id = 6;
 
             isAlive = true;
             my.myObject.Count = 333;
@@ -107,6 +107,11 @@ namespace StarfieldPlus
                     // Circle
                     case 5:
                         my.myObj_100.Process(this, ref isAlive);
+                        break;
+
+                    // Desktop
+                    case 6:
+                        my.myObj_101.Process(this, ref isAlive);
                         break;
 
                     default:

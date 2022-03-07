@@ -60,6 +60,7 @@
     <Compile Include="myObj_003.cs" />
     <Compile Include="myObj_004_test.cs" />
     <Compile Include="myObj_100_test.cs" />
+    <Compile Include="myObj_101_test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
