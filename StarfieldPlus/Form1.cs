@@ -70,7 +70,7 @@ namespace StarfieldPlus
             // Starfield has slight priority over the others
             int id = new Random().Next(8);
 
-            id = 6;
+            //id = 6;
 
             isAlive = true;
             my.myObject.Count = 333;
