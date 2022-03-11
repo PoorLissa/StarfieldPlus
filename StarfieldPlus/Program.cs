@@ -25,9 +25,6 @@ namespace StarfieldPlus
         [STAThread]
         static void Main(string[] args)
         {
-
-//          Application.SetHighDpiMode(HighDpiMode.SystemAware);
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -83,27 +80,7 @@ namespace StarfieldPlus
             }
         }
 
-
-
-        static void ShowScreenSaver()
-        {
-            SetDpiAwareness();
-
-            foreach (Screen screen in Screen.AllScreens)
-            {
-                // todo: make it work on each monitor
-                if (screen.Bounds.Width > 3000)
-                {
-                    Form1 ss = new Form1(screen.Bounds);
-                    ss.Show();
-                    break;
-                }
-            }
-
-            return;
-        }
-
-
+        // -------------------------------------------------------------------
 
         private static void SetDpiAwareness()
         {
@@ -121,5 +98,27 @@ namespace StarfieldPlus
 
             return;
         }
+
+        // -------------------------------------------------------------------
+
+        static void ShowScreenSaver()
+        {
+            SetDpiAwareness();
+
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                // todo: make it work on each monitor
+                if (screen.Bounds.Width > 3000)
+                {
+                    var form = new Form1(screen.Bounds);
+                    form.Show();
+                    break;
+                }
+            }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------
     }
 }

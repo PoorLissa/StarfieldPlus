@@ -32,7 +32,7 @@ namespace my
         // -------------------------------------------------------------------------
 
         // Using form's background image as our drawing surface
-        public static void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
         {
             Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
             Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image

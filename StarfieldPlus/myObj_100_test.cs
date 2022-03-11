@@ -66,7 +66,7 @@ namespace my
         // -------------------------------------------------------------------------
 
         // Using form's background image as our drawing surface
-        public static void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
         {
             var list = new System.Collections.Generic.List<myObj_100>();
 

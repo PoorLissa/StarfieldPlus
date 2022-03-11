@@ -5,11 +5,11 @@ using System.Drawing;
 
 namespace my
 {
-    public class myObj_004 : myObject
+    public class myObj_004_a : myObject
     {
         private int dx, dy;
 
-        public myObj_004()
+        public myObj_004_a()
         {
             X = rand.Next(Width);
             Y = rand.Next(Height);
@@ -33,9 +33,6 @@ namespace my
 
         public override void Move()
         {
-            X += dx;
-            Y += dy;
-
             X += dx + (int)(Math.Sin(Y) * 5);
             Y += dy + (int)(Math.Sin(X) * 5);
 
@@ -56,7 +53,7 @@ namespace my
                 dx = (int)((X - x0) * speed / dist);
                 dy = (int)((Y - y0) * speed / dist);
 
-                Size = rand.Next(6) + 1;
+                Size = 3;
             }
 
             return;
@@ -92,12 +89,10 @@ namespace my
                     {
                         g.FillRectangle(br, s.X, s.Y, s.Size, s.Size);
                         s.Move();
-                        g.FillRectangle(Brushes.Red, s.X, s.Y, s.Size, s.Size);
                     }
 
                     form.Invalidate();
-                    //System.Threading.Thread.Sleep(33);
-                    System.Threading.Thread.Sleep(11);
+                    System.Threading.Thread.Sleep(33);
 
                     if (++cnt > 1000)
                     {

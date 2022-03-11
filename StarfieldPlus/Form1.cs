@@ -11,8 +11,9 @@ namespace StarfieldPlus
 {
     public partial class Form1 : Form
     {
-        private bool isAlive = false;
-        private Point oldMouseLocation;
+        private bool        _isAlive = false;
+        private Point       _oldMouseLocation;
+        public my.myObject _obj = null;
 
         // -------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ namespace StarfieldPlus
             this.MouseMove += Form1_MouseMove;
             this.KeyDown += Form1_KeyDown;
 
+            getScreenSaverObject();
             RunScreensaver();
         }
 
@@ -50,74 +52,88 @@ namespace StarfieldPlus
         {
             int dist = 50;
 
-            if (!oldMouseLocation.IsEmpty)
+            if (!_oldMouseLocation.IsEmpty)
             {
                 // Terminate if mouse is moved a significant distance
-                if (Math.Abs(oldMouseLocation.X - e.X) > dist || Math.Abs(oldMouseLocation.Y - e.Y) > dist)
+                if (Math.Abs(_oldMouseLocation.X - e.X) > dist || Math.Abs(_oldMouseLocation.Y - e.Y) > dist)
                 {
                     appExit();
                 }
             }
 
             // Update mouse location
-            oldMouseLocation = e.Location;
+            _oldMouseLocation = e.Location;
+        }
+
+        // -------------------------------------------------------------------
+
+        private void getScreenSaverObject()
+        {
+            // Starfield has a slight priority over the others
+            int id = new Random().Next(9);
+
+            id = 4;
+
+            switch (id)
+            {
+                // Stars
+                case 0:
+                    _obj = new my.myObj_000();
+                    break;
+
+                // Random roaming
+                case 1:
+                    _obj = new my.myObj_001();
+                    break;
+
+                // Circles
+                case 2:
+                    _obj = new my.myObj_002();
+                    break;
+
+                // Rain Drops
+                case 3:
+                    _obj = new my.myObj_003();
+                    break;
+
+                // Lines
+                case 4:
+                    _obj = new my.myObj_004();
+                    break;
+
+                // Lines
+                case 5:
+                    _obj = new my.myObj_004_a();
+                    break;
+
+                // Circle
+                case 6:
+                    _obj = new my.myObj_100();
+                    break;
+
+                // Desktop
+                case 7:
+                    _obj = new my.myObj_101();
+                    break;
+
+                default:
+                    _obj = new my.myObj_000();
+                    break;
+            }
+
+            return;
         }
 
         // -------------------------------------------------------------------
 
         private void RunScreensaver()
         {
-            // Starfield has slight priority over the others
-            int id = new Random().Next(8);
-
-            //id = 6;
-
-            isAlive = true;
+            _isAlive = true;
             my.myObject.Count = 333;
 
             new System.Threading.Tasks.Task(() => {
 
-                switch (id)
-                {
-                    // Stars
-                    case 0:
-                        my.myObj_000.Process(this, ref isAlive);
-                        break;
-
-                    // Random roaming
-                    case 1:
-                        my.myObj_001.Process(this, ref isAlive);
-                        break;
-
-                    // Circles
-                    case 2:
-                        my.myObj_002.Process(this, ref isAlive);
-                        break;
-
-                    // Rain Drops
-                    case 3:
-                        my.myObj_003.Process(this, ref isAlive);
-                        break;
-
-                    // Lines
-                    case 4:
-                        my.myObj_004.Process(this, ref isAlive);
-                        break;
-
-                    // Circle
-                    case 5:
-                        my.myObj_100.Process(this, ref isAlive);
-                        break;
-
-                    // Desktop
-                    case 6:
-                        my.myObj_101.Process(this, ref isAlive);
-                        break;
-
-                    default:
-                        my.myObj_000.Process(this, ref isAlive);
-                        break;
-                }
+                _obj.Process(this, ref _isAlive);
 
             }).Start();
 
@@ -131,9 +147,9 @@ namespace StarfieldPlus
             this.MouseMove -= Form1_MouseMove;
             this.KeyDown -= Form1_KeyDown;
 
-            isAlive = false;
+            _isAlive = false;
 
-            while (isAlive == false)
+            while (_isAlive == false)
                 ;
 
             Application.Exit();
