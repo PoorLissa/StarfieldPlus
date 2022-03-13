@@ -153,8 +153,9 @@ namespace my
 
                 if (X < -10 || X > Width || Y < -10 || Y > Height)
                 {
-                    X = -111;
-                    Y = -111;
+                    X = -11;
+                    Y = -11;
+                    Size = 1;
                 }
             }
             else
@@ -172,7 +173,6 @@ namespace my
         {
             p.Color = Color.FromArgb(alpha, p.Color.R, p.Color.G, p.Color.B);
             g.DrawEllipse(p, X, Y, Size, Size);
-
 //            g.DrawEllipse(Pens.DarkOrange, X, Y, Size + 2, Size + 2);
         }
 
