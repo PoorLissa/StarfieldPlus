@@ -70,9 +70,9 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random().Next(10);
+            int id = new Random().Next(11);
 
-            id = 9;
+            id = 4;
 
             switch (id)
             {
@@ -96,33 +96,43 @@ namespace StarfieldPlus
                     _obj = new my.myObj_003();
                     break;
 
-                // Lines
+                // Lines 1
                 case 4:
                     _obj = new my.myObj_004();
                     break;
 
-                // Lines
+                // Lines 2
                 case 5:
                     _obj = new my.myObj_004_a();
                     break;
 
-                // Circle
+                // Lines 3
                 case 6:
+                    _obj = new my.myObj_004_b();
+                    break;
+
+                // Lines 3
+                case 7:
+                    _obj = new my.myObj_004_c();
+                    break;
+
+                // Circle
+                case 8:
                     _obj = new my.myObj_100();
                     break;
 
                 // Desktop 1
-                case 7:
+                case 9:
                     _obj = new my.myObj_101();
                     break;
 
                 // Desktop 2
-                case 8:
+                case 10:
                     _obj = new my.myObj_102();
                     break;
 
                 // Desktop 3
-                case 9:
+                case 11:
                     _obj = new my.myObj_103();
                     break;
 
