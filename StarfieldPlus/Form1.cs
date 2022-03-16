@@ -76,9 +76,9 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random().Next(15);
+            int id = new Random().Next(16);
 
-            id = 14;
+            id = 15;
 
             switch (id)
             {
@@ -155,6 +155,11 @@ namespace StarfieldPlus
                 // Desktop 5
                 case 14:
                     _obj = new my.myObj_110();
+                    break;
+
+                // Moving Lines
+                case 15:
+                    _obj = new my.myObj_120();
                     break;
 
                 default:
