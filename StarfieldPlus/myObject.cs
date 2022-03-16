@@ -8,7 +8,7 @@ namespace my
     public interface iMyObject
     {
         void Move();
-        void takeSnapshot();
+        void getImage();
     };
 
 
@@ -30,7 +30,7 @@ namespace my
 
         public myObject()
         {
-            takeSnapshot();
+            getImage();
         }
 
         // -------------------------------------------------------------------------
@@ -42,8 +42,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        // Override this method for those child classes that actually need a snapshot
-        public virtual void takeSnapshot()
+        // Override this method for those child classes that actually need a snapshot or an image
+        public virtual void getImage()
         {
             ;
         }

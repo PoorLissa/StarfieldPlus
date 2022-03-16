@@ -88,12 +88,12 @@ namespace StarfieldPlus
             {
                 if (Environment.OSVersion.Version.Major >= 6)
                 {
-                    //SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
+                    SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
                 }
             }
             catch (EntryPointNotFoundException)
             {
-                // this exception occures if OS does not implement this API, just ignore it.
+                // this exception occurs if OS does not implement this API, just ignore it.
             }
 
             return;

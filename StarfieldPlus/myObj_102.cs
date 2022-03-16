@@ -18,7 +18,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void takeSnapshot()
+        public override void getImage()
         {
             // Get desktop snapshot
             _originalScreen = new Bitmap(Width, Height);
@@ -68,7 +68,10 @@ namespace my
                     break;
             }
 
-            size = rand.Next(size) + 2;
+            bool isRandomSize = rand.Next(2) == 0;
+            int tmp = size;
+
+            size = rand.Next(size);
 
             if (size < 25)
                 cnt = 10000000;
@@ -81,12 +84,17 @@ namespace my
             else
                 cnt = 1000;
 
+            if (isRandomSize)
+            {
+                size = -tmp;
+            }
+
             return;
         }
 
         // -------------------------------------------------------------------------
 
-        private void getAvgColor(SolidBrush br, int x, int y, int w, int h)
+        protected virtual void getAvgColor(SolidBrush br, int x, int y, int w, int h)
         {
             Color clr;
             int cnt = 0, R = 0, G = 0, B = 0;
@@ -95,7 +103,7 @@ namespace my
             {
                 for (int j = y; j < y + h; j++)
                 {
-                    if (i < Width && j < Height)
+                    if (i > -1 && j > -1 && i < Width && j < Height)
                     {
                         clr = _originalScreen.GetPixel(i, j);
 
@@ -121,7 +129,10 @@ namespace my
 
         private void drawRectangle(Graphics g, SolidBrush br, Pen p, int x, int y, int w, int h, int isBorder)
         {
-            g.FillRectangle(br, x, y, w, h);
+            if (isBorder != 5)
+            {
+                g.FillRectangle(br, x, y, w, h);
+            }
 
             switch (isBorder)
             {
@@ -141,6 +152,11 @@ namespace my
                 case 4:
                     g.DrawRectangle(p, x, y, w, h);
                     break;
+
+                case 5:
+                    p.Color = Color.FromArgb(200, br.Color.R, br.Color.G, br.Color.B);
+                    g.DrawRectangle(p, x, y, w, h);
+                    break;
             }
 
             return;
@@ -150,7 +166,10 @@ namespace my
 
         private void drawCircle(Graphics g, SolidBrush br, Pen p, int x, int y, int w, int h, int isBorder)
         {
-            g.FillEllipse(br, x, y, w, h);
+            if (isBorder != 5)
+            {
+                g.FillEllipse(br, x, y, w, h);
+            }
 
             switch (isBorder)
             {
@@ -170,6 +189,11 @@ namespace my
                 case 4:
                     g.DrawEllipse(p, x, y, w, h);
                     break;
+
+                case 5:
+                    p.Color = Color.FromArgb(200, br.Color.R, br.Color.G, br.Color.B);
+                    g.DrawEllipse(p, x, y, w, h);
+                    break;
             }
 
             return;
@@ -187,10 +211,12 @@ namespace my
 
                 switch (rand.Next(2))
                 {
+                    // Rectangles
                     case 0:
                         proc1(form, g, ref isAlive);
                         break;
 
+                    // Circles
                     case 1:
                         proc2(form, g, ref isAlive);
                         break;
@@ -223,7 +249,7 @@ namespace my
                 int maxX = rand.Next(100) + 1;
                 int maxy = rand.Next(100) + 1;
                 int maxZ = rand.Next(100) + 1;
-                int isBorder = rand.Next(5);
+                int isBorder = rand.Next(6);
 
                 if (isBorder == 4)
                 {
@@ -238,24 +264,61 @@ namespace my
 
                 getSize(ref size, ref cnt);
 
-                while (isAlive)
+                if (size < 0)
                 {
-                    int x = rand.Next(Width);
-                    int y = rand.Next(Height);
+                    // Random size on each iteration
+                    int maxSize = -size/2;
 
-                    int w = size;
-                    int h = size;
+                    if (maxSize == 0)
+                        maxSize = 1;
 
-                    getAvgColor(br, x, y, w, h);
-                    drawRectangle(g, br, p, x, y, w, h, isBorder: isBorder);
-
-                    form.Invalidate();
-                    System.Threading.Thread.Sleep(t);
-
-                    if (--cnt == 0)
+                    while (isAlive)
                     {
-                        cnt = 10000;
-                        t++;
+                        size = rand.Next(maxSize) + 1;
+
+                        int x = rand.Next(Width)  - size;
+                        int y = rand.Next(Height) - size;
+
+                        int w = 2 * size;
+                        int h = 2 * size;
+
+                        getAvgColor(br, x, y, w, h);
+                        drawRectangle(g, br, p, x, y, w, h, isBorder: isBorder);
+
+                        form.Invalidate();
+                        System.Threading.Thread.Sleep(t);
+
+                        if (--cnt == 0)
+                        {
+                            cnt = 10000;
+                            t++;
+                        }
+                    }
+                }
+                else
+                {
+                    // Constant size on each iteration
+                    size /= (size > 1) ? 2 : 1;
+
+                    int w = 2 * size;
+                    int h = 2 * size;
+
+                    while (isAlive)
+                    {
+                        int x = rand.Next(Width)  - size;
+                        int y = rand.Next(Height) - size;
+
+                        getAvgColor(br, x, y, w, h);
+                        drawRectangle(g, br, p, x, y, w, h, isBorder: isBorder);
+
+                        form.Invalidate();
+                        System.Threading.Thread.Sleep(t);
+
+                        if (--cnt == 0)
+                        {
+                            cnt = 10000;
+                            t++;
+                        }
                     }
                 }
             }
@@ -283,7 +346,7 @@ namespace my
                 int maxX = rand.Next(100) + 1;
                 int maxy = rand.Next(100) + 1;
                 int maxZ = rand.Next(100) + 1;
-                int isBorder = rand.Next(5);
+                int isBorder = rand.Next(6);
 
                 if (isBorder == 4)
                 {
@@ -298,38 +361,76 @@ namespace my
 
                 getSize(ref size, ref cnt);
 
-                while (isAlive)
+                if (size < 0)
                 {
-                    int x = rand.Next(Width);
-                    int y = rand.Next(Height);
+                    // Random size on each iteration
+                    int maxSize = -size / 2;
 
-                    int w = size;
-                    int h = size;
+                    if (maxSize == 0)
+                        maxSize = 1;
 
-                    getAvgColor(br, x, y, w, h);
-                    drawCircle(g, br, p, x, y, w, h, isBorder: isBorder);
-
-                    form.Invalidate();
-                    System.Threading.Thread.Sleep(t);
-
-                    if (--cnt == 0)
+                    while (isAlive)
                     {
-                        cnt = 10000;
-                        t++;
+                        size = rand.Next(maxSize) + 1;
+
+                        int x = rand.Next(Width)  - size;
+                        int y = rand.Next(Height) - size;
+
+                        int w = 2 * size;
+                        int h = 2 * size;
+
+                        getAvgColor(br, x, y, w, h);
+                        drawCircle(g, br, p, x, y, w, h, isBorder: isBorder);
+
+                        form.Invalidate();
+                        System.Threading.Thread.Sleep(t);
+
+                        if (--cnt == 0)
+                        {
+                            cnt = 10000;
+                            t++;
+                        }
+                    }
+                }
+                else
+                {
+                    // Constant size on each iteration
+                    size /= (size > 1) ? 2 : 1;
+
+                    int w = 2 * size;
+                    int h = 2 * size;
+
+                    while (isAlive)
+                    {
+                        int x = rand.Next(Width)  - size;
+                        int y = rand.Next(Height) - size;
+
+                        getAvgColor(br, x, y, w, h);
+                        drawCircle(g, br, p, x, y, w, h, isBorder: isBorder);
+
+                        form.Invalidate();
+                        System.Threading.Thread.Sleep(t);
+
+                        if (--cnt == 0)
+                        {
+                            cnt = 10000;
+                            t++;
+                        }
                     }
                 }
             }
 
             return;
         }
-
-        // -------------------------------------------------------------------------
     }
 
 
+    // =================================================================================================================
+    // =================================================================================================================
+    // =================================================================================================================
 
 
-
+    // The same as myObj_102, but uses the picture file instead of screenshot
     public class myObj_103 : myObj_102
     {
         public myObj_103()
@@ -339,25 +440,92 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void takeSnapshot()
+        public override void getImage()
         {
-            // Get desktop snapshot
-/*
-            string currentWallpaper = new string('\0', MAX_PATH);
-            Win32.SystemParametersInfo(SPI_GETDESKWALLPAPER, currentWallpaper.Length, currentWallpaper, 0);
-            return currentWallpaper.Substring(0, currentWallpaper.IndexOf('\0'));
-*/
+                // Get desktop snapshot
+        /*
+                    string currentWallpaper = new string('\0', MAX_PATH);
+                    Win32.SystemParametersInfo(SPI_GETDESKWALLPAPER, currentWallpaper.Length, currentWallpaper, 0);
+                    return currentWallpaper.Substring(0, currentWallpaper.IndexOf('\0'));
+        */
 
-            string currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\_dsc_00341_0_ultrawide.jpg";
-            currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\0jcj71fni5111.png";
-            currentWallpaper = "E:\\iNet\\pix\\05-01-11.gif";
-
-            _originalScreen = new Bitmap(currentWallpaper);
-
-            if (_originalScreen.Width < Width || _originalScreen.Height < Height)
+            try
             {
-                _originalScreen = new Bitmap(_originalScreen, Width, Height);
+                string currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\_dsc_00341_0_ultrawide.jpg";
+                currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\0jcj71fni5111.png";
+                currentWallpaper = "E:\\iNet\\pix\\05-01-11.gif";
+
+                _originalScreen = new Bitmap(currentWallpaper);
+
+                if (_originalScreen.Width < Width || _originalScreen.Height < Height)
+                {
+                    _originalScreen = new Bitmap(_originalScreen, Width, Height);
+                }
             }
+            catch (Exception)
+            {
+                _originalScreen = null;
+            }
+        }
+    }
+
+
+    // =================================================================================================================
+    // =================================================================================================================
+    // =================================================================================================================
+
+
+    // The same as myObj_102, but the color of a shape is determined by one single point
+    public class myObj_104 : myObj_102
+    {
+        protected override void getAvgColor(SolidBrush br, int x, int y, int w, int h)
+        {
+            if (x < 0)
+                x = 0;
+
+            if (y < 0)
+                y = 0;
+
+            if (x > _originalScreen.Width)
+                x = _originalScreen.Width;
+
+            if (y > _originalScreen.Height)
+                y = _originalScreen.Height;
+
+            Color clr = _originalScreen.GetPixel(x, y);
+            br.Color = Color.FromArgb(133, clr.R, clr.G, clr.B);
+
+            return;
+        }
+    }
+
+
+    // =================================================================================================================
+    // =================================================================================================================
+    // =================================================================================================================
+
+
+    // The same as myObj_103, but the color of a shape is determined by one single point
+    public class myObj_105 : myObj_103
+    {
+        protected override void getAvgColor(SolidBrush br, int x, int y, int w, int h)
+        {
+            if (x < 0)
+                x = 0;
+
+            if (y < 0)
+                y = 0;
+
+            if (x > _originalScreen.Width)
+                x = _originalScreen.Width;
+
+            if (y > _originalScreen.Height)
+                y = _originalScreen.Height;
+
+            Color clr = _originalScreen.GetPixel(x, y);
+            br.Color = Color.FromArgb(133, clr.R, clr.G, clr.B);
+
+            return;
         }
     }
 

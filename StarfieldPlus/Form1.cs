@@ -2,10 +2,16 @@
 using System.Drawing;
 using System.Windows.Forms;
 
+
+// ================================================================================================
+// Creating a Screen Saver with C#
 // https://sites.harding.edu/fmccown/screensaver/screensaver.html
 
 // What graphisc api to choose for C#
 // https://www.reddit.com/r/csharp/comments/5uvyw9/what_can_i_use_for_basic_fast_2d_graphics/
+// ================================================================================================
+
+
 
 namespace StarfieldPlus
 {
@@ -70,9 +76,9 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random().Next(11);
+            int id = new Random().Next(15);
 
-            id = 4;
+            id = 14;
 
             switch (id)
             {
@@ -134,6 +140,21 @@ namespace StarfieldPlus
                 // Desktop 3
                 case 11:
                     _obj = new my.myObj_103();
+                    break;
+
+                // Desktop 4
+                case 12:
+                    _obj = new my.myObj_104();
+                    break;
+
+                // Desktop 5
+                case 13:
+                    _obj = new my.myObj_105();
+                    break;
+
+                // Desktop 5
+                case 14:
+                    _obj = new my.myObj_110();
                     break;
 
                 default:

@@ -14,7 +14,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void takeSnapshot()
+        public override void getImage()
         {
             // Get desktop snapshot
             _originalScreen = new Bitmap(Width, Height);
