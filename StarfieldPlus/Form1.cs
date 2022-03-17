@@ -76,9 +76,9 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random().Next(16);
+            int id = new Random().Next(19);
 
-            id = 15;
+            //id = 16;
 
             switch (id)
             {
@@ -160,6 +160,15 @@ namespace StarfieldPlus
                 // Moving Lines
                 case 15:
                     _obj = new my.myObj_120();
+                    break;
+
+                case 16:
+                    _obj = new my.myObj_130();
+                    break;
+
+                // Growing shapes -- rain alike
+                case 17:
+                    _obj = new my.myObj_131();
                     break;
 
                 default:
