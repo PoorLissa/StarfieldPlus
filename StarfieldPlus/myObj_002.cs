@@ -37,12 +37,12 @@ namespace my
         protected virtual void generateNew()
         {
             lifeCounter = rand.Next(100) + 100;
-            cnt = 5;
 
             int x0 = rand.Next(Width);
             int y0 = rand.Next(Height);
             int speed = rand.Next(30) + 50;
-            growSpeed = rand.Next(3) + 1;
+            growSpeed = rand.Next(5) + 1;
+            cnt = growSpeed;
             drawMode = rand.Next(2);
 
             speed = rand.Next(20) + 10;
@@ -79,8 +79,8 @@ namespace my
             {
                 if (cnt-- == 0)
                 {
-                    Size += growSpeed;
-                    cnt = 2;
+                    Size += 3;
+                    cnt = growSpeed;
                 }
 
                 x += dx;
