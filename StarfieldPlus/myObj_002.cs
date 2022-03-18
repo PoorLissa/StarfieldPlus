@@ -11,87 +11,30 @@ namespace my
 {
     public class myObj_002 : myObject
     {
-        protected float x, y, dx, dy;
-        protected int cnt = 0;
-        protected int max = 0;
-        protected int color = 0;
+        static Pen p = null;
+        static SolidBrush br = null;
+        static myColorPicker colorPicker = null;
+
+        float x, y, dx, dy;
+        int cnt = 0, A = 0, R = 0, G = 0, B = 0, lifeCounter = 0, growSpeed = 1, drawMode = 0, A_Filling = 0;
+
+        // -------------------------------------------------------------------------
 
         public myObj_002()
         {
+            if (p == null)
+            {
+                p = new Pen(Color.Red);
+                br = new SolidBrush(Color.Red);
+                colorPicker = new myColorPicker(Width, Height);
+            }
+
             generateNew();
         }
 
         // -------------------------------------------------------------------------
 
         protected virtual void generateNew()
-        {
-        }
-
-        // -------------------------------------------------------------------------
-
-        protected virtual void Show(Graphics g)
-        {
-        }
-
-        // -------------------------------------------------------------------------
-
-        // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
-        {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
-            var list = new System.Collections.Generic.List<myObj_002>();
-            list.Add(new myObj_002_a());
-
-            int alpha = rand.Next(255);
-            int R     = rand.Next(255);
-            int G     = rand.Next(255);
-            int B     = rand.Next(255);
-
-            using (Brush br = new SolidBrush(Color.FromArgb(alpha, R, G, B)))
-            {
-                while (isAlive)
-                {
-                    g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-
-                    foreach (var s in list)
-                    {
-                        s.Show(g);
-                        s.Move();
-                    }
-
-                    form.Invalidate();
-                    System.Threading.Thread.Sleep(50);
-
-                    // Gradually increase number of moving stars, until the limit is reached
-                    if (list.Count < Count)
-                    {
-                        list.Add(new myObj_002_a());
-                    }
-                }
-            }
-
-            g.Dispose();
-            isAlive = true;
-
-            return;
-        }
-    };
-
-    // ===========================================================================================================
-    // ===========================================================================================================
-
-    public class myObj_002_a : myObj_002
-    {
-        private int lifeCounter = 0;
-        private int cnt = 0;
-        private int growSpeed = 1;
-        private int alpha = 0;
-        private static Pen p = null;
-
-        protected override void generateNew()
         {
             lifeCounter = rand.Next(100) + 100;
             cnt = 5;
@@ -100,6 +43,7 @@ namespace my
             int y0 = rand.Next(Height);
             int speed = rand.Next(30) + 50;
             growSpeed = rand.Next(3) + 1;
+            drawMode = rand.Next(2);
 
             speed = rand.Next(20) + 10;
 
@@ -121,27 +65,17 @@ namespace my
 
             Size = 1;
 
-            int R = 0, G = 0, B = 0, max = 256;
-            alpha = rand.Next(max - 75) + 75;
+            A = rand.Next(250) + 6;
+            A_Filling = A / (rand.Next(10) + 2);
 
-            if (p == null)
-            {
-                p = new Pen(Color.Black);
-
-                while (R + G + B < 100)
-                {
-                    R = rand.Next(max);
-                    G = rand.Next(max);
-                    B = rand.Next(max);
-                }
-
-                p.Color = Color.FromArgb(255, R, G, B);
-            }
+            colorPicker.getColor(X, Y, ref R, ref G, ref B);
         }
 
-        public override void Move()
+        // -------------------------------------------------------------------------
+
+        public void Move()
         {
-            if (X != -111)
+            if (X != -1111)
             {
                 if (cnt-- == 0)
                 {
@@ -155,11 +89,11 @@ namespace my
                 X = (int)x;
                 Y = (int)y;
 
-                if (X < -10 || X > Width || Y < -10 || Y > Height)
+                if (X < -Size || X > Width + Size || Y < -Size || Y > Height + Size)
                 {
-                    X = -11;
-                    Y = -11;
-                    Size = 1;
+                    X = -1111;
+                    Y = -1111;
+                    Size = 0;
                 }
             }
             else
@@ -173,12 +107,64 @@ namespace my
             return;
         }
 
-        protected override void Show(Graphics g)
+        // -------------------------------------------------------------------------
+
+        protected virtual void Show(Graphics g)
         {
-            p.Color = Color.FromArgb(alpha, p.Color.R, p.Color.G, p.Color.B);
-            g.DrawEllipse(p, X, Y, Size, Size);
-//            g.DrawEllipse(Pens.DarkOrange, X, Y, Size + 2, Size + 2);
+            if (Size > 0)
+            {
+                p.Color = Color.FromArgb(A, R, G, B);
+
+                switch (drawMode)
+                {
+                    case 0:
+                        g.DrawEllipse(p, X, Y, Size, Size);
+                        break;
+
+                    case 1:
+                        br.Color = Color.FromArgb(A_Filling, R, G, B);
+                        g.FillEllipse(br, X, Y, Size, Size);
+                        g.DrawEllipse(p, X, Y, Size, Size);
+                        break;
+                }
+            }
         }
 
+        // -------------------------------------------------------------------------
+
+        // Using form's background image as our drawing surface
+        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        {
+            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
+            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
+            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
+
+            var list = new System.Collections.Generic.List<myObj_002>();
+
+            while (isAlive)
+            {
+                g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+                foreach (var s in list)
+                {
+                    s.Show(g);
+                    s.Move();
+                }
+
+                form.Invalidate();
+                System.Threading.Thread.Sleep(50);
+
+                // Gradually increase number of objects, until the limit is reached
+                if (list.Count < Count)
+                {
+                    list.Add(new myObj_002());
+                }
+            }
+
+            g.Dispose();
+            isAlive = true;
+
+            return;
+        }
     };
 };
