@@ -78,21 +78,21 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random().Next(19);
 
-            //id = 16;
+            id = 2;
 
             switch (id)
             {
-                // Stars
+                // Star Field
                 case 0:
                     _obj = new my.myObj_000();
                     break;
 
-                // Random roaming
+                // Randomly Roaming Squares (Snow Like)
                 case 1:
                     _obj = new my.myObj_001();
                     break;
 
-                // Circles
+                // Linearly Moving Circles (Soap Bubbles)
                 case 2:
                     _obj = new my.myObj_002();
                     break;
@@ -162,11 +162,12 @@ namespace StarfieldPlus
                     _obj = new my.myObj_120();
                     break;
 
+                // Growing shapes -- rain drops alike -- no refresh
                 case 16:
                     _obj = new my.myObj_130();
                     break;
 
-                // Growing shapes -- rain alike
+                // Growing shapes -- rain drops alike
                 case 17:
                     _obj = new my.myObj_131();
                     break;

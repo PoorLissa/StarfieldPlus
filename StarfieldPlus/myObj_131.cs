@@ -2,7 +2,7 @@
 using System.Drawing;
 
 /*
-    - Growing shapes -- rain alike
+    - Growing shapes -- rain drops alike
 */
 
 namespace my
