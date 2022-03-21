@@ -22,14 +22,15 @@ namespace my
         public int Y        { get; set; }
         public int Size     { get; set; }
 
-        protected static Bitmap _originalScreen = null;
-        protected static Random rand = new Random();
+        protected static myColorPicker _colorPicker = null;
+        protected static Bitmap        _originalScreen = null;
+        protected static Random         rand = new Random();
 
         // -------------------------------------------------------------------------
 
         public myObject()
         {
-            getImage();
+            //getImage();
         }
 
         // -------------------------------------------------------------------------
@@ -44,6 +45,7 @@ namespace my
         // Override this method for those child classes that actually need a snapshot or an image
         public virtual void getImage()
         {
+            // todo: get rid of this; use colorPicker instead
             ;
         }
 

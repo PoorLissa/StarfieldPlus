@@ -11,7 +11,6 @@ namespace my
     {
         static Pen p = null;
         static SolidBrush br = null;
-        static myColorPicker colorPicker = null;
         static int shape = 0;
         static int moveMode = 0;
         static int A_Filling = 0;
@@ -34,7 +33,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height);
+                _colorPicker = new myColorPicker(Width, Height);
 
                 moveMode = rand.Next(7);
                 shape = rand.Next(6);
@@ -66,7 +65,7 @@ namespace my
             counter = 0;
 
             A = rand.Next(256);
-            colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
 
             return;
         }

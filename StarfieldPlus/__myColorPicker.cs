@@ -29,14 +29,22 @@ namespace my
             {
                 // Use Desktop Snapshot
                 case 0:
-                    if (_img == null)
-                    {
-                        _img = new Bitmap(Width, Height);
 
-                        using (Graphics g = Graphics.FromImage(_img))
+                    try
+                    {
+                        if (_img == null)
                         {
-                            g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
+                            _img = new Bitmap(Width, Height);
+
+                            using (Graphics g = Graphics.FromImage(_img))
+                            {
+                                g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
+                        ;
                     }
                     break;
 
@@ -45,17 +53,17 @@ namespace my
 
                     try
                     {
-                        string currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\_dsc_00341_0_ultrawide.jpg";
-                        currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\0jcj71fni5111.png";
-                        currentWallpaper = "E:\\iNet\\pix\\05-01-11.gif";
-                        currentWallpaper = "C:\\_maxx\\ukraine.png";
+                        string currentWallpaper = getRandomFile(StarfieldPlus.Program._imgPath);
 
-                        _img = new Bitmap(currentWallpaper);
-
-                        if (_img.Width < Width || _img.Height < Height)
+                        if (currentWallpaper != null && currentWallpaper != string.Empty)
                         {
-                            // Stretch it, if it is less than the desktop size
-                            _img = new Bitmap(_img, Width, Height);
+                            _img = new Bitmap(currentWallpaper);
+
+                            if (_img.Width < Width || _img.Height < Height)
+                            {
+                                // Stretch the image, if its size is less than the desktop size
+                                _img = new Bitmap(_img, Width, Height);
+                            }
                         }
                     }
                     catch (Exception)
@@ -65,7 +73,7 @@ namespace my
                     }
                     break;
 
-                // Use Random Color
+                // Use Custom Color
                 default:
                     break;
             }
@@ -83,6 +91,13 @@ namespace my
         public int getMode()
         {
             return _mode;
+        }
+
+        // -------------------------------------------------------------------------
+
+        public Bitmap getImg()
+        {
+            return _img;
         }
 
         // -------------------------------------------------------------------------
@@ -139,5 +154,60 @@ namespace my
             return;
         }
 
+        // -------------------------------------------------------------------------
+
+        private string getRandomFile(string dir)
+        {
+            string res = "";
+
+            if (System.IO.Directory.Exists(dir))
+            {
+                try
+                {
+                    string[] files = System.IO.Directory.GetFiles(dir);
+
+                    if (files != null)
+                    {
+                        string[] Extensions = { ".bmp", ".gif", ".png", ".jpg" };
+
+                        var list = new System.Collections.Generic.List<string>();
+
+                        for (int i = 0; i < files.Length; i++)
+                        {
+                            var file = files[i];
+                            bool ok = false;
+
+                            foreach (var ext in Extensions)
+                            {
+                                if (file.EndsWith(ext))
+                                {
+                                    ok = true;
+                                    break;
+                                }
+                            }
+
+                            if (ok)
+                            {
+                                list.Add(file);
+                            }
+                        }
+
+                        if (list.Count > 0)
+                        {
+                            int rnd = new Random().Next(list.Count);
+                            res = list[rnd];
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    ;
+                }
+            }
+
+            return res;
+        }
+
+        // -------------------------------------------------------------------------
     }
 };

@@ -13,16 +13,15 @@ namespace my
     {
         private int dx, dy;
         static SolidBrush br = null;
-        static myColorPicker colorPicker = null;
 
         int A = 0, R = 0, G = 0, B = 0;
 
         public myObj_010()
         {
-            if (colorPicker == null)
+            if (_colorPicker == null)
             {
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height);
+                _colorPicker = new myColorPicker(Width, Height);
             }
 
             X = rand.Next(Width);
@@ -36,7 +35,7 @@ namespace my
             Size = rand.Next(11) + 1;
 
             A = rand.Next(256 - 75) + 75;
-            colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
         }
 
         // -------------------------------------------------------------------------

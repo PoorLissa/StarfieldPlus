@@ -7,6 +7,8 @@ namespace StarfieldPlus
 {
     internal static class Program
     {
+        public static string _imgPath = "";
+
         [DllImport("shcore.dll")]
         private static extern int SetProcessDpiAwareness(ProcessDPIAwareness value);
 
@@ -86,9 +88,20 @@ namespace StarfieldPlus
         {
             try
             {
-                if (Environment.OSVersion.Version.Major >= 6)
+                int major = Environment.OSVersion.Version.Major;
+                int minor = Environment.OSVersion.Version.Minor;
+
+                if (major >= 6)
                 {
-                    //SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
+                    if (minor > 1)
+                    {
+                        _imgPath = "c:\\_maxx";
+                        SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
+                    }
+                    else
+                    {
+                        _imgPath = "E:\\iNet\\pix\\wallpapers_3840x1600\\";
+                    }
                 }
             }
             catch (EntryPointNotFoundException)

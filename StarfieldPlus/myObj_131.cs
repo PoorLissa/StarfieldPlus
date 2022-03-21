@@ -13,7 +13,6 @@ namespace my
         static SolidBrush br = null;
         static int max_dSize = 0;
         static int shape = 0;
-        static myColorPicker colorPicker = null;
 
         protected int maxSize = 0, A = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
 
@@ -25,7 +24,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height);
+                _colorPicker = new myColorPicker(Width, Height);
 
                 shape = rand.Next(5);
                 max_dSize = rand.Next(15) + 3;
@@ -42,7 +41,7 @@ namespace my
             Y = rand.Next(Height);
 
             A = rand.Next(250) + 6;
-            colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
 
             if (shape == 1 || shape == 3)
             {

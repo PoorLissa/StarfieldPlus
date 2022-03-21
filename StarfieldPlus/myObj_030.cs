@@ -13,17 +13,16 @@ namespace my
 
         static Pen p = null;
         static SolidBrush br = null;
-        static myColorPicker colorPicker = null;
 
         bool isSlow = false;
 
         public myObj_030()
         {
-            if (colorPicker == null)
+            if (_colorPicker == null)
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
-                colorPicker = new myColorPicker(Width, Height);
+                _colorPicker = new myColorPicker(Width, Height);
             }
 
             generateNew();
@@ -71,7 +70,7 @@ namespace my
             dx = 0;
             dy = 0;
 
-            colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
         }
 
         // -------------------------------------------------------------------------
