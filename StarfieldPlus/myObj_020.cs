@@ -9,24 +9,26 @@ using System.Drawing;
 
 namespace my
 {
-    public class myObj_002 : myObject
+    public class myObj_020 : myObject
     {
         static Pen p = null;
         static SolidBrush br = null;
         static myColorPicker colorPicker = null;
+        static int shape = 0;
 
         float x, y, dx, dy;
         int cnt = 0, A = 0, R = 0, G = 0, B = 0, lifeCounter = 0, growSpeed = 1, drawMode = 0, A_Filling = 0;
 
         // -------------------------------------------------------------------------
 
-        public myObj_002()
+        public myObj_020()
         {
             if (p == null)
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
+                shape = rand.Next(2);
             }
 
             generateNew();
@@ -115,16 +117,26 @@ namespace my
             {
                 p.Color = Color.FromArgb(A, R, G, B);
 
-                switch (drawMode)
+                switch (shape)
                 {
                     case 0:
                         g.DrawEllipse(p, X, Y, Size, Size);
+
+                        if (drawMode == 1)
+                        {
+                            br.Color = Color.FromArgb(A_Filling, R, G, B);
+                            g.FillEllipse(br, X, Y, Size, Size);
+                        }
                         break;
 
                     case 1:
-                        br.Color = Color.FromArgb(A_Filling, R, G, B);
-                        g.FillEllipse(br, X, Y, Size, Size);
-                        g.DrawEllipse(p, X, Y, Size, Size);
+                        g.DrawRectangle(p, X, Y, Size, Size);
+
+                        if (drawMode == 1)
+                        {
+                            br.Color = Color.FromArgb(A_Filling, R, G, B);
+                            g.FillRectangle(br, X, Y, Size, Size);
+                        }
                         break;
                 }
             }
@@ -139,7 +151,7 @@ namespace my
             Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
             form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
 
-            var list = new System.Collections.Generic.List<myObj_002>();
+            var list = new System.Collections.Generic.List<myObj_020>();
 
             while (isAlive)
             {
@@ -157,7 +169,7 @@ namespace my
                 // Gradually increase number of objects, until the limit is reached
                 if (list.Count < Count)
                 {
-                    list.Add(new myObj_002());
+                    list.Add(new myObj_020());
                 }
             }
 

@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace my
 {
-    public class myObj_001 : myObject
+    public class myObj_010 : myObject
     {
         private int dx, dy;
         static SolidBrush br = null;
@@ -17,7 +17,7 @@ namespace my
 
         int A = 0, R = 0, G = 0, B = 0;
 
-        public myObj_001()
+        public myObj_010()
         {
             if (colorPicker == null)
             {
@@ -84,7 +84,7 @@ namespace my
             Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
             form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
 
-            var list = new System.Collections.Generic.List<myObj_001>();
+            var list = new System.Collections.Generic.List<myObj_010>();
 
             while (isAlive)
             {
@@ -98,7 +98,7 @@ namespace my
 
                 if (list.Count < Count)
                 {
-                    list.Add(new myObj_001());
+                    list.Add(new myObj_010());
                 }
 
                 form.Invalidate();

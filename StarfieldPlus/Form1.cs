@@ -73,12 +73,22 @@ namespace StarfieldPlus
 
         // -------------------------------------------------------------------
 
+        // todo:
+        // - divide the screen in squares and swap them randomly
+        // - gravity
+        // - sort all the screen pixels
+        // - moving stripes (from top to bottom, for example)
+        // - gravity, where the color of a pixel is its mass
+        // - posterization (color % int)
+        // - divide in squares and each square gets its own blur factor
+        // - sperm floating towards the center
+
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
             int id = new Random().Next(19);
 
-            id = 2;
+            id = 4;
 
             switch (id)
             {
@@ -89,27 +99,27 @@ namespace StarfieldPlus
 
                 // Randomly Roaming Squares (Snow Like)
                 case 1:
-                    _obj = new my.myObj_001();
+                    _obj = new my.myObj_010();
                     break;
 
                 // Linearly Moving Circles (Soap Bubbles)
                 case 2:
-                    _obj = new my.myObj_002();
+                    _obj = new my.myObj_020();
                     break;
 
                 // Rain Drops
                 case 3:
-                    _obj = new my.myObj_003();
+                    _obj = new my.myObj_030();
                     break;
 
                 // Lines 1
                 case 4:
-                    _obj = new my.myObj_004();
+                    _obj = new my.myObj_040();
                     break;
 
                 // Lines 2
                 case 5:
-                    _obj = new my.myObj_004_a();
+                    _obj = new my.myObj_004_b();
                     break;
 
                 // Lines 3

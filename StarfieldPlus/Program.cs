@@ -88,7 +88,7 @@ namespace StarfieldPlus
             {
                 if (Environment.OSVersion.Version.Major >= 6)
                 {
-                    SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
+                    //SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
                 }
             }
             catch (EntryPointNotFoundException)
