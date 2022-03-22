@@ -24,7 +24,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                _colorPicker = new myColorPicker(Width, Height);
+                colorPicker = new myColorPicker(Width, Height);
 
                 shape = rand.Next(5);
                 max_dSize = rand.Next(15) + 3;
@@ -41,7 +41,7 @@ namespace my
             Y = rand.Next(Height);
 
             A = rand.Next(250) + 6;
-            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            colorPicker.getColor(X, Y, ref R, ref G, ref B);
 
             if (shape == 1 || shape == 3)
             {
@@ -63,7 +63,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected override void Move()
         {
             Size += dSize;
 
@@ -82,7 +82,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected void Show(Graphics g)
+        protected override void Show()
         {
             p.Color = Color.FromArgb(A, R, G, B);
 
@@ -122,12 +122,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 50;
             int num = rand.Next(333) + 33;
 
@@ -141,7 +137,7 @@ namespace my
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
@@ -154,9 +150,6 @@ namespace my
                     list.Add(new myObj_131());
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

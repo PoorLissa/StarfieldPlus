@@ -27,7 +27,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
             var brush = Brushes.White;
 
@@ -66,13 +66,9 @@ namespace my
         // -------------------------------------------------------------------------
 
         // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
             var list = new System.Collections.Generic.List<myObj_000>();
-
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             form.Invalidate();
@@ -94,7 +90,7 @@ namespace my
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
@@ -107,9 +103,6 @@ namespace my
                     list.Add(new myObj_000_a());
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }
@@ -150,7 +143,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected override void Move()
         {
             x += dx;
             y += dy;
@@ -224,7 +217,7 @@ namespace my
             }
         }
 
-        public override void Move()
+        protected override void Move()
         {
             if (doMove)
             {
@@ -252,10 +245,10 @@ namespace my
             return;
         }
 
-        protected override void Show(Graphics g)
+        protected override void Show()
         {
             // Draw static stars ...
-            base.Show(g);
+            base.Show();
 
             if (cnt % 100 == 0)
             {
@@ -280,7 +273,6 @@ namespace my
     public class myObj_000_c : myObj_000
     {
         private int lifeCounter = 0;
-        private int cnt = 0;
 
         protected override void generateNew()
         {
@@ -315,7 +307,7 @@ namespace my
             Size = 1;
         }
 
-        public override void Move()
+        protected override void Move()
         {
             if (X != -11)
             {
@@ -348,7 +340,7 @@ namespace my
             return;
         }
 
-        protected override void Show(Graphics g)
+        protected override void Show()
         {
             g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
             //g.FillRectangle(Brushes.OrangeRed, X, Y, Size, Size);

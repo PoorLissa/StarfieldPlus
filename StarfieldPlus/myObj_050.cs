@@ -16,10 +16,10 @@ namespace my
 
         public myObj_050()
         {
-            if (_colorPicker == null)
+            if (colorPicker == null)
             {
                 // Use only Desktop snapshots or static images
-                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 mode = rand.Next(2);
             }
 
@@ -57,7 +57,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected override void Move()
         {
             switch (mode)
             {
@@ -103,48 +103,40 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected void Show(Graphics g)
+        protected override void Show()
         {
             switch (mode)
             {
                 case 0:
                     rect1.Y = Y;
                     rect2.Y = X;
-                    g.DrawImage(_colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                    g.DrawImage(colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
                     break;
 
                 case 1:
-                    g.DrawImage(_colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
-                    g.DrawImage(_colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);
+                    g.DrawImage(colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                    g.DrawImage(colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);
                     break;
             }
         }
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            // Using form's background image as our drawing surface
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 150;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-            g.DrawImage(_colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
+            g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
 
             while (isAlive)
             {
-                Show(g);
+                Show();
                 Move();
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

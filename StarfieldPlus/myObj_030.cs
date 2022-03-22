@@ -18,11 +18,11 @@ namespace my
 
         public myObj_030()
         {
-            if (_colorPicker == null)
+            if (colorPicker == null)
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
-                _colorPicker = new myColorPicker(Width, Height);
+                colorPicker = new myColorPicker(Width, Height);
             }
 
             generateNew();
@@ -70,12 +70,12 @@ namespace my
             dx = 0;
             dy = 0;
 
-            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            colorPicker.getColor(X, Y, ref R, ref G, ref B);
         }
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected override void Move()
         {
             if (isSlow)
             {
@@ -132,7 +132,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
             br.Color = Color.FromArgb(A, R, G, B);
 
@@ -158,13 +158,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 33;
 
             var list = new System.Collections.Generic.List<myObj_030>();
@@ -175,7 +170,7 @@ namespace my
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
@@ -189,8 +184,6 @@ namespace my
             }
 
             br.Dispose();
-            g.Dispose();
-            isAlive = true;
 
             return;
         }
@@ -215,11 +208,11 @@ namespace my
 
         public myObj_031()
         {
-            if (_colorPicker == null)
+            if (colorPicker == null)
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
-                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
             }
 
             generateNew();
@@ -240,7 +233,7 @@ namespace my
                 A = rand.Next(56) + 200;
                 X = rand.Next(Width);
                 Y = rand.Next(Height);
-                _colorPicker.getColor(X, Y, ref R, ref G, ref B);
+                colorPicker.getColor(X, Y, ref R, ref G, ref B);
             }
             while (R == 0 && G == 0 && B == 0);
 
@@ -253,12 +246,12 @@ namespace my
             {
                 for (int j = Y - half; j < Y + half; j++)
                 {
-                    _colorPicker.setPixel(i, j);
+                    colorPicker.setPixel(i, j);
                 }
             }
         }
 
-        protected void Show(Graphics g)
+        protected override void Show()
         {
             int half = Size / 2;
 
@@ -266,7 +259,7 @@ namespace my
             g.FillRectangle(br, X - half, Y - half, Size, Size);
         }
 
-        public override void Move()
+        protected override void Move()
         {
             if (Y % 5 == 0)
             {
@@ -285,12 +278,8 @@ namespace my
             }
         }
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 33;
 
             t = 11;
@@ -299,11 +288,11 @@ namespace my
 
             while (isAlive)
             {
-                g.DrawImage(_colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
+                g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
@@ -317,8 +306,6 @@ namespace my
             }
 
             br.Dispose();
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

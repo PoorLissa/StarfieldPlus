@@ -9,9 +9,9 @@ namespace my
     {
         public myObj_101()
         {
-            if (_colorPicker == null)
+            if (colorPicker == null)
             {
-                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
             }
 
             generateNew();
@@ -25,19 +25,15 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
             //g.FillRectangle(brush, X, Y, Size, Size);
         }
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
             using (Brush br = new SolidBrush(Color.Red))
@@ -66,7 +62,7 @@ namespace my
                     // Normal image
                     //g.DrawImage(_originalScreen, x, y, rect, GraphicsUnit.Pixel);
 
-                    g.DrawImage(_colorPicker.getImg(), x / 2 + Width / 4, y / 2 + Height / 4, rect, GraphicsUnit.Pixel);
+                    g.DrawImage(colorPicker.getImg(), x / 2 + Width / 4, y / 2 + Height / 4, rect, GraphicsUnit.Pixel);
 
                     form.Invalidate();
                     System.Threading.Thread.Sleep(t);
@@ -77,9 +73,6 @@ namespace my
                         t++;
                     }
                 }
-
-                g.Dispose();
-                isAlive = true;
             }
 
             return;

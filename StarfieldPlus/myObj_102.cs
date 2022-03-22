@@ -15,9 +15,9 @@ namespace my
 
         public myObj_102()
         {
-            if (_colorPicker == null)
+            if (colorPicker == null)
             {
-                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 avgColorMode = rand.Next(2);
             }
 
@@ -32,7 +32,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
         }
 
@@ -103,7 +103,7 @@ namespace my
                             {
                                 if (i > -1 && j > -1 && i < Width && j < Height)
                                 {
-                                    _colorPicker.getColor(i, j, ref r, ref g, ref b);
+                                    colorPicker.getColor(i, j, ref r, ref g, ref b);
 
                                     R += r;
                                     G += g;
@@ -130,13 +130,13 @@ namespace my
                         if (y < 0)
                             y = 0;
 
-                        if (x > _colorPicker.getImg().Width)
-                            x = _colorPicker.getImg().Width;
+                        if (x > colorPicker.getImg().Width)
+                            x = colorPicker.getImg().Width;
 
-                        if (y > _colorPicker.getImg().Height)
-                            y = _colorPicker.getImg().Height;
+                        if (y > colorPicker.getImg().Height)
+                            y = colorPicker.getImg().Height;
 
-                        Color clr = _colorPicker.getImg().GetPixel(x, y);
+                        Color clr = colorPicker.getImg().GetPixel(x, y);
                         br.Color = Color.FromArgb(133, clr.R, clr.G, clr.B);
                     }
                     break;
@@ -221,12 +221,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             switch (rand.Next(2))
             {
                 // Rectangles
@@ -239,9 +235,6 @@ namespace my
                     proc2(form, g, ref isAlive);
                     break;
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

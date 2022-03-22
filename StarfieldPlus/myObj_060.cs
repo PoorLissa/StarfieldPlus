@@ -15,10 +15,10 @@ namespace my
 
         public myObj_060()
         {
-            if (_colorPicker == null)
+            if (colorPicker == null)
             {
                 // Use only Desktop snapshots
-                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 br = new SolidBrush(Color.White);
             }
 
@@ -35,7 +35,7 @@ namespace my
 
         private object lockObject = new object();
 
-        public override void Move()
+        protected override void Move()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace my
                 x = -1;
                 y = -1;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ;
             }
@@ -76,7 +76,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected void Show(Graphics g)
+        protected override void Show()
         {
             Color clr1 = buffer.GetPixel(x, y);
             Color clr2 = buffer.GetPixel(X, Y);
@@ -94,17 +94,12 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            // Using form's background image as our drawing surface
-            buffer = new Bitmap(Width, Height);             // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 0;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-            g.DrawImage(_colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
+            g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
 
             while (isAlive)
             {
@@ -119,8 +114,8 @@ namespace my
 
                 var rect2 = new Rectangle(X, Y, Size, Size);
 
-                g.DrawImage(_colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
-                g.DrawImage(_colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);
+                g.DrawImage(colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                g.DrawImage(colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);
 
 /*
                 Move();
@@ -136,9 +131,6 @@ namespace my
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t++);
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

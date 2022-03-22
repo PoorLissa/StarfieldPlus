@@ -15,7 +15,7 @@ namespace my
         static int moveType = 0;
 
         float x, y, dx, dy, a, size;
-        int A = 0, R = -1, G = -1, B = -1;
+        int R = -1, G = -1, B = -1;
 
         public myObj_040()
         {
@@ -58,7 +58,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected override void Move()
         {
 moveType = 0;
 shape = 0;
@@ -79,7 +79,7 @@ shape = 0;
 
         // -------------------------------------------------------------------------
 
-        protected void Show(Graphics g)
+        protected override void Show()
         {
             Size = (int)size;
 
@@ -103,17 +103,10 @@ shape = 0;
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            // Using form's background image as our drawing surface
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int cnt = 0, t = 22;
-
 t = 5;
-
             var list = new System.Collections.Generic.List<myObj_040>();
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
@@ -122,7 +115,7 @@ t = 5;
             {
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                     //g.FillRectangle(Brushes.DarkRed, s.x, s.y, s.Size, s.Size);
                 }
@@ -145,9 +138,6 @@ t = 5;
                     }
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }
@@ -297,7 +287,7 @@ namespace my
             while (dx == 0 && dy == 0);
         }
 
-        public override void Move()
+        protected override void Move()
         {
             X += dx;
             Y += dy;
@@ -318,13 +308,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int cnt = 0;
 
             var list = new System.Collections.Generic.List<myObj_004_b>();
@@ -362,9 +347,6 @@ namespace my
                     }
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }
@@ -462,7 +444,7 @@ namespace my
             while (dx == 0 && dy == 0);
         }
 
-        public override void Move()
+        protected override void Move()
         {
             //X += dx;
             //Y += dy;
@@ -488,12 +470,8 @@ namespace my
         // -------------------------------------------------------------------------
 
         // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int cnt = 0;
 
             var list = new System.Collections.Generic.List<myObj_004_c>();
@@ -539,9 +517,6 @@ namespace my
                     }
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

@@ -104,7 +104,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
             br.Color = Color.FromArgb(A, R, G, B);
 
@@ -220,12 +220,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 1, cnt = 1000;
 
             isBorder = rand.Next(5);
@@ -248,7 +244,7 @@ namespace my
             while (isAlive)
             {
                 generateNew();
-                Show(g);
+                Show();
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
@@ -260,9 +256,6 @@ namespace my
                     cnt = 1000;
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

@@ -26,7 +26,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                _colorPicker = new myColorPicker(Width, Height);
+                colorPicker = new myColorPicker(Width, Height);
                 shape = rand.Next(2);
             }
 
@@ -69,12 +69,12 @@ namespace my
             A = rand.Next(250) + 6;
             A_Filling = A / (rand.Next(10) + 2);
 
-            _colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            colorPicker.getColor(X, Y, ref R, ref G, ref B);
         }
 
         // -------------------------------------------------------------------------
 
-        public void Move()
+        protected override void Move()
         {
             if (X != -1111)
             {
@@ -110,7 +110,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
             if (Size > 0)
             {
@@ -144,12 +144,8 @@ namespace my
         // -------------------------------------------------------------------------
 
         // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             var list = new System.Collections.Generic.List<myObj_020>();
 
             while (isAlive)
@@ -158,7 +154,7 @@ namespace my
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
@@ -171,9 +167,6 @@ namespace my
                     list.Add(new myObj_020());
                 }
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

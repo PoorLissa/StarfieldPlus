@@ -73,7 +73,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Move()
+        protected override void Move()
         {
             X += dx;
             Y += dy;
@@ -86,7 +86,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected void Show(Graphics g)
+        protected override void Show()
         {
             int x2 = 0, y2 = 0;
 
@@ -182,12 +182,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
-
             int t = 50;
             int num = rand.Next(333) + 33;
             colorMode = rand.Next(5);
@@ -205,16 +201,13 @@ namespace my
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }

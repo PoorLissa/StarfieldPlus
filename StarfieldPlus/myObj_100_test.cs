@@ -27,7 +27,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void Show(Graphics g)
+        protected override void Show()
         {
             var brush = Brushes.White;
 
@@ -65,14 +65,9 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        // Using form's background image as our drawing surface
-        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
         {
             var list = new System.Collections.Generic.List<myObj_100>();
-
-            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             form.Invalidate();
@@ -94,16 +89,13 @@ namespace my
 
                 foreach (var s in list)
                 {
-                    s.Show(g);
+                    s.Show();
                     s.Move();
                 }
 
                 System.Threading.Thread.Sleep(33);
                 form.Invalidate();
             }
-
-            g.Dispose();
-            isAlive = true;
 
             return;
         }
@@ -151,7 +143,7 @@ namespace my
             }
         }
 
-        public override void Move()
+        protected override void Move()
         {
             x += dx;
             y += dy;
@@ -175,10 +167,10 @@ namespace my
             return;
         }
 
-        protected override void Show(Graphics g)
+        protected override void Show()
         {
             // Draw static stars ...
-            base.Show(g);
+            base.Show();
 
             if (cnt % 100 == 0)
             {
