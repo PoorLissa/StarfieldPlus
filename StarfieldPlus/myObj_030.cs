@@ -52,8 +52,7 @@ namespace my
             if (rnd == 666)
                 maxSize = 123;
 
-            //if (rnd > 750)
-            if (rnd > -1)
+            if (rnd > 750)
             {
                 isSlow = true;
                 maxSize = 2;
@@ -89,8 +88,7 @@ namespace my
                 X = (int)x;
                 Y = (int)y;
 
-                //dy += (0.01f + Size / 20.0f);
-                dy += (0.01f + Size / 2.0f);
+                dy += (0.01f + Size / 20.0f);
 
                 if (Y >= Height)
                 {
@@ -198,6 +196,10 @@ namespace my
         }
     };
 };
+
+
+
+
 
 
 
