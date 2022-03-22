@@ -23,6 +23,8 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
                 colorPicker = new myColorPicker(Width, Height);
+
+                Log($"myObj_030: colorPicker({colorPicker.getMode()})");
             }
 
             generateNew();
@@ -192,7 +194,7 @@ namespace my
 
 
 
-
+// ************************************************************************************************
 
 
 
@@ -213,6 +215,8 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
                 colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+
+                Log($"myObj_031: colorPicker({colorPicker.getMode()})");
             }
 
             generateNew();

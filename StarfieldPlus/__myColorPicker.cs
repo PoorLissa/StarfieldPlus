@@ -29,48 +29,12 @@ namespace my
             {
                 // Use Desktop Snapshot
                 case 0:
-
-                    try
-                    {
-                        if (_img == null)
-                        {
-                            _img = new Bitmap(Width, Height);
-
-                            using (Graphics g = Graphics.FromImage(_img))
-                            {
-                                g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        ;
-                    }
+                    getSnapshot(Width, Height);
                     break;
 
                 // Use Custom Picture
                 case 1:
-
-                    try
-                    {
-                        string currentWallpaper = getRandomFile(StarfieldPlus.Program._imgPath);
-
-                        if (currentWallpaper != null && currentWallpaper != string.Empty)
-                        {
-                            _img = new Bitmap(currentWallpaper);
-
-                            if (_img.Width < Width || _img.Height < Height)
-                            {
-                                // Stretch the image, if its size is less than the desktop size
-                                _img = new Bitmap(_img, Width, Height);
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        _img = null;
-                        _mode++;
-                    }
+                    getCustomPicture(Width, Height);
                     break;
 
                 // Use Custom Color
@@ -183,20 +147,14 @@ namespace my
                         for (int i = 0; i < files.Length; i++)
                         {
                             var file = files[i];
-                            bool ok = false;
 
                             foreach (var ext in Extensions)
                             {
                                 if (file.EndsWith(ext))
                                 {
-                                    ok = true;
+                                    list.Add(file);
                                     break;
                                 }
-                            }
-
-                            if (ok)
-                            {
-                                list.Add(file);
                             }
                         }
 
@@ -209,11 +167,68 @@ namespace my
                 }
                 catch (Exception)
                 {
-                    ;
+                    res = "";
                 }
             }
 
             return res;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void getSnapshot(int Width, int Height)
+        {
+            try
+            {
+                if (_img == null)
+                {
+                    _img = new Bitmap(Width, Height);
+
+                    using (Graphics g = Graphics.FromImage(_img))
+                    {
+                        g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ;
+            }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void getCustomPicture(int Width, int Height)
+        {
+            try
+            {
+                string currentWallpaper = getRandomFile(StarfieldPlus.Program._imgPath);
+
+                if (currentWallpaper != null && currentWallpaper != string.Empty)
+                {
+                    _img = new Bitmap(currentWallpaper);
+
+                    if (_img.Width < Width || _img.Height < Height)
+                    {
+                        // Stretch the image, if its size is less than the desktop size
+                        _img = new Bitmap(_img, Width, Height);
+                    }
+                }
+                else
+                {
+                    throw new Exception("");
+                }
+            }
+            catch (Exception)
+            {
+                _img = null;
+                _mode = 0;
+                getSnapshot(Width, Height);
+            }
+
+            return;
         }
 
         // -------------------------------------------------------------------------

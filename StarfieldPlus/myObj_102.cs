@@ -19,6 +19,8 @@ namespace my
             {
                 colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 avgColorMode = rand.Next(2);
+
+                Log($"myObj_102: colorPicker({colorPicker.getMode()}), avgColorMode({avgColorMode})");
             }
 
             generateNew();

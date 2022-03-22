@@ -22,6 +22,8 @@ namespace my
             {
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
+
+                Log($"myObj_010: colorPicker({colorPicker.getMode()})");
             }
 
             X = rand.Next(Width);

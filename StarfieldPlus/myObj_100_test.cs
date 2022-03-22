@@ -7,6 +7,8 @@ namespace my
 {
     public class myObj_100 : myObject
     {
+        static char q = (char)0;
+
         protected float x, y, dx, dy;
         protected int cnt = 0;
         protected int max = 0;
@@ -16,6 +18,12 @@ namespace my
 
         public myObj_100()
         {
+            if (q == 0)
+            {
+                q = (char)1;
+                Log($"myObj_100");
+            }
+
             generateNew();
         }
 

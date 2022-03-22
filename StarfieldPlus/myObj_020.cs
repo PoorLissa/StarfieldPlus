@@ -28,6 +28,8 @@ namespace my
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
                 shape = rand.Next(2);
+
+                Log($"myObj_020: colorPicker({colorPicker.getMode()}), shape({shape})");
             }
 
             generateNew();

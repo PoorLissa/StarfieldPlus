@@ -76,6 +76,9 @@ namespace my
 
                 g.Dispose();
                 bmp.Dispose();
+
+                g = null;
+                bmp = null;
             }
             finally
             {
@@ -94,6 +97,20 @@ namespace my
             isAlive = false;
 
             while (isAlive == false);
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        protected void Log(string str)
+        {
+            //System.IO.File.CreateText(path).Dispose();
+
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText("zzz.log"))
+            {
+                sw.WriteLine(str);
+            }
 
             return;
         }

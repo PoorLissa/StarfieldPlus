@@ -21,6 +21,8 @@ namespace my
                 // Use only Desktop snapshots or static images
                 colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 mode = rand.Next(2);
+
+                Log($"myObj_050: colorPicker({colorPicker.getMode()}), mode({mode})");
             }
 
             generateNew();

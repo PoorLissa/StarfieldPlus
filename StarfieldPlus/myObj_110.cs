@@ -60,6 +60,8 @@ namespace my
                 }
             }
 
+            Log($"myObj_110: isRandomSize({isRandomSize}), shape({shape})");
+
             generateNew();
         }
 

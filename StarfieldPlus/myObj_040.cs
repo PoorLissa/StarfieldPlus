@@ -25,6 +25,8 @@ namespace my
                 br = new SolidBrush(Color.White);
                 shape = rand.Next(2);
                 moveType = rand.Next(2);
+
+                Log($"myObj_040: shape({shape}), moveType({moveType})");
             }
 
             generateNew();
@@ -223,10 +225,17 @@ namespace my
 {
     public class myObj_004_b : myObject
     {
+        static char q = (char)0;
         private int dx, dy, a;
 
         public myObj_004_b()
         {
+            if (q == 0)
+            {
+                q = (char)1;
+                Log($"myObj_004_b");
+            }
+
             dx = 0;
             dy = 0;
 
@@ -380,10 +389,17 @@ namespace my
 {
     public class myObj_004_c : myObject
     {
+        static char q = (char)0;
         private int dx, dy, a;
 
         public myObj_004_c()
         {
+            if (q == 0)
+            {
+                q = (char)1;
+                Log($"myObj_004_c");
+            }
+
             dx = 0;
             dy = 0;
 

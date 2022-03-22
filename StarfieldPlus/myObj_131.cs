@@ -28,6 +28,8 @@ namespace my
 
                 shape = rand.Next(5);
                 max_dSize = rand.Next(15) + 3;
+
+                Log($"myObj_131: colorPicker({colorPicker.getMode()}), shape({shape}), max_dSize({max_dSize})");
             }
 
             generateNew();

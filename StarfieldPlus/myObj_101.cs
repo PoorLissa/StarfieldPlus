@@ -12,6 +12,8 @@ namespace my
             if (colorPicker == null)
             {
                 colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+
+                Log($"myObj_101: colorPicker({colorPicker.getMode()})");
             }
 
             generateNew();

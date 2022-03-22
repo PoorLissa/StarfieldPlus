@@ -87,7 +87,7 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(15);
 
-            id = 2;
+            id = 11;
             //_obj = new my.myObj_031();
             //return;
 

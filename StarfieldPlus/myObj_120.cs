@@ -21,6 +21,7 @@ namespace my
             if (p == null)
             {
                 p = new Pen(Color.Red);
+                Log($"myObj_120");
             }
 
             generateNew();
