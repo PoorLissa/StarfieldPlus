@@ -20,6 +20,8 @@ namespace my
                 // Use only Desktop snapshots
                 colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 br = new SolidBrush(Color.White);
+
+                Log("myObj_060");
             }
 
             generateNew();
