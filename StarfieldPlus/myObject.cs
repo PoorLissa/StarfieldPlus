@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 
 
 
@@ -21,6 +22,8 @@ namespace my
         protected static myColorPicker  colorPicker = null;
         protected static Random         rand = new Random((int)DateTime.Now.Ticks);
         protected static Graphics       g = null;
+        protected static Form           form = null;
+        protected static bool           isAlive = true;
 
         // -------------------------------------------------------------------------
 
@@ -49,14 +52,17 @@ namespace my
         // -------------------------------------------------------------------------
 
         // Override it for every derived class to implement the logic
-        protected virtual void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected virtual void Process()
         {
         }
 
         // -------------------------------------------------------------------------
 
-        public void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        public void Process(System.Windows.Forms.Form mainForm)
         {
+            form = mainForm;
+            isAlive = true;
+
             // Using form's background image as our drawing surface
             try
             {
@@ -66,10 +72,10 @@ namespace my
                 form.BackgroundImage = bmp;                         // set the Form's image to be the buffer
                 g = Graphics.FromImage(bmp);                        // set the graphics to draw on the image
 
-                Process(form, g, ref isAlive);
+                Process();
 
-                bmp.Dispose();
                 g.Dispose();
+                bmp.Dispose();
             }
             finally
             {
@@ -77,6 +83,17 @@ namespace my
             }
 
             isAlive = true;
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        public void Stop()
+        {
+            isAlive = false;
+
+            while (isAlive == false);
 
             return;
         }

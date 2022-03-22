@@ -106,7 +106,7 @@ namespace StarfieldPlus
             }
             catch (EntryPointNotFoundException)
             {
-                // this exception occurs if OS does not implement this API, just ignore it.
+                // This exception occurs if OS does not implement this API, just ignore it
             }
 
             return;

@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>IDE1006;IDE0055;IDE0044</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

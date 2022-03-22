@@ -103,7 +103,7 @@ shape = 0;
 
         // -------------------------------------------------------------------------
 
-        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected override void Process()
         {
             int cnt = 0, t = 22;
 t = 5;
@@ -308,7 +308,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected override void Process()
         {
             int cnt = 0;
 
@@ -469,8 +469,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        // Using form's background image as our drawing surface
-        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected override void Process()
         {
             int cnt = 0;
 

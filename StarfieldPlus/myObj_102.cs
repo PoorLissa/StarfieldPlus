@@ -221,18 +221,18 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected override void Process()
         {
             switch (rand.Next(2))
             {
                 // Rectangles
                 case 0:
-                    proc1(form, g, ref isAlive);
+                    proc1(form, g);
                     break;
 
                 // Circles
                 case 1:
-                    proc2(form, g, ref isAlive);
+                    proc2(form, g);
                     break;
             }
 
@@ -241,7 +241,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        private void proc1(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        private void proc1(System.Windows.Forms.Form form, Graphics g)
         {
             using (SolidBrush br = new SolidBrush(Color.Red))
             using (Pen p = new Pen(Color.Red))
@@ -338,7 +338,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        private void proc2(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        private void proc2(System.Windows.Forms.Form form, Graphics g)
         {
             using (SolidBrush br = new SolidBrush(Color.Red))
             using (Pen p = new Pen(Color.Red))

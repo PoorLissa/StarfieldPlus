@@ -32,7 +32,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected override void Process()
         {
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 

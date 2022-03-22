@@ -17,9 +17,8 @@ namespace StarfieldPlus
 {
     public partial class Form1 : Form
     {
-        private bool        _isAlive = false;
         private Point       _oldMouseLocation;
-        public my.myObject _obj = null;
+        private my.myObject _obj = null;
 
         // -------------------------------------------------------------------
 
@@ -88,7 +87,7 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(15);
 
-            //id = 2;
+            id = 2;
             //_obj = new my.myObj_031();
             //return;
 
@@ -181,12 +180,11 @@ namespace StarfieldPlus
 
         private void RunScreensaver()
         {
-            _isAlive = true;
             my.myObject.Count = 333;
 
             new System.Threading.Tasks.Task(() => {
 
-                _obj.Process(this, ref _isAlive);
+                _obj.Process(this);
 
             }).Start();
 
@@ -197,13 +195,10 @@ namespace StarfieldPlus
 
         private void appExit()
         {
+            _obj.Stop();
+
             this.MouseMove -= Form1_MouseMove;
             this.KeyDown -= Form1_KeyDown;
-
-            _isAlive = false;
-
-            while (_isAlive == false)
-                ;
 
             Application.Exit();
         }

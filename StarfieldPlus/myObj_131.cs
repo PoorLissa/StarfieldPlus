@@ -122,7 +122,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected override void Process(System.Windows.Forms.Form form, Graphics g, ref bool isAlive)
+        protected override void Process()
         {
             int t = 50;
             int num = rand.Next(333) + 33;
