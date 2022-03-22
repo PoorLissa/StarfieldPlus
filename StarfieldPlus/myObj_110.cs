@@ -65,7 +65,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+        protected override void generateNew()
         {
             if (isRandomSize)
             {

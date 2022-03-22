@@ -32,7 +32,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+        protected override void generateNew()
         {
             dx = 0;
             dy = 0;

@@ -27,7 +27,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+        protected override void generateNew()
         {
         }
 

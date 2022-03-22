@@ -21,7 +21,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+		protected override void generateNew()
         {
         }
 
@@ -114,7 +114,7 @@ namespace my
     // Moving stars
     class myObj_000_a : myObj_000
     {
-        protected override void generateNew()
+		protected override void generateNew()
         {
             X = rand.Next(Width);
             Y = rand.Next(Height);

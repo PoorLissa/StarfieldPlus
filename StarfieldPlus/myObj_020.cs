@@ -35,7 +35,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+        protected override void generateNew()
         {
             lifeCounter = rand.Next(100) + 100;
 

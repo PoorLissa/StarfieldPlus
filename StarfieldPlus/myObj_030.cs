@@ -30,7 +30,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+        protected override void generateNew()
         {
             isSlow = false;
 
@@ -218,7 +218,7 @@ namespace my
             generateNew();
         }
 
-        protected void generateNew()
+        protected override void generateNew()
         {
             do
             {

@@ -52,7 +52,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        protected virtual void generateNew()
+        protected override void generateNew()
         {
             X = rand.Next(Width);
             Y = rand.Next(Height);
