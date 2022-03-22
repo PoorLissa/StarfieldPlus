@@ -17,7 +17,7 @@ namespace my
 
         public myColorPicker(int Width, int Height, int mode = -1)
         {
-            _rand = new Random();
+            _rand = new Random((int)DateTime.Now.Ticks);
             _mode = mode;
 
             if (_mode < 0)
@@ -98,6 +98,12 @@ namespace my
         public Bitmap getImg()
         {
             return _img;
+        }
+
+        public void setPixel(int x, int y)
+        {
+            if (x > -1 && y > -1 && x < _img.Width && y < _img.Height)
+                _img.SetPixel(x, y, Color.FromArgb(255, 0, 0, 0));
         }
 
         // -------------------------------------------------------------------------
@@ -194,7 +200,7 @@ namespace my
 
                         if (list.Count > 0)
                         {
-                            int rnd = new Random().Next(list.Count);
+                            int rnd = new Random((int)DateTime.Now.Ticks).Next(list.Count);
                             res = list[rnd];
                         }
                     }

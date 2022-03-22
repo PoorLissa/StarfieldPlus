@@ -12,12 +12,15 @@ namespace my
         Rectangle rect1;
         Rectangle rect2;
 
+        int mode = 0;
+
         public myObj_050()
         {
             if (_colorPicker == null)
             {
                 // Use only Desktop snapshots or static images
                 _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                mode = rand.Next(2);
             }
 
             generateNew();
@@ -27,43 +30,94 @@ namespace my
 
         protected virtual void generateNew()
         {
-            var list = new System.Collections.Generic.List<int>();
+            switch (mode)
+            {
+                case 0: {
 
-            for (int i = 1; i < 100; i++)
-                if (Height % i == 0)
-                    list.Add(i);
+                        var list = new System.Collections.Generic.List<int>();
 
-            Size = list[rand.Next(list.Count)];
-            X = -1;
-            Y = -1;
+                        for (int i = 1; i < 100; i++)
+                            if (Height % i == 0)
+                                list.Add(i);
 
-            rect1 = new Rectangle(0, 0, Width, Size);
-            rect2 = new Rectangle(0, 0, Width, Size);
+                        Size = list[rand.Next(list.Count)];
+                        X = -1;
+                        Y = -1;
+
+                        rect1 = new Rectangle(0, 0, Width, Size);
+                        rect2 = new Rectangle(0, 0, Width, Size);
+
+                    }
+                    break;
+
+                case 1:
+                    break;
+            }
         }
 
         // -------------------------------------------------------------------------
 
         public override void Move()
         {
-            do
+            switch (mode)
             {
-                Y = rand.Next(Height / Size);
-                X = rand.Next(Height / Size);
-            }
-            while (X == Y);
+                case 0: {
 
-            X *= Size;
-            Y *= Size;
+                        do
+                        {
+                            Y = rand.Next(Height / Size);
+                            X = rand.Next(Height / Size);
+                        }
+                        while (X == Y);
+
+                        X *= Size;
+                        Y *= Size;
+
+                    }
+                    break;
+
+                case 1: {
+
+                        Size = rand.Next(50) + 10;
+
+                        X = rand.Next(Width - Size);
+                        Y = rand.Next(Height - Size);
+
+                        rect1.X = X;
+                        rect1.Y = Y;
+                        rect1.Width = Size;
+                        rect1.Height = Size;
+
+                        X = rand.Next(Width);
+                        Y = rand.Next(Height);
+
+                        rect2.X = X;
+                        rect2.Y = Y;
+                        rect2.Width = Size;
+                        rect2.Height = Size;
+
+                    }
+                    break;
+            }
         }
 
         // -------------------------------------------------------------------------
 
         protected void Show(Graphics g)
         {
-            rect1.Y = Y;
-            rect2.Y = X;
+            switch (mode)
+            {
+                case 0:
+                    rect1.Y = Y;
+                    rect2.Y = X;
+                    g.DrawImage(_colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                    break;
 
-            g.DrawImage(_colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                case 1:
+                    g.DrawImage(_colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                    g.DrawImage(_colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);
+                    break;
+            }
         }
 
         // -------------------------------------------------------------------------

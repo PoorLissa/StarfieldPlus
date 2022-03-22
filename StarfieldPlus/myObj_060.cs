@@ -18,7 +18,7 @@ namespace my
             if (_colorPicker == null)
             {
                 // Use only Desktop snapshots
-                _colorPicker = new myColorPicker(Width, Height, 0);
+                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 br = new SolidBrush(Color.White);
             }
 
@@ -108,7 +108,7 @@ namespace my
 
             while (isAlive)
             {
-                Size = rand.Next(333) + 10;
+                Size = rand.Next(50) + 10;
                 X = rand.Next(Width - Size);
                 Y = rand.Next(Height - Size);
 

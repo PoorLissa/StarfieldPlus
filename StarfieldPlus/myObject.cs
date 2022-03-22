@@ -8,7 +8,6 @@ namespace my
     public interface iMyObject
     {
         void Move();
-        void getImage();
     };
 
 
@@ -23,29 +22,18 @@ namespace my
         public int Size     { get; set; }
 
         protected static myColorPicker _colorPicker = null;
-        protected static Bitmap        _originalScreen = null;
-        protected static Random         rand = new Random();
+        protected static Random         rand = new Random((int)DateTime.Now.Ticks);
 
         // -------------------------------------------------------------------------
 
         public myObject()
         {
-            //getImage();
         }
 
         // -------------------------------------------------------------------------
 
         public virtual void Move()
         {
-            ;
-        }
-
-        // -------------------------------------------------------------------------
-
-        // Override this method for those child classes that actually need a snapshot or an image
-        public virtual void getImage()
-        {
-            // todo: get rid of this; use colorPicker instead
             ;
         }
 

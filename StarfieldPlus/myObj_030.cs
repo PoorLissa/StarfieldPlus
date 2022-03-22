@@ -7,14 +7,14 @@ namespace my
 {
     public class myObj_030 : myObject
     {
-        float x, y, dx, dy;
-        int lifeCounter = -1;
-        int A = 0, R = 0, G = 0, B = 0;
+        protected float x, y, dx, dy;
+        protected int lifeCounter = -1;
+        protected int A = 0, R = 0, G = 0, B = 0;
 
-        static Pen p = null;
-        static SolidBrush br = null;
+        protected static Pen p = null;
+        protected static SolidBrush br = null;
 
-        bool isSlow = false;
+        protected bool isSlow = false;
 
         public myObj_030()
         {
@@ -52,7 +52,8 @@ namespace my
             if (rnd == 666)
                 maxSize = 123;
 
-            if (rnd > 750)
+            //if (rnd > 750)
+            if (rnd > -1)
             {
                 isSlow = true;
                 maxSize = 2;
@@ -88,7 +89,8 @@ namespace my
                 X = (int)x;
                 Y = (int)y;
 
-                dy += (0.01f + Size / 20.0f);
+                //dy += (0.01f + Size / 20.0f);
+                dy += (0.01f + Size / 2.0f);
 
                 if (Y >= Height)
                 {
@@ -194,5 +196,130 @@ namespace my
 
             return;
         }
+    };
+};
+
+
+
+namespace my
+{
+    public class myObj_031 : myObject
+    {
+        protected float x, y, dx, dy;
+        protected int A = 0, R = 0, G = 0, B = 0;
+
+        protected static Pen p = null;
+        protected static SolidBrush br = null;
+
+        public myObj_031()
+        {
+            if (_colorPicker == null)
+            {
+                p = new Pen(Color.White);
+                br = new SolidBrush(Color.White);
+                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+            }
+
+            generateNew();
+        }
+
+        protected void generateNew()
+        {
+            do
+            {
+                Size = rand.Next(11) + 1;
+            }
+            while (Size % 2 != 1);
+
+            dx = rand.Next(3)-1;
+            dy = 0;
+
+            do {
+                A = rand.Next(56) + 200;
+                X = rand.Next(Width);
+                Y = rand.Next(Height);
+                _colorPicker.getColor(X, Y, ref R, ref G, ref B);
+            }
+            while (R == 0 && G == 0 && B == 0);
+
+            x = X;
+            y = Y;
+
+            int half = Size / 2;
+
+            for (int i = X - half; i < X + half; i++)
+            {
+                for (int j = Y - half; j < Y + half; j++)
+                {
+                    _colorPicker.setPixel(i, j);
+                }
+            }
+        }
+
+        protected void Show(Graphics g)
+        {
+            int half = Size / 2;
+
+            br.Color = Color.FromArgb(A, R, G, B);
+            g.FillRectangle(br, X - half, Y - half, Size, Size);
+        }
+
+        public override void Move()
+        {
+            if (Y % 5 == 0)
+            {
+                x += rand.Next(3) - 1;
+            }
+
+            y += dy;
+            X = (int)x;
+            Y = (int)y;
+
+            dy += (0.01f + Size / 2.0f);
+
+            if (Y >= Height)
+            {
+                generateNew();
+            }
+        }
+
+        public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
+        {
+            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
+            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
+            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
+
+            int t = 33;
+
+            t = 11;
+
+            var list = new System.Collections.Generic.List<myObj_031>();
+
+            while (isAlive)
+            {
+                g.DrawImage(_colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
+
+                foreach (var s in list)
+                {
+                    s.Show(g);
+                    s.Move();
+                }
+
+                form.Invalidate();
+                System.Threading.Thread.Sleep(t);
+
+                if (list.Count < Count + 2150)
+                {
+                    list.Add(new myObj_031());
+                }
+            }
+
+            br.Dispose();
+            g.Dispose();
+            isAlive = true;
+
+            return;
+        }
+
     };
 };

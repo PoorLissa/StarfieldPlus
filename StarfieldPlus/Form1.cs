@@ -86,13 +86,11 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random().Next(20);
+            int id = new Random((int)DateTime.Now.Ticks).Next(15);
 
-            id = 7;
-
-            _obj = new my.myObj_060();
-
-            return;
+            //id = 3;
+            //_obj = new my.myObj_031();
+            //return;
 
             switch (id)
             {
@@ -131,7 +129,7 @@ namespace StarfieldPlus
                     _obj = new my.myObj_004_c();
                     break;
 
-                // ...
+                // Desktop pieces
                 case 7:
                     _obj = new my.myObj_050();
                     break;
@@ -153,36 +151,21 @@ namespace StarfieldPlus
 
                 // Desktop 3
                 case 11:
-                    _obj = new my.myObj_103();
-                    break;
-
-                // Desktop 4
-                case 12:
-                    _obj = new my.myObj_104();
-                    break;
-
-                // Desktop 5
-                case 13:
-                    _obj = new my.myObj_105();
-                    break;
-
-                // Desktop 5
-                case 14:
                     _obj = new my.myObj_110();
                     break;
 
                 // Moving Lines
-                case 15:
+                case 12:
                     _obj = new my.myObj_120();
                     break;
 
                 // Growing shapes -- rain drops alike -- no refresh
-                case 16:
+                case 13:
                     _obj = new my.myObj_130();
                     break;
 
                 // Growing shapes -- rain drops alike
-                case 17:
+                case 14:
                     _obj = new my.myObj_131();
                     break;
 

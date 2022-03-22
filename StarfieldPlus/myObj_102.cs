@@ -11,22 +11,17 @@ namespace my
 {
     public class myObj_102 : myObject
     {
+        static int avgColorMode = 0;
+
         public myObj_102()
         {
-            generateNew();
-        }
-
-        // -------------------------------------------------------------------------
-
-        public override void getImage()
-        {
-            // Get desktop snapshot
-            _originalScreen = new Bitmap(Width, Height);
-
-            using (Graphics g = Graphics.FromImage(_originalScreen))
+            if (_colorPicker == null)
             {
-                g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
+                _colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                avgColorMode = rand.Next(2);
             }
+
+            generateNew();
         }
 
         // -------------------------------------------------------------------------
@@ -96,31 +91,56 @@ namespace my
 
         protected virtual void getAvgColor(SolidBrush br, int x, int y, int w, int h)
         {
-            Color clr;
-            int cnt = 0, R = 0, G = 0, B = 0;
-
-            for (int i = x; i < x + w; i++)
+            switch (avgColorMode)
             {
-                for (int j = y; j < y + h; j++)
-                {
-                    if (i > -1 && j > -1 && i < Width && j < Height)
-                    {
-                        clr = _originalScreen.GetPixel(i, j);
+                case 0: {
 
-                        R += clr.R;
-                        G += clr.G;
-                        B += clr.B;
+                        int cnt = 0, R = 0, G = 0, B = 0, r = 0, g = 0, b = 0;
 
-                        cnt++;
+                        for (int i = x; i < x + w; i++)
+                        {
+                            for (int j = y; j < y + h; j++)
+                            {
+                                if (i > -1 && j > -1 && i < Width && j < Height)
+                                {
+                                    _colorPicker.getColor(i, j, ref r, ref g, ref b);
+
+                                    R += r;
+                                    G += g;
+                                    B += b;
+
+                                    cnt++;
+                                }
+                            }
+                        }
+
+                        R /= cnt;
+                        G /= cnt;
+                        B /= cnt;
+
+                        br.Color = Color.FromArgb(155, R, G, B);
                     }
-                }
+                    break;
+
+                case 1: {
+
+                        if (x < 0)
+                            x = 0;
+
+                        if (y < 0)
+                            y = 0;
+
+                        if (x > _colorPicker.getImg().Width)
+                            x = _colorPicker.getImg().Width;
+
+                        if (y > _colorPicker.getImg().Height)
+                            y = _colorPicker.getImg().Height;
+
+                        Color clr = _colorPicker.getImg().GetPixel(x, y);
+                        br.Color = Color.FromArgb(133, clr.R, clr.G, clr.B);
+                    }
+                    break;
             }
-
-            R /= cnt;
-            G /= cnt;
-            B /= cnt;
-
-            br.Color = Color.FromArgb(155, R, G, B);
 
             return;
         }
@@ -203,28 +223,25 @@ namespace my
 
         public override void Process(System.Windows.Forms.Form form, ref bool isAlive)
         {
-            if (_originalScreen != null)
+            Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
+            Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
+            form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
+
+            switch (rand.Next(2))
             {
-                Bitmap buffer = new Bitmap(Width, Height);      // set the size of the image
-                Graphics g = Graphics.FromImage(buffer);        // set the graphics to draw on the image
-                form.BackgroundImage = buffer;                  // set the PictureBox's image to be the buffer
+                // Rectangles
+                case 0:
+                    proc1(form, g, ref isAlive);
+                    break;
 
-                switch (rand.Next(2))
-                {
-                    // Rectangles
-                    case 0:
-                        proc1(form, g, ref isAlive);
-                        break;
-
-                    // Circles
-                    case 1:
-                        proc2(form, g, ref isAlive);
-                        break;
-                }
-
-                g.Dispose();
-                isAlive = true;
+                // Circles
+                case 1:
+                    proc2(form, g, ref isAlive);
+                    break;
             }
+
+            g.Dispose();
+            isAlive = true;
 
             return;
         }
@@ -423,110 +440,4 @@ namespace my
             return;
         }
     }
-
-
-    // =================================================================================================================
-    // =================================================================================================================
-    // =================================================================================================================
-
-
-    // The same as myObj_102, but uses the picture file instead of screenshot
-    public class myObj_103 : myObj_102
-    {
-        public myObj_103()
-        {
-            generateNew();
-        }
-
-        // -------------------------------------------------------------------------
-
-        public override void getImage()
-        {
-                // Get desktop snapshot
-        /*
-                    string currentWallpaper = new string('\0', MAX_PATH);
-                    Win32.SystemParametersInfo(SPI_GETDESKWALLPAPER, currentWallpaper.Length, currentWallpaper, 0);
-                    return currentWallpaper.Substring(0, currentWallpaper.IndexOf('\0'));
-        */
-
-            try
-            {
-                string currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\_dsc_00341_0_ultrawide.jpg";
-                currentWallpaper = "E:\\iNet\\pix\\wallpapers_3840x1600\\0jcj71fni5111.png";
-                currentWallpaper = "E:\\iNet\\pix\\05-01-11.gif";
-
-                _originalScreen = new Bitmap(currentWallpaper);
-
-                if (_originalScreen.Width < Width || _originalScreen.Height < Height)
-                {
-                    _originalScreen = new Bitmap(_originalScreen, Width, Height);
-                }
-            }
-            catch (Exception)
-            {
-                _originalScreen = null;
-            }
-        }
-    }
-
-
-    // =================================================================================================================
-    // =================================================================================================================
-    // =================================================================================================================
-
-
-    // The same as myObj_102, but the color of a shape is determined by one single point
-    public class myObj_104 : myObj_102
-    {
-        protected override void getAvgColor(SolidBrush br, int x, int y, int w, int h)
-        {
-            if (x < 0)
-                x = 0;
-
-            if (y < 0)
-                y = 0;
-
-            if (x > _originalScreen.Width)
-                x = _originalScreen.Width;
-
-            if (y > _originalScreen.Height)
-                y = _originalScreen.Height;
-
-            Color clr = _originalScreen.GetPixel(x, y);
-            br.Color = Color.FromArgb(133, clr.R, clr.G, clr.B);
-
-            return;
-        }
-    }
-
-
-    // =================================================================================================================
-    // =================================================================================================================
-    // =================================================================================================================
-
-
-    // The same as myObj_103, but the color of a shape is determined by one single point
-    public class myObj_105 : myObj_103
-    {
-        protected override void getAvgColor(SolidBrush br, int x, int y, int w, int h)
-        {
-            if (x < 0)
-                x = 0;
-
-            if (y < 0)
-                y = 0;
-
-            if (x > _originalScreen.Width)
-                x = _originalScreen.Width;
-
-            if (y > _originalScreen.Height)
-                y = _originalScreen.Height;
-
-            Color clr = _originalScreen.GetPixel(x, y);
-            br.Color = Color.FromArgb(133, clr.R, clr.G, clr.B);
-
-            return;
-        }
-    }
-
 };
