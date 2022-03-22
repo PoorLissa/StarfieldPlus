@@ -100,6 +100,8 @@ namespace my
             return _img;
         }
 
+        // -------------------------------------------------------------------------
+
         public void setPixel(int x, int y)
         {
             if (x > -1 && y > -1 && x < _img.Width && y < _img.Height)

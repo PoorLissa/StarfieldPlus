@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 
 
 
@@ -57,17 +58,23 @@ namespace my
         public void Process(System.Windows.Forms.Form form, ref bool isAlive)
         {
             // Using form's background image as our drawing surface
+            try
+            {
+                Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
 
-            Bitmap bmp = new Bitmap(Width, Height);             // set the size of the image
-            form.BackgroundImage = bmp;                         // set the Form's image to be the buffer
-            g = Graphics.FromImage(bmp);                        // set the graphics to draw on the image
+                Bitmap bmp = new Bitmap(Width, Height);             // set the size of the image
+                form.BackgroundImage = bmp;                         // set the Form's image to be the buffer
+                g = Graphics.FromImage(bmp);                        // set the graphics to draw on the image
 
+                Process(form, g, ref isAlive);
 
-            Process(form, g, ref isAlive);
-
-
-            bmp.Dispose();
-            g.Dispose();
+                bmp.Dispose();
+                g.Dispose();
+            }
+            finally
+            {
+                Thread.CurrentThread.Priority = ThreadPriority.Normal;
+            }
 
             isAlive = true;
 
