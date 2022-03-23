@@ -91,7 +91,7 @@ namespace StarfieldPlus
 
             if (false)
             {
-                _obj = new my.myObj_031();
+                _obj = new my.myObj_070();
                 return;
             }
 

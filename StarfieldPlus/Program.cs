@@ -8,6 +8,7 @@ namespace StarfieldPlus
     internal static class Program
     {
         public static string _imgPath = "";
+        private static System.Threading.Mutex mutex = null;
 
         [DllImport("shcore.dll")]
         private static extern int SetProcessDpiAwareness(ProcessDPIAwareness value);
@@ -27,6 +28,15 @@ namespace StarfieldPlus
         [STAThread]
         static void Main(string[] args)
         {
+            const string appName = "MyAppName";
+            bool createdNew;
+            mutex = new System.Threading.Mutex(true, appName, out createdNew);
+
+            if (!createdNew)
+            {
+                return;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

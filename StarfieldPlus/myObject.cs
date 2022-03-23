@@ -105,6 +105,8 @@ namespace my
 
         protected void Log(string str)
         {
+            return;
+
             //System.IO.File.CreateText(path).Dispose();
 
             using (System.IO.StreamWriter sw = System.IO.File.AppendText("zzz.log"))
