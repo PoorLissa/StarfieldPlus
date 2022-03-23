@@ -46,7 +46,7 @@ namespace my
                  srcRect.Width  = maxSize;
                  srcRect.Height = maxSize;
 
-                g_orig = Graphics.FromImage(colorPicker.getImg());      // Graphics to draw to the original image
+                g_orig = Graphics.FromImage(colorPicker.getImg());      // Graphics to draw on the original image
 
                 Log($"myObj_072: colorPicker({colorPicker.getMode()})");
             }
