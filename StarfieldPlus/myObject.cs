@@ -105,7 +105,7 @@ namespace my
 
         protected void Log(string str)
         {
-            return;
+#if DEBUG
 
             //System.IO.File.CreateText(path).Dispose();
 
@@ -113,7 +113,7 @@ namespace my
             {
                 sw.WriteLine(str);
             }
-
+#endif
             return;
         }
 
