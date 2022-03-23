@@ -23,6 +23,7 @@ namespace my
         protected static Random         rand = new Random((int)DateTime.Now.Ticks);
         protected static Graphics       g = null;
         protected static Form           form = null;
+        protected static Font           f = null;
         protected static bool           isAlive = true;
 
         // -------------------------------------------------------------------------
@@ -106,15 +107,11 @@ namespace my
         protected void Log(string str)
         {
 #if DEBUG
-
-            //System.IO.File.CreateText(path).Dispose();
-
             using (System.IO.StreamWriter sw = System.IO.File.AppendText("zzz.log"))
             {
                 sw.WriteLine(str);
             }
 #endif
-            return;
         }
 
         // -------------------------------------------------------------------------
