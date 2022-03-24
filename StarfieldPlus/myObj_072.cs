@@ -13,13 +13,14 @@ namespace my
     public class myObj_072 : myObject
     {
         protected float x, y, dx, dy;
-        protected int A = 0, R = 0, G = 0, B = 0;
+        protected int A = 0, R = 0, G = 0, B = 0, oldX = -1, oldY = -1, x0 = 0, y0 = 0;
         protected bool alive = false;
+		protected float time = 0;
 
-        protected static Pen p = null;
-        protected static SolidBrush br = null;
-        protected static int maxSize = 25;
-
+        protected static int maxSize = 33;
+        protected static int moveMode = 0;
+        protected static int dir = 0;
+		
         protected static Rectangle destRect;
         protected static Rectangle srcRect;
 
@@ -27,20 +28,24 @@ namespace my
         protected Bitmap bmp2 = null;
         protected Graphics g2 = null;
 
-        private int oldX = -1, oldY = -1;
-
         // -------------------------------------------------------------------------
 
         public myObj_072()
         {
             if (colorPicker == null)
             {
+                A = (rand.Next(5) + 1) * 50;
+
                 p = new Pen(Color.White);
-                br = new SolidBrush(Color.FromArgb(50, 0, 0, 0));
+                br = new SolidBrush(Color.FromArgb(A, 0, 0, 0));
                 //colorPicker = new myColorPicker(Width, Height, rand.Next(2));
-                colorPicker = new myColorPicker(Width, Height, 0);
+                colorPicker = new myColorPicker(Width, Height, 1);
                 f = new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Point);
+
                 maxSize = rand.Next(maxSize) + 5;
+				moveMode = rand.Next(3);
+                dir = rand.Next(2);
+                dir = dir == 0 ? -1 : 1;
 
                 destRect.X = 0;
                 destRect.Y = 0;
@@ -70,10 +75,11 @@ namespace my
             dx = rand.Next(3) - 1;
             dx = 0;
             dy = 0;
-
+            R = 0;
+            time = 0;
             oldX = -1;
             oldY = -1;
-
+			
             int failCnt = 0;
 
             do
@@ -96,6 +102,9 @@ namespace my
 
             x = X;
             y = Y;
+
+            x0 = X;
+            y0 = Y;
 
             // Store the original main piece
             using (Graphics gg = Graphics.FromImage(bmp1))
@@ -131,35 +140,77 @@ namespace my
         }
 
         // -------------------------------------------------------------------------
-
+		
         protected override void Move()
         {
-/*
-            if (Y % 5 == 0)
-                x += rand.Next(3) - 1;
-*/
-
             oldX = X;
             oldY = Y;
 
-            x += (float)(Math.Sin(Y) * 2) + rand.Next(13);
-            y += dy;
+            switch (moveMode)
+            {
+                case 0:
+                    move_0();       // Vertically down
+                    break;
 
-/*
-            var aaa = (int)System.DateTime.Now.Ticks;
-            x = (float)(Math.Sin(aaa) * 33);
-            y = (float)(Math.Cos(aaa) * 33);
-*/
-            X = (int)x;
-            Y = (int)y;
+                case 1:
+                    move_1();       // Blown by the wind
+                    break;
 
-            dy += (0.01f + Size / 2.0f);
+                case 2:
+                    move_2();       // Vertically down -- sin
+                    break;
+            }
 
             if (Y > Height + Size)
             {
                 Show();
                 generateNew();
             }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+		
+        private void move_0()
+        {
+            x += dx;
+            y += dy;
+
+            X = (int)x;
+            Y = (int)y;
+
+            dy += (0.01f + Size / 20.0f);
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void move_1()
+        {
+            x += dir * rand.Next(99);
+            y += dy;
+
+            X = (int)x;
+            Y = (int)y;
+
+            dy += (0.01f + Size / 200.0f);
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void move_2()
+        {
+            x = (float)(Math.Sin(time) * R/8);
+            x += dx;
+            y += dy;
+
+            X = x0 + (int)x;
+            Y = (int)y;
+
+            R++;
+            time += 0.25f;
+
+            dy += (0.01f + Size / 10.0f);
         }
 
         // -------------------------------------------------------------------------
@@ -191,7 +242,7 @@ namespace my
                     }
                 }
 #if DEBUG
-                string str = $"total = {totalCnt++}; Count = {list.Count}; alive = {found}\nmemory = {proc.PrivateMemorySize64/1024/1024} Mb";
+                string str = $"total = {totalCnt++}; Count = {list.Count}; alive = {found}\nmemory = {proc.PrivateMemorySize64 / 1024 / 1024} Mb";
                 g.FillRectangle(Brushes.Black, 50, 50, 400, 60);
                 g.DrawString(str, f, Brushes.Red, 50, 50);
 #endif

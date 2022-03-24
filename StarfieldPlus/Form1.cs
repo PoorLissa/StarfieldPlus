@@ -82,15 +82,14 @@ namespace StarfieldPlus
         // - divide in squares and each square gets its own blur factor
         // - sperm floating towards the center
         // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
-
-        // - cover everything in cpiralling traingles
+        // - cover everything in spiralling traingles
 
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(16);
 
-            //id = 17;
+            //id = 9;
 
             if (false)
             {

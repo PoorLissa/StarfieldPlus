@@ -5,7 +5,6 @@ using System.Drawing;
     - Pieces drop off the desktop and fall down -- random positions and sizes of the tiles
 
     todo:
-        checkered grid pattern (all drops from predefined grid places)
         look for target color across all the cell, not only in a single pixel
 */
 
@@ -17,9 +16,8 @@ namespace my
         protected int A = 0, R = 0, G = 0, B = 0;
         protected bool alive = false;
 
-        protected static Pen p = null;
-        protected static SolidBrush br = null;
         protected static int maxSize = 66;
+        protected static int dim_A = 0;
 
         // -------------------------------------------------------------------------
 
@@ -29,11 +27,10 @@ namespace my
             {
                 p = new Pen(Color.Black);
                 br = new SolidBrush(Color.White);
-
-                //colorPicker = new myColorPicker(Width, Height, rand.Next(2));
-colorPicker = new myColorPicker(Width, Height, 0);
-
+                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
                 f = new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Point);
+
+                dim_A = rand.Next(33) + 33;
 
                 Log($"myObj_070: colorPicker({colorPicker.getMode()})");
             }
@@ -74,7 +71,7 @@ colorPicker = new myColorPicker(Width, Height, 0);
             y = Y;
 
             // Dim the tile on the src image
-            br.Color = Color.FromArgb(100, 0, 0, 0);
+            br.Color = Color.FromArgb(dim_A, 0, 0, 0);
             colorPicker.GetGraphics().FillRectangle(br, X - Size, Y - Size, 2*Size, 2*Size);
         }
 
@@ -100,7 +97,7 @@ colorPicker = new myColorPicker(Width, Height, 0);
             X = (int)x;
             Y = (int)y;
 
-            dy += (0.01f + Size / 2.0f);
+            dy += (0.01f + Size / 5.0f);
 
             if (Y > Height + Size)
             {
