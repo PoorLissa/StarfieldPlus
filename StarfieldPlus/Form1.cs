@@ -81,6 +81,7 @@ namespace StarfieldPlus
         // - posterization (color % int)
         // - divide in squares and each square gets its own blur factor
         // - sperm floating towards the center
+        // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
 
         private void getScreenSaverObject()
         {
