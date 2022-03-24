@@ -2,7 +2,10 @@
 using System.Drawing;
 
 /*
-    - Pieces drop off the desktop and fall down -- even grid-like distribution
+    - Pieces drop off the desktop and fall down -- even grid-like distribution of the tiles
+
+    todo:
+        look for target color across all the cell, not only in a single pixel
 */
 
 namespace my
@@ -15,8 +18,7 @@ namespace my
 
         protected static Pen p = null;
         protected static SolidBrush br = null;
-        protected static Graphics g_orig = null;
-        protected static int maxSize = 33;
+        protected static int maxSize = 25;
 
         protected static Rectangle destRect;
         protected static Rectangle srcRect;
@@ -35,9 +37,10 @@ namespace my
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.FromArgb(50, 0, 0, 0));
-                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                //colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, 0);
                 f = new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Point);
-                maxSize = rand.Next(25) + 5;
+                maxSize = rand.Next(maxSize) + 5;
 
                 destRect.X = 0;
                 destRect.Y = 0;
@@ -45,8 +48,6 @@ namespace my
                 destRect.Height = maxSize;
                  srcRect.Width  = maxSize;
                  srcRect.Height = maxSize;
-
-                g_orig = Graphics.FromImage(colorPicker.getImg());      // Graphics to draw on the original image
 
                 Log($"myObj_072: colorPicker({colorPicker.getMode()})");
             }
@@ -105,7 +106,7 @@ namespace my
             }
 
             // Darken the source
-            g_orig.FillRectangle(br, X, Y, Size, Size);
+            colorPicker.GetGraphics().FillRectangle(br, X, Y, Size, Size);
 
             return;
         }
@@ -165,6 +166,9 @@ namespace my
 
         protected override void Process()
         {
+#if DEBUG
+            var proc = System.Diagnostics.Process.GetCurrentProcess();
+#endif
             g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
             form.Invalidate();
             System.Threading.Thread.Sleep(33);
@@ -187,8 +191,8 @@ namespace my
                     }
                 }
 #if DEBUG
-                string str = $"total = {totalCnt++}; Count = {list.Count}; alive = {found}";
-                g.FillRectangle(Brushes.Black, 50, 50, 400, 33);
+                string str = $"total = {totalCnt++}; Count = {list.Count}; alive = {found}\nmemory = {proc.PrivateMemorySize64/1024/1024} Mb";
+                g.FillRectangle(Brushes.Black, 50, 50, 400, 60);
                 g.DrawString(str, f, Brushes.Red, 50, 50);
 #endif
                 if (found == 0 && list.Count > 0)
@@ -206,7 +210,6 @@ namespace my
                 }
             }
 
-            g_orig.Dispose();
             br.Dispose();
 
             return;

@@ -19,6 +19,8 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        protected static Pen            p = null;
+        protected static SolidBrush     br = null;
         protected static myColorPicker  colorPicker = null;
         protected static Random         rand = new Random((int)DateTime.Now.Ticks);
         protected static Graphics       g = null;
