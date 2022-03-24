@@ -83,17 +83,20 @@ namespace StarfieldPlus
         // - sperm floating towards the center
         // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
 
+        // - cover everything in cpiralling traingles
+
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(16);
 
-            //id = 8;
+            //id = 17;
 
             if (false)
             {
                 //_obj = new my.myObj_070();
-                _obj = new my.myObj_071();
+                //_obj = new my.myObj_072();
+                _obj = new my.myObj_140();
                 return;
             }
 
@@ -140,49 +143,59 @@ namespace StarfieldPlus
                     _obj = new my.myObj_004_c();
                     break;
 
-                // Desktop pieces
+                // Desktop pieces swapping
                 case 7:
                     _obj = new my.myObj_050();
                     break;
 
-                // Desktop pieces
+                // Desktop pieces falling off -- 1
                 case 8:
+                    _obj = new my.myObj_070();
+                    break;
+
+                // Desktop pieces falling off -- 2
+                case 9:
                     _obj = new my.myObj_072();
                     break;
 
                 // Circle
-                case 9:
+                case 10:
                     _obj = new my.myObj_100();
                     break;
 
                 // Desktop 1
-                case 10:
+                case 11:
                     _obj = new my.myObj_101();
                     break;
 
                 // Desktop 2
-                case 11:
+                case 12:
                     _obj = new my.myObj_102();
                     break;
 
                 // Desktop 3
-                case 12:
+                case 13:
                     _obj = new my.myObj_110();
                     break;
 
                 // Moving Lines
-                case 13:
+                case 14:
                     _obj = new my.myObj_120();
                     break;
 
                 // Growing shapes -- rain drops alike -- no refresh
-                case 14:
+                case 15:
                     _obj = new my.myObj_130();
                     break;
 
                 // Growing shapes -- rain drops alike
-                case 15:
+                case 16:
                     _obj = new my.myObj_131();
+                    break;
+
+                // Grid with moving rectangle lenses -- test, looks strange
+                case 17:
+                    _obj = new my.myObj_140();
                     break;
 
                 default:

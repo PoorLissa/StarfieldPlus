@@ -2,7 +2,10 @@
 using System.Drawing;
 
 /*
-    - Pieces drop off the desktop and fall down -- even grid-like distribution
+    - Pieces drop off the desktop and fall down -- even grid-like distribution of the tiles
+
+    todo:
+        look for target color across all the cell, not only in a single pixel
 */
 
 namespace my
@@ -10,16 +13,13 @@ namespace my
     public class myObj_072 : myObject
     {
         protected float x, y, dx, dy;
-        protected int A = 0, R = 0, G = 0, B = 0, oldX = -1, oldY = -1, x0 = 0, y0 = 0;
+        protected int A = 0, R = 0, G = 0, B = 0;
         protected bool alive = false;
-        protected float time = 0;
 
         protected static Pen p = null;
         protected static SolidBrush br = null;
-        protected static Graphics g_orig = null;
-        protected static int maxSize = 33;
-        protected static int moveMode = 0;
-        protected static int dir = 0;
+        protected static int maxSize = 25;
+
         protected static Rectangle destRect;
         protected static Rectangle srcRect;
 
@@ -27,26 +27,20 @@ namespace my
         protected Bitmap bmp2 = null;
         protected Graphics g2 = null;
 
+        private int oldX = -1, oldY = -1;
+
         // -------------------------------------------------------------------------
 
         public myObj_072()
         {
             if (colorPicker == null)
             {
-                A = (rand.Next(5) + 1) * 50;
-
                 p = new Pen(Color.White);
-                br = new SolidBrush(Color.FromArgb(A, 0, 0, 0));
-                colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                br = new SolidBrush(Color.FromArgb(50, 0, 0, 0));
+                //colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+                colorPicker = new myColorPicker(Width, Height, 0);
                 f = new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Point);
-                g_orig = Graphics.FromImage(colorPicker.getImg());                      // Graphics to draw on the original image
-                maxSize = rand.Next(50) + 5;
-                moveMode = rand.Next(3);
-
-//moveMode = 2;
-
-                dir = rand.Next(2);
-                dir = dir == 0 ? -1 : 1;
+                maxSize = rand.Next(maxSize) + 5;
 
                 destRect.X = 0;
                 destRect.Y = 0;
@@ -74,9 +68,9 @@ namespace my
         {
             Size = maxSize;
             dx = rand.Next(3) - 1;
+            dx = 0;
             dy = 0;
-            R = 0;
-            time = 0;
+
             oldX = -1;
             oldY = -1;
 
@@ -103,9 +97,6 @@ namespace my
             x = X;
             y = Y;
 
-            x0 = X;
-            y0 = Y;
-
             // Store the original main piece
             using (Graphics gg = Graphics.FromImage(bmp1))
             {
@@ -115,7 +106,7 @@ namespace my
             }
 
             // Darken the source
-            g_orig.FillRectangle(br, X, Y, Size, Size);
+            colorPicker.GetGraphics().FillRectangle(br, X, Y, Size, Size);
 
             return;
         }
@@ -143,96 +134,51 @@ namespace my
 
         protected override void Move()
         {
+/*
+            if (Y % 5 == 0)
+                x += rand.Next(3) - 1;
+*/
+
             oldX = X;
             oldY = Y;
 
-            switch (moveMode)
-            {
-                case 0:
-                    move_0();       // Vertically down
-                    break;
+            x += (float)(Math.Sin(Y) * 2) + rand.Next(13);
+            y += dy;
 
-                case 1:
-                    move_1();       // Blown by the wind
-                    break;
+/*
+            var aaa = (int)System.DateTime.Now.Ticks;
+            x = (float)(Math.Sin(aaa) * 33);
+            y = (float)(Math.Cos(aaa) * 33);
+*/
+            X = (int)x;
+            Y = (int)y;
 
-                case 2:
-                    move_2();       // Test
-                    break;
-            }
+            dy += (0.01f + Size / 2.0f);
 
             if (Y > Height + Size)
             {
                 Show();
                 generateNew();
             }
-
-            return;
-        }
-
-        // -------------------------------------------------------------------------
-
-        private void move_0()
-        {
-            x += dx;
-            y += dy;
-
-            X = (int)x;
-            Y = (int)y;
-
-            dy += (0.01f + Size / 20.0f);
-        }
-
-        // -------------------------------------------------------------------------
-
-        private void move_1()
-        {
-            x += dir * rand.Next(99);
-            y += dy;
-
-            X = (int)x;
-            Y = (int)y;
-
-            dy += (0.01f + Size / 200.0f);
-        }
-
-        // -------------------------------------------------------------------------
-
-        private void move_2()
-        {
-            x = (float)(Math.Sin(time) * R/8);
-            x += dx;
-            y += dy;
-
-            X = x0 + (int)x;
-            Y = (int)y;
-
-            R++;
-            time += 0.25f;
-
-            dy += (0.01f + Size / 10.0f);
         }
 
         // -------------------------------------------------------------------------
 
         protected override void Process()
         {
+#if DEBUG
+            var proc = System.Diagnostics.Process.GetCurrentProcess();
+#endif
             g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
             form.Invalidate();
             System.Threading.Thread.Sleep(33);
 
-            int t = 11, Cnt = 100, totalCnt = 0;
+            int t = 11, Cnt = 333, totalCnt = 0;
 
             var list = new System.Collections.Generic.List<myObj_072>();
 
             while (isAlive)
             {
-#if false
-                g.FillRectangle(br, form.Bounds);
-                form.Invalidate();
-                System.Threading.Thread.Sleep(1000);
-                continue;
-#endif
                 int found = 0;
 
                 foreach (var obj in list)
@@ -245,8 +191,8 @@ namespace my
                     }
                 }
 #if DEBUG
-                string str = $"total = {totalCnt++}; Count = {list.Count}; alive = {found}";
-                g.FillRectangle(Brushes.Black, 50, 50, 400, 33);
+                string str = $"total = {totalCnt++}; Count = {list.Count}; alive = {found}\nmemory = {proc.PrivateMemorySize64/1024/1024} Mb";
+                g.FillRectangle(Brushes.Black, 50, 50, 400, 60);
                 g.DrawString(str, f, Brushes.Red, 50, 50);
 #endif
                 if (found == 0 && list.Count > 0)
@@ -264,7 +210,6 @@ namespace my
                 }
             }
 
-            g_orig.Dispose();
             br.Dispose();
 
             return;

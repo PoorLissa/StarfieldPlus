@@ -7,9 +7,10 @@ namespace my
 {
     public class myColorPicker
     {
-        private int _mode = -1;
-        private Bitmap _img = null;
-        private Random _rand = null;
+        private int      _mode = -1;
+        private Bitmap   _img = null;
+        private Random   _rand = null;
+        private Graphics _g = null;
 
         private static int gl_R = 0, gl_G = 0, gl_B = 0;
 
@@ -45,6 +46,23 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        ~myColorPicker()
+        {
+            if (_g != null)
+            {
+                _g.Dispose();
+                _g = null;
+            }
+
+            if (_img != null)
+            {
+                _img.Dispose();
+                _img = null;
+            }
+        }
+
+        // -------------------------------------------------------------------------
+
         public void setMode(int mode)
         {
             _mode = mode;
@@ -62,6 +80,13 @@ namespace my
         public Bitmap getImg()
         {
             return _img;
+        }
+
+        // -------------------------------------------------------------------------
+
+        public Graphics GetGraphics()
+        {
+            return _g;
         }
 
         // -------------------------------------------------------------------------
@@ -184,10 +209,14 @@ namespace my
                 {
                     _img = new Bitmap(Width, Height);
 
-                    using (Graphics g = Graphics.FromImage(_img))
+                    if (_g != null)
                     {
-                        g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
+                        _g.Dispose();
+                        _g = null;
                     }
+
+                    _g = Graphics.FromImage(_img);
+                    _g.CopyFromScreen(Point.Empty, Point.Empty, new Size(Width, Height));
                 }
             }
             catch (Exception)
@@ -213,8 +242,18 @@ namespace my
                     if (_img.Width < Width || _img.Height < Height)
                     {
                         // Stretch the image, if its size is less than the desktop size
+                        // todo: check out this high quality resize
+                        // https://stackoverflow.com/questions/1922040/how-to-resize-an-image-c-sharp
                         _img = new Bitmap(_img, Width, Height);
                     }
+
+                    if (_g != null)
+                    {
+                        _g.Dispose();
+                        _g = null;
+                    }
+
+                    _g = Graphics.FromImage(_img);
                 }
                 else
                 {
@@ -224,6 +263,7 @@ namespace my
             catch (Exception)
             {
                 _img = null;
+                _g = null;
                 _mode = 0;
                 getSnapshot(Width, Height);
             }
