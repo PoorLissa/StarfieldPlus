@@ -9,8 +9,6 @@ namespace my
 {
     public class myObj_130 : myObject
     {
-        static Pen p = null;
-        static SolidBrush br = null;
         static int shape = 0;
         static int moveMode = 0;
         static int A_Filling = 0;

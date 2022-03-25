@@ -89,12 +89,10 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(16);
 
-            //id = 9;
+            id = 16;
 
             if (false)
             {
-                //_obj = new my.myObj_070();
-                //_obj = new my.myObj_072();
                 _obj = new my.myObj_140();
                 return;
             }
@@ -157,12 +155,12 @@ namespace StarfieldPlus
                     _obj = new my.myObj_072();
                     break;
 
-                // Circle
+                // Big Bang
                 case 10:
                     _obj = new my.myObj_100();
                     break;
 
-                // Desktop 1
+                // Desktop -- Random pieces of the desktop are shown at their own slightly offset locations
                 case 11:
                     _obj = new my.myObj_101();
                     break;

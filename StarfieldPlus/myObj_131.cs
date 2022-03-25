@@ -9,8 +9,6 @@ namespace my
 {
     public class myObj_131 : myObject
     {
-        static Pen p = null;
-        static SolidBrush br = null;
         static int max_dSize = 0;
         static int shape = 0;
 
@@ -28,6 +26,8 @@ namespace my
 
                 shape = rand.Next(5);
                 max_dSize = rand.Next(15) + 3;
+
+shape = 4;
 
                 Log($"myObj_131: colorPicker({colorPicker.getMode()}), shape({shape}), max_dSize({max_dSize})");
             }

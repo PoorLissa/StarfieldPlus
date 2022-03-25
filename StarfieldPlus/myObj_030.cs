@@ -11,9 +11,6 @@ namespace my
         protected int lifeCounter = -1;
         protected int A = 0, R = 0, G = 0, B = 0;
 
-        protected static Pen p = null;
-        protected static SolidBrush br = null;
-
         protected bool isSlow = false;
 
         public myObj_030()

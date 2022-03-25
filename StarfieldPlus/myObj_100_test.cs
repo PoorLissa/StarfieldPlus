@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Drawing;
 
-
+/*
+    - Big Bang
+*/
 
 namespace my
 {
     public class myObj_100 : myObject
     {
-        static char q = (char)0;
+        protected static int maxLife = 500;
+        protected static int maxSpeed = 0;
+        protected static int explosionSpeed = 0;
+        protected static int staticStarsCnt = 1111;
+        protected static bool isExplosionMode = false;
 
         protected float x, y, dx, dy;
         protected int cnt = 0;
@@ -18,9 +24,11 @@ namespace my
 
         public myObj_100()
         {
-            if (q == 0)
+            if (br == null)
             {
-                q = (char)1;
+                br = new SolidBrush(Color.Black);
+                maxSpeed = rand.Next(11);
+                explosionSpeed = rand.Next(100) + 33;
                 Log($"myObj_100");
             }
 
@@ -31,6 +39,13 @@ namespace my
 
         protected override void generateNew()
         {
+        }
+
+        // -------------------------------------------------------------------------
+
+        public static void setExplosionMode(bool mode)
+        {
+            isExplosionMode = mode;
         }
 
         // -------------------------------------------------------------------------
@@ -75,21 +90,22 @@ namespace my
 
         protected override void Process()
         {
-            var list = new System.Collections.Generic.List<myObj_100>();
-
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             form.Invalidate();
             System.Threading.Thread.Sleep(666);
 
-            int staticStarsCnt = 1111;
-
             // Add static stars
             Count += staticStarsCnt;
+            var list = new System.Collections.Generic.List<myObj_100>();
 
-            for (int i = 0; i < staticStarsCnt; i++)
+            setExplosionMode(true);
+
+            for (int i = 0; i < Count; i++)
             {
                 list.Add(new myObj_100_b());
             }
+
+            setExplosionMode(false);
 
             while (isAlive)
             {
@@ -103,6 +119,11 @@ namespace my
 
                 System.Threading.Thread.Sleep(33);
                 form.Invalidate();
+
+                if (list.Count < Count)
+                {
+                    list.Add(new myObj_100_b());
+                }
             }
 
             return;
@@ -115,14 +136,27 @@ namespace my
     // Static stars
     public class myObj_100_b : myObj_100
     {
-        static SolidBrush br = new SolidBrush(Color.Black);
-
         private int lifeCounter = 0;
         private int alpha = 0;
 
+        public myObj_100_b()
+        {
+            generateNew();
+
+            if (isExplosionMode)
+            {
+                Size = rand.Next(3) + 1;
+            }
+        }
+
         protected override void generateNew()
         {
-            lifeCounter = rand.Next(500) + 500;
+            lifeCounter = rand.Next(maxLife) + maxLife;
+
+            if (isExplosionMode)
+            {
+                lifeCounter = rand.Next(100) + 33;
+            }
 
             X = rand.Next(Width);
             Y = rand.Next(Height);
@@ -134,7 +168,7 @@ namespace my
             Size = 0;
 
             {
-                int speed = 1;
+                int speed = (isExplosionMode ? rand.Next(explosionSpeed) : rand.Next(maxSpeed)) + 1;
 
                 int x0 = Width  / 2;
                 int y0 = Height / 2;

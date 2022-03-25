@@ -12,8 +12,6 @@ namespace my
     public class myObj_010 : myObject
     {
         private int dx, dy;
-        static SolidBrush br = null;
-
         int A = 0, R = 0, G = 0, B = 0;
 
         public myObj_010()

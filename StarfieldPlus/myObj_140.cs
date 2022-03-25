@@ -2,7 +2,7 @@
 using System.Drawing;
 
 /*
-    - ...
+    - Grid with moving rectangle lenses -- test, looks strange
 */
 
 namespace my
@@ -47,7 +47,7 @@ namespace my
 
         protected override void Move()
         {
-            if (cnt++ < 50)
+            if (cnt++ < 150)
             {
                 return;
             }
@@ -104,10 +104,10 @@ namespace my
 
         protected override void Show()
         {
-            int offset = 50;
+            int offset = step;
 
             // restore old part of the image
-            var rect = new Rectangle(gridXOld - offset, gridYOld - offset, step + 2* offset, step + 2* offset);
+            var rect = new Rectangle(gridXOld - offset, gridYOld - offset, step + 2 * offset, step + 2 * offset);
             g.DrawImage(colorPicker.getImg(), rect, rect, GraphicsUnit.Pixel);
 
             //br.Color = Color.FromArgb(100, 200, 33, 33);
@@ -117,7 +117,7 @@ namespace my
             rect.X = gridX - offset;
             rect.Y = gridY - offset;
 
-            var rect2 = new Rectangle(gridX + 1, gridY + 1, step -1, step -1);
+            var rect2 = new Rectangle(gridX + 1, gridY + 1, step - 1, step - 1);
 
             g.DrawImage(colorPicker.getImg(), rect, rect2, GraphicsUnit.Pixel);
 
@@ -134,7 +134,7 @@ namespace my
             drawGrid();
             g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
 
-            int t = 33, Cnt = 3;
+            int t = 33, Cnt = 5;
 
             var list = new System.Collections.Generic.List<myObj_140>();
 

@@ -11,8 +11,6 @@ namespace my
 {
     public class myObj_020 : myObject
     {
-        static Pen p = null;
-        static SolidBrush br = null;
         static int shape = 0;
 
         float x, y, dx, dy;

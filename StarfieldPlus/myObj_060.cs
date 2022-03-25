@@ -11,7 +11,6 @@ namespace my
     {
         static int x = -1, y = -1;
         Bitmap buffer = null;
-        static SolidBrush br = null;
 
         public myObj_060()
         {

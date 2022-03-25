@@ -9,7 +9,6 @@ namespace my
 {
     public class myObj_120 : myObject
     {
-        static Pen p = null;
         int length = 0, dir = 0, dx = 0, dy = 0, A = 0, R = 0, G = 0, B = 0;
         static int colorMode = 0;
         static int gl_R = 0, gl_G = 0, gl_B = 0;

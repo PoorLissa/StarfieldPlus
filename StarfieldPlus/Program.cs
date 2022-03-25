@@ -105,7 +105,7 @@ namespace StarfieldPlus
                 {
                     if (minor > 1)
                     {
-                        _imgPath = "c:\\_maxx\\";
+                        _imgPath = "c:\\_maxx\\pix\\";
                         SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
                     }
                     else

@@ -71,9 +71,9 @@ namespace my
             {
                 Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
 
-                Bitmap bmp = new Bitmap(Width, Height);             // set the size of the image
-                form.BackgroundImage = bmp;                         // set the Form's image to be the buffer
-                g = Graphics.FromImage(bmp);                        // set the graphics to draw on the image
+                Bitmap bmp = new Bitmap(Width, Height);     // set the size of the image
+                form.BackgroundImage = bmp;                 // set the Form's image to be the buffer
+                g = Graphics.FromImage(bmp);                // set the graphics to draw on the image
 
                 Process();
 

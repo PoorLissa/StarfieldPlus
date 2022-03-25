@@ -15,9 +15,6 @@ namespace my
         bool isRandomSize = false;
         int shape = 0;
 
-        SolidBrush br = null;
-        Pen p = null;
-
         // -------------------------------------------------------------------------
 
         public myObj_110()

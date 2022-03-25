@@ -188,8 +188,6 @@ namespace my
     // Static stars
     public class myObj_000_b : myObj_000
     {
-        static SolidBrush br = new SolidBrush(Color.Black);
-
         private int lifeCounter = 0;
         private int alpha = 0;
         private static int factor = 1;

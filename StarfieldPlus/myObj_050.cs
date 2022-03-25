@@ -109,12 +109,14 @@ namespace my
         {
             switch (mode)
             {
+                // Draw random src line at random position of dest
                 case 0:
                     rect1.Y = Y;
                     rect2.Y = X;
                     g.DrawImage(colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
                     break;
 
+                // Swap 2 Rectangles
                 case 1:
                     g.DrawImage(colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
                     g.DrawImage(colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);

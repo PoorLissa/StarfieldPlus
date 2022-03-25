@@ -7,8 +7,6 @@ namespace my
 {
     public class myObj_040 : myObject
     {
-        static Pen p = null;
-        static SolidBrush br = null;
         static int x0 = Width  / 2;
         static int y0 = Height / 2;
         static int shape = 0;
