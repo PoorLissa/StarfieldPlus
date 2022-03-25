@@ -87,9 +87,9 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random((int)DateTime.Now.Ticks).Next(16);
+            int id = new Random((int)DateTime.Now.Ticks).Next(18);
 
-            id = 16;
+            id = 17;
 
             if (false)
             {
@@ -190,8 +190,13 @@ namespace StarfieldPlus
                     _obj = new my.myObj_131();
                     break;
 
-                // Grid with moving rectangle lenses -- test, looks strange
+                // Splines
                 case 17:
+                    _obj = new my.myObj_132();
+                    break;
+
+                // Grid with moving rectangle lenses -- test, looks strange
+                case 18:
                     _obj = new my.myObj_140();
                     break;
 

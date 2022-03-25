@@ -86,6 +86,7 @@
     <Compile Include="myObj_120.cs" />
     <Compile Include="myObj_130.cs" />
     <Compile Include="myObj_131.cs" />
+    <Compile Include="myObj_132.cs" />
     <Compile Include="myObj_140.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
