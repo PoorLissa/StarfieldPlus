@@ -2,7 +2,7 @@
 using System.Drawing;
 
 /*
-    - Growing shapes -- rain drops alike
+    - 
 */
 
 namespace my
@@ -14,7 +14,7 @@ namespace my
 
         protected int maxSize = 0, A = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
 
-        float time, dx, dy, float_A;
+        float time, dx, dy, float_A, float_B;
 
         // -------------------------------------------------------------------------
 
@@ -47,6 +47,7 @@ shape = 1;
             A = rand.Next(250) + 6;
 A = 255;
 float_A = 255.0f;
+float_B = 1.0f;
 
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             maxSize = rand.Next(333) + 33;
@@ -71,6 +72,11 @@ dA = 1;
             if (shape < 2)
             {
                 move_0();
+
+                if (float_A < 0)
+                {
+                    generateNew();
+                }
             }
             else
             {
@@ -82,11 +88,11 @@ dA = 1;
 
                 // Decrease opacity until fully invisible
                 A -= dA;
-            }
 
-            if (A < 0)
-            {
-                generateNew();
+                if (A < 0)
+                {
+                    generateNew();
+                }
             }
         }
 
@@ -97,7 +103,7 @@ dA = 1;
             Size += dSize;
             A -= dA;
             time += 0.1f;
-            float_A -= 0.1f;
+            float_A -= 0.25f;
 
             int aaa = System.DateTime.Now.Millisecond;
 
@@ -114,7 +120,7 @@ dA = 1;
         {
             //p.Color = Color.FromArgb(A, R, G, B);
 
-            p.Color = Color.FromArgb((int)float_A, R, G, B);
+            p.Color = Color.FromArgb(100, R, G, B);
 
             switch (shape)
             {
@@ -134,9 +140,336 @@ dA = 1;
                     //g.DrawLine(p, X/2, Y/2, Size + dx, Size + dy);
 
 
-                    g.DrawRectangle(Pens.DarkOrange, Size + dx2, Size + dy2, 3, 3);
+                    // ok?
+                    if (false)
+                    {
+                        g.DrawRectangle(Pens.DarkOrange, Size + dx2, Size + dy2, 3, 3);
+                        g.DrawLine(p, X / 2, Y / 2, Size + dx2, Size + dy2);
+                    }
 
-                    g.DrawLine(p, X, Y, Size + dx2, Size + dy2);
+                    if (false)
+                    {
+                        float x1 = Size + dx2;
+                        float y1 = Size + dy2;
+                        float x2 = Width  - Size + dx2;
+                        float y2 = Height - Size + dy2;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+
+                        x1 = Width - Size + dx2;
+                        y1 = Size + dy2;
+                        x2 = Size + dx2;
+                        y2 = Height - Size + dy2;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        float x1 = Size + dx2 * dx/10;
+                        float y1 = Size + dy2;
+                        float x2 = Width  - Size + dx2 * dx/10;
+                        float y2 = Height - Size + dy2;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+
+                        x1 = Width - Size + dx2 * dx/10;
+                        y1 = Size + dy2;// * dy/10;
+                        x2 = Size + dx2 * dx / 10;
+                        y2 = Height - Size + dy2;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        float x1 = Size + dx2;
+                        float y1 = Size + dy2 * dy/20;
+
+                        x1 += float_B;
+
+                        float x2 = Width - x1;
+                        float y2 = Height - y1;
+
+                        float_B += 1.123f;  // try changing this value
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        float x1 = Size + dx2;
+                        float y1 = Size + dy2 * dy / 20;
+
+                        x1 += (float)Math.Sin(float_B) * 10;
+                        y1 += (float)Math.Cos(time) * 5;
+
+                        float x2 = Width - x1;
+                        float y2 = Height - y1;
+
+                        float_B += 0.23f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (true)
+                    {
+                        float x1 = Size + dx2;
+                        float y1 = Size + dy2 * dy / 20;
+
+                        x1 += (float)Math.Sin(float_B) * 10;
+                        y1 += (float)Math.Cos(time) * 5;
+
+                        x1 += 2*Width/5;
+
+                        float x2 = Width - x1;
+                        float y2 = y1;
+
+                        float_B += 0.23f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    // ok
+                    if (false)
+                    {
+                        float x1 = Size + dx2;
+                        float y1 = Size + dy2;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / 20;
+                        float y2 = 2 * Height / 5 + dy2 * Size / 20;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx2 * Size / aaa;
+                        float y1 = 1 * Height / 2 + dy2 * Size / aaa;
+                        float x2 = 4 * Width  / 5 - dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx2 * Size / aaa;
+                        float y1 = 1 * Height / 2 - dy2 * Size / aaa;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 - dy2 * Size / aaa;
+                        float y1 = 1 * Height / 2 + dx2 * Size / aaa;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa;
+                        float y1 = 1 * Height / 2 + dy  * Size / aaa;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / aaa;
+                        float y1 = 1 * Height / 2 + dy  * Size / aaa / aaa;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 - dx  * Size / aaa / aaa;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / aaa;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / aaa;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / aaa;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / 2;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / 2;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa / 1;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa / 1;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / 2;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / 2;
+                        float x2 = 4 * Width  / 5 + dx2 * Size / aaa * float_B;
+                        float y2 = 1 * Height / 2 - dy2 * Size / aaa * float_B;
+
+                        float_B += 0.0001f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / 2;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / 2;
+                        float x2 = 4 * Width  / 5 + dx2 * 33;
+                        float y2 = 1 * Height / 2 - dy2 * 33;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / 33;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / 33;
+                        float x2 = 4 * Width  / 5 + dx2 * 33;
+                        float y2 = 1 * Height / 2 - dy2 * 33;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        int aaa = 50;
+
+                        float x1 = 1 * Width  / 5 + dx  * Size / aaa / 33;
+                        float y1 = 1 * Height / 2 - dy  * Size / aaa / 33;
+                        float x2 = 4 * Width  / 5 + dx2 * 33 / float_B;
+                        float y2 = 1 * Height / 2 - dy2 * 33 / float_B;
+
+                        float_B += 0.001f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        float x1 = 1 * Width  / 5 + dx2 * 33;
+                        float y1 = 1 * Height / 2 - dy2 * 33;
+                        float x2 = 4 * Width  / 5 + dx2 * 33;
+                        float y2 = 1 * Height / 2 - dy2 * 33;
+
+                        float_B += 0.001f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        float x1 = 1 * Width  / 5 + dy2 * 33 / float_B;
+                        float y1 = 1 * Height / 2 - dx2 * 33 / float_B;
+                        float x2 = 4 * Width  / 5 + dx2 * 33 * float_B;
+                        float y2 = 1 * Height / 2 - dy2 * 33 * float_B;
+
+                        float_B += 0.01f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
+
+                    if (false)
+                    {
+                        float x1 = 1 * Width  / 5 - dy2 * 33 / float_B;
+                        float y1 = 1 * Height / 2 - dx2 * 33 / float_B;
+                        float x2 = 4 * Width  / 5 + dx2 * 33 * float_B;
+                        float y2 = 1 * Height / 2 - dy2 * 33 * float_B;
+
+                        float_B += 0.01f;
+
+                        g.DrawLine(p, x1, y1, x2, y2);
+                        g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                        g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    }
 
                     //g.DrawLine(p, X * dx2, Y * dy2, Size * dx, Size * dy);
 
