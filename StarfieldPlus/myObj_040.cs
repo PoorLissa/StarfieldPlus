@@ -1,4 +1,4 @@
-﻿using System;
+﻿                                                                                                                                                                                                                                                                                                                    using System;
 using System.Drawing;
 
 
@@ -223,64 +223,45 @@ namespace my
 {
     public class myObj_004_b : myObject
     {
-        static char q = (char)0;
-        private int dx, dy, a;
+        private int dx, dy, A;
+
+        static int x0 = 0, y0 = 0;
+
+        // todo: x0 and y0 as random
+
+        // -------------------------------------------------------------------------
 
         public myObj_004_b()
         {
-            if (q == 0)
+            if (colorPicker == null)
             {
-                q = (char)1;
+                br = new SolidBrush(Color.White);
+                colorPicker = new myColorPicker(Width, Height);
+
+                x0 = Width  / 2;
+                y0 = Height / 2;
+
                 Log($"myObj_004_b");
             }
 
-            dx = 0;
-            dy = 0;
-
-            do
-            {
-
-                X = rand.Next(Width);
-                Y = rand.Next(Height);
-
-                int speed = rand.Next(20) + 1;
-
-                speed = 3;
-
-                int x0 = Width / 2;
-                int y0 = Height / 2;
-
-                int dist = (int)Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
-
-                dx = (X - x0) * speed / dist;
-                dy = (Y - y0) * speed / dist;
-
-            }
-            while (dx == 0 && dy == 0);
-
-            Size = 3;
-            a = 0;
+            generateNew();
         }
 
         // -------------------------------------------------------------------------
 
-        private void getNew()
+        protected override void generateNew()
         {
             dx = 0;
             dy = 0;
 
             do
             {
-
                 X = rand.Next(Width);
                 Y = rand.Next(Height);
 
-                a = 0;
+                A = 0;
 
                 int speed = 5;
-
-                int x0 = Width / 2;
-                int y0 = Height / 2;
 
                 //int dist = (int)Math.Sqrt((X - x0)*(X - x0) + (Y - y0)*(Y - y0));
 
@@ -294,6 +275,8 @@ namespace my
             while (dx == 0 && dy == 0);
         }
 
+        // -------------------------------------------------------------------------
+
         protected override void Move()
         {
             X += dx;
@@ -304,20 +287,29 @@ namespace my
 
             if (X < 0 || X > Width || Y < 0 || Y > Height)
             {
-                getNew();
+                generateNew();
             }
 
-            if (a != 255)
-                a++;
+            if (A != 255)
+                A++;
 
             return;
         }
 
         // -------------------------------------------------------------------------
 
+        protected override void Show()
+        {
+            br.Color = Color.FromArgb(A, br.Color.R, br.Color.G, br.Color.B);
+
+            g.FillRectangle(br, X, Y, Size, Size);
+        }
+
+        // -------------------------------------------------------------------------
+
         protected override void Process()
         {
-            int cnt = 0;
+            int cnt = 0, t = 11;
 
             var list = new System.Collections.Generic.List<myObj_004_b>();
 
@@ -328,30 +320,22 @@ namespace my
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-            using (SolidBrush br = new SolidBrush(Color.FromArgb(250, 250, 250, 250)))
+            while (isAlive)
             {
-                while (isAlive)
+                foreach (var obj in list)
                 {
-                    foreach (var s in list)
-                    {
-                        br.Color = Color.FromArgb(s.a, br.Color.R, br.Color.G, br.Color.B);
+                    obj.Show();
+                    obj.Move();
+                }
 
-                        //g.FillRectangle(Brushes.Black, s.X, s.Y, 2, 2);
-                        g.FillRectangle(br, s.X, s.Y, s.Size, s.Size);
-                        s.Move();
-                        //g.FillRectangle(Brushes.Red, s.X, s.Y, 2, 2);
-                    }
+                form.Invalidate();
+                System.Threading.Thread.Sleep(t);
 
-                    form.Invalidate();
-                    //System.Threading.Thread.Sleep(33);
-                    System.Threading.Thread.Sleep(11);
-
-                    if (++cnt > 1001)
-                    {
-                        //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-                        getNewBrush(br);
-                        cnt = 0;
-                    }
+                if (++cnt > 1001)
+                {
+                    //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+                    getNewBrush(br);
+                    cnt = 0;
                 }
             }
 

@@ -176,6 +176,11 @@ namespace my
             if (rand.Next(2) == 0)
             {
                 g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
+
+                using (SolidBrush br = new SolidBrush(Color.FromArgb(225, 255, 255, 255)))
+                {
+                    g.FillRectangle(br, 0, 0, Width, Height);
+                }
             }
             else
             {

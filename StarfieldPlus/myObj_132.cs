@@ -47,7 +47,7 @@ float_B = 1.0f;
 
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             maxSize = rand.Next(333) + 33;
-            shape = rand.Next(24);
+            shape = rand.Next(25);
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -105,6 +105,8 @@ dA = 1;
             //g.DrawLine(p, X * dx2, Y * dy2, Size * dx, Size * dy);
             //g.DrawLine(p, X - Size, Y - Size, 2 * Size + dx, 2 * Size + dy);
             //g.DrawLine(p, X, Y, 2 * Size + dx, 2 * Size + dy);
+
+            shape = 99;
 
             switch (shape)
             {
@@ -441,6 +443,92 @@ dA = 1;
                     g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
+
+                case 24:
+                    x1 = 1 * Width  / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+                    y1 = 1 * Height / 2 + dy2 * 33 * (float)Math.Sin(float_B);
+
+                    x2 = 4 * Width  / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+                    y2 = 1 * Height / 2 + dy2 * 33 * (float)Math.Sin(float_B);
+
+                    float_B += 0.01f;
+
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 25:
+                    x1 = 1 * Width  / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+                    y1 = 2 * Height / 5 + dy2 * 33 * (float)Math.Sin(float_B);
+
+                    x2 = 4 * Width  / 5 + dy2 * 33 * (float)Math.Sin(float_B);
+                    y2 = 3 * Height / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+
+                    float_B += 0.01f;
+
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 26:
+                    x1 = 1 * Width  / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+                    y1 = 1 * Height / 2 + dy2 * 33;
+
+                    x2 = 4 * Width  / 5 + dy2 * 33 * (float)Math.Sin(float_B);
+                    y2 = 1 * Height / 2 + dx2 * 33;
+
+                    float_B += 0.01f;
+
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 27:
+                    x1 = 1 * Width  / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+                    y1 = 1 * Height / 2 + dy2 * 33 / float_B;
+
+                    x2 = 4 * Width  / 5 + dx2 * 33 * (float)Math.Sin(float_B);
+                    y2 = 1 * Height / 2 + dy2 * 33 / float_B;
+
+                    float_B += 0.01f;
+
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 99:
+                    x1 = 1 * Width  / 5 + 600 * (float)Math.Sin(float_B);
+                    y1 = 1 * Height / 2 + dy2 * 66 / float_B;
+
+                    x2 = 4 * Width  / 5 - 600 * (float)Math.Sin(float_B);
+                    y2 = 1 * Height / 2 - dy2 * 33 / float_B;
+
+                    float_B += 0.01f;       // try changing it
+                    //float_B += 0.001f;
+
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 991:
+                    x1 = 1 * Width / 5 + 500 * (float)Math.Sin(float_B);
+                    y1 = 1 * Height / 2 + dy2 * 33 / float_B;
+
+                    float_B += 0.01f;
+
+                    x2 = 4 * Width / 5 - 500 * (float)Math.Sin(float_B);
+                    y2 = 1 * Height / 2 - dy2 * 33 / float_B;
+
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
             }
         }
 
