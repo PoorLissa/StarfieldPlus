@@ -78,7 +78,6 @@
     <Compile Include="myObj_040.cs" />
     <Compile Include="myObj_040_b.cs" />
     <Compile Include="myObj_040_d.cs" />
-    <Compile Include="myObj_040_d2.cs" />
     <Compile Include="myObj_050.cs" />
     <Compile Include="myObj_060.cs" />
     <Compile Include="myObj_070.cs" />

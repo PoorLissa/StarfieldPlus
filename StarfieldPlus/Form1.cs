@@ -90,13 +90,7 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
-            id = 2;
-
-            if (false)
-            {
-                _obj = new my.myObj_004_d2();
-                return;
-            }
+            //id = 8;
 
             if (false)
             {
@@ -148,6 +142,7 @@ namespace StarfieldPlus
                     _obj = new my.myObj_004_c();
                     break;
 
+                // Various shapes 
                 case 8:
                     _obj = new my.myObj_004_d();
                     break;
