@@ -110,14 +110,24 @@ namespace my
 
             int const1 = 1;
 
-#if false
-            moveMode = 7;
+#if true
+            moveMode = 99;
             drawMode = 2;
             t = 1;
 #endif
 
             switch (moveMode)
             {
+                case 99:
+                    time += 0.999f;
+
+                    x += (float)(Math.Sin(time + dyf*1) * 1) * time;
+                    y += (float)(Math.Cos(time + dyf*1) * 1) * time;
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
                 case 9991:
                     const1 = 1;
 
