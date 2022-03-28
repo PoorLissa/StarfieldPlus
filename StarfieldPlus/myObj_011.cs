@@ -1,0 +1,110 @@
+﻿using System;
+using System.Drawing;
+
+
+/*
+    - Randomly Roaming Squares (Snow Like)
+*/
+
+
+namespace my
+{
+    public class myObj_011 : myObject
+    {
+        private int dx, dy;
+        int A = 0, R = 0, G = 0, B = 0;
+
+        public myObj_011()
+        {
+            if (colorPicker == null)
+            {
+                br = new SolidBrush(Color.Red);
+                colorPicker = new myColorPicker(Width, Height);
+
+                Log($"myObj_010: colorPicker({colorPicker.getMode()})");
+            }
+
+            X = rand.Next(Width);
+            Y = rand.Next(Height);
+
+            int maxSpeed = 20;
+
+            dx = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
+            dy = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
+
+            Size = rand.Next(11) + 1;
+
+            A = rand.Next(256 - 75) + 75;
+            colorPicker.getColor(X, Y, ref R, ref G, ref B);
+        }
+
+        // -------------------------------------------------------------------------
+
+        protected override void Move()
+        {
+            X += dx;
+            Y += dy;
+
+            if (X < 0 || X > Width)
+            {
+                dx *= -1;
+            }
+
+            if (Y < 0 || Y > Height)
+            {
+                dy *= -1;
+            }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        protected override void Show()
+        {
+            br.Color = Color.FromArgb(A, R, G, B);
+            g.FillRectangle(br, X, Y, Size, Size);
+
+            if (Size > 3)
+            {
+                g.FillRectangle(Brushes.Black, X,            Y,            1, 1);
+                g.FillRectangle(Brushes.Black, X + Size - 1, Y,            1, 1);
+                g.FillRectangle(Brushes.Black, X,            Y + Size - 1, 1, 1);
+                g.FillRectangle(Brushes.Black, X + Size - 1, Y + Size - 1, 1, 1);
+            }
+        }
+
+        // -------------------------------------------------------------------------
+
+        protected override void Process()
+        {
+            var list = new System.Collections.Generic.List<myObj_011>();
+
+            while (list.Count < 2)
+            {
+                list.Add(new myObj_011());
+            }
+
+            p = new Pen(Color.Red);
+            p.Color = Color.FromArgb(133, 255, 11, 11);
+
+            g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+            while (isAlive)
+            {
+                foreach (var s in list)
+                {
+                    //s.Show();
+                    s.Move();
+                }
+
+                g.DrawLine(p, list[0].X, list[0].Y, list[1].X, list[1].Y);
+
+                form.Invalidate();
+                System.Threading.Thread.Sleep(50);
+            }
+
+            return;
+        }
+    };
+};
