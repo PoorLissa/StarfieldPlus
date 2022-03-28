@@ -26,7 +26,7 @@ namespace my
                 colorPicker = new myColorPicker(Width, Height);
 
                 drawMode = rand.Next(6);
-                moveMode = rand.Next(7);
+                moveMode = rand.Next(9);
                 speedMode = rand.Next(2);
                 maxA = rand.Next(100) + 100;
                 t = rand.Next(15) + 10;
@@ -108,8 +108,137 @@ namespace my
             oldX = X;
             oldY = Y;
 
+            int const1 = 1;
+
+#if false
+            moveMode = 7;
+            drawMode = 2;
+            t = 1;
+#endif
+
             switch (moveMode)
             {
+                case 9991:
+                    const1 = 1;
+
+                    time += 0.1f;   // try 0.2, 0.3, 0.5
+
+                    x += (float)(Math.Sin(time) * dxf) * time;
+                    y += (float)(Math.Cos(time) * dyf) * time;
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 999:
+                    const1 = 1;
+
+                    time += 0.05f;
+
+                    x += dxf;
+                    y += dyf * (float)(Math.Cos(time) * 2);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 998:
+                    const1 = 1;
+
+                    time += 0.01f;
+
+                    x += dxf * (float)(Math.Sin(time) * 3);
+                    y += dyf;
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 997:
+                    const1 = 1;
+
+                    time += 0.1f;
+
+                    x += dxf + (int)(Math.Sin(time) * 5);
+                    y += dyf + (int)(Math.Cos(time) * 5);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 996:
+                    const1 = 1;
+
+                    time += 0.01f;
+
+                    x += (int)(Math.Sin(time * dyf) * 21 + time * const1);
+                    y += (int)(Math.Cos(time * dxf) * 21 + time * const1);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 995:
+                    const1 = 1;
+
+                    time += 0.01f;
+
+                    x += (int)(Math.Sin(time + dyf) * 21 + time * const1);
+                    y += (int)(Math.Cos(time + dxf) * 21 + time * const1);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 994:
+                    const1 = 1;
+
+                    time += 0.01f;
+
+                    x += (int)(Math.Sin(time + dyf) * 3 + time * const1);
+                    y += (int)(Math.Cos(time + dxf) * 3 + time * const1);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 993:
+                    const1 = 1;
+
+                    time += 0.1f;
+
+                    x += (int)(Math.Sin(time + dyf) * 3 + time * const1);
+                    y += (int)(Math.Cos(time + dxf) * 3 + time * const1);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 992:
+                    time += 0.01f;
+
+                    x += (int)(Math.Sin(Y+time) * 30 * time);
+                    y += (int)(Math.Cos(X+time) * 30 * time);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 991:
+                    time += 0.1f;
+
+                    x += dxf * 3;
+                    y += dyf * 3;
+
+                    x += (int)(Math.Sin(time) * 21);    // change const
+                    y += (int)(Math.Cos(time) * 21);
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                // =================================================================
+
                 case 0:
                     x += dxf * 2;
                     y += dyf * 2;
@@ -178,6 +307,27 @@ namespace my
                     X = (int)x;
                     Y = (int)y;
                     break;
+
+                case 7:
+                    time += 0.1f;
+
+                    x += (float)(Math.Sin(time + dyf) * 2) * time;
+                    y += (float)(Math.Cos(time + dyf) * 2) * time;
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
+                case 8:
+                    time += 0.1f;
+
+                    x += (float)(Math.Sin(time * dyf) * 2) * time;
+                    y += (float)(Math.Cos(time * dyf) * 2) * time;
+
+                    X = (int)x;
+                    Y = (int)y;
+                    break;
+
 #if false
                 case 8:
                     time += 0.01f;
@@ -321,6 +471,7 @@ namespace my
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
 
+                // Wait untill every object finishes, then start from new point
                 if (++cnt > threshold)
                 {
                     generationAllowed = false;

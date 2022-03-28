@@ -90,7 +90,7 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(20);
 
-            id = 7;
+            //id = 7;
 
             if (false)
             {
