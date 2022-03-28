@@ -83,18 +83,18 @@ namespace StarfieldPlus
         // - sperm floating towards the center
         // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
         // - cover everything in spiralling traingles
-        // - travelling sin and cosin functions - the same as moving lines
+        // - try bezier curves: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random((int)DateTime.Now.Ticks).Next(20);
+            int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
-            id = 7;
+            id = 2;
 
             if (false)
             {
-                _obj = new my.myObj_004_d();
+                _obj = new my.myObj_004_d2();
                 return;
             }
 
@@ -118,92 +118,97 @@ namespace StarfieldPlus
                     _obj = new my.myObj_010();
                     break;
 
-                // Linearly Moving Circles (Soap Bubbles)
+                // Randomly Roaming Lines (based on Randomly Roaming Squares)
                 case 2:
+                    _obj = new my.myObj_011();
+                    break;
+
+                // Linearly Moving Circles (Soap Bubbles)
+                case 3:
                     _obj = new my.myObj_020();
                     break;
 
                 // Rain Drops
-                case 3:
+                case 4:
                     _obj = new my.myObj_030();
                     break;
 
                 // Lines 1
-                case 4:
+                case 5:
                     _obj = new my.myObj_040();
                     break;
 
                 // Lines 2
-                case 5:
+                case 6:
                     _obj = new my.myObj_004_b();
                     break;
 
                 // Lines 3
-                case 6:
+                case 7:
                     _obj = new my.myObj_004_c();
                     break;
 
-                case 7:
+                case 8:
                     _obj = new my.myObj_004_d();
                     break;
 
                 // Desktop pieces swapping
-                case 8:
+                case 9:
                     _obj = new my.myObj_050();
                     break;
 
                 // Desktop pieces falling off -- 1
-                case 9:
+                case 10:
                     _obj = new my.myObj_070();
                     break;
 
                 // Desktop pieces falling off -- 2
-                case 10:
+                case 11:
                     _obj = new my.myObj_072();
                     break;
 
                 // Big Bang
-                case 11:
+                case 12:
                     _obj = new my.myObj_100();
                     break;
 
                 // Desktop -- Random pieces of the desktop are shown at their own slightly offset locations
-                case 12:
+                case 13:
                     _obj = new my.myObj_101();
                     break;
 
                 // Desktop 2
-                case 13:
+                case 14:
                     _obj = new my.myObj_102();
                     break;
 
                 // Desktop 3
-                case 14:
+                case 15:
                     _obj = new my.myObj_110();
                     break;
 
                 // Moving Lines
-                case 15:
+                case 16:
                     _obj = new my.myObj_120();
                     break;
 
                 // Growing shapes -- rain drops alike -- no refresh
-                case 16:
+                case 17:
                     _obj = new my.myObj_130();
                     break;
 
                 // Growing shapes -- rain drops alike
-                case 17:
+                case 18:
                     _obj = new my.myObj_131();
                     break;
 
                 // Splines
-                case 18:
+                case 19:
                     _obj = new my.myObj_132();
                     break;
 
                 // Grid with moving rectangle lenses -- test, looks strange
-                case 19:
+                case 20:
                     _obj = new my.myObj_140();
                     break;
 
