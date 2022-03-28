@@ -90,14 +90,9 @@ namespace my
 
         protected override void Process()
         {
-            int t = 50, cnt = 0;
+            int t = 50, cnt = 0, Cnt = 10;
 
             var list = new System.Collections.Generic.List<myObj_011>();
-
-            while (list.Count < 10)
-            {
-                list.Add(new myObj_011());
-            }
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
@@ -113,6 +108,11 @@ namespace my
                     {
                         cnt = 0;
                     }
+                }
+
+                if (list.Count < Cnt)
+                {
+                    list.Add(new myObj_011());
                 }
 
                 foreach (var s in list)
