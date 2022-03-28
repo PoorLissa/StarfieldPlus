@@ -81,7 +81,7 @@ namespace my
 
         protected override void Show()
         {
-            p.Color = Color.FromArgb(33, R, G, B);
+            p.Color = Color.FromArgb(50, R, G, B);
 
             g.DrawLine(p, X, Y, x, y);
         }
@@ -98,6 +98,13 @@ namespace my
 
             while (isAlive)
             {
+                // Remove traces constantly (if needed)
+                if (cnt % 3 == 0)
+                {
+                    br.Color = Color.FromArgb(5, 0, 0, 0);
+                    g.FillRectangle(br, 0, 0, Width, Height);
+                }
+
                 // Darken all the picture
                 if (++cnt > 5000)
                 {
