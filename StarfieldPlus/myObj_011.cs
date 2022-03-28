@@ -11,9 +11,10 @@ namespace my
 {
     public class myObj_011 : myObject
     {
+        static int removeTraces = 0;
+
         private int dx1, dy1, dx2, dy2, x, y;
         int A = 0, R = 0, G = 0, B = 0;
-
 
 
         public myObj_011()
@@ -24,12 +25,14 @@ namespace my
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
 
+                removeTraces = rand.Next(2);
+
                 Log($"myObj_011: colorPicker({colorPicker.getMode()})");
             }
 
             x = rand.Next(Width);
-            y = rand.Next(Height);
             X = rand.Next(Width);
+            y = rand.Next(Height);
             Y = rand.Next(Height);
 
             int maxSpeed = 20;
@@ -41,7 +44,15 @@ namespace my
 
             Size = 1;
 
-            A = rand.Next(256 - 75) + 75;
+            if (removeTraces == 1)
+            {
+                A = rand.Next(66) + 66;
+            }
+            else
+            {
+                A = rand.Next(33) + 33;
+            }
+            
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
         }
 
@@ -81,7 +92,7 @@ namespace my
 
         protected override void Show()
         {
-            p.Color = Color.FromArgb(50, R, G, B);
+            p.Color = Color.FromArgb(A, R, G, B);
 
             g.DrawLine(p, X, Y, x, y);
         }
@@ -99,7 +110,7 @@ namespace my
             while (isAlive)
             {
                 // Remove traces constantly (if needed)
-                if (cnt % 3 == 0)
+                if (removeTraces == 1 && cnt % 3 == 0)
                 {
                     br.Color = Color.FromArgb(5, 0, 0, 0);
                     g.FillRectangle(br, 0, 0, Width, Height);
