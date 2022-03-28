@@ -11,28 +11,35 @@ namespace my
 {
     public class myObj_011 : myObject
     {
-        private int dx, dy;
+        private int dx1, dy1, dx2, dy2, x, y;
         int A = 0, R = 0, G = 0, B = 0;
+
+
 
         public myObj_011()
         {
             if (colorPicker == null)
             {
+                p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
 
-                Log($"myObj_010: colorPicker({colorPicker.getMode()})");
+                Log($"myObj_011: colorPicker({colorPicker.getMode()})");
             }
 
+            x = rand.Next(Width);
+            y = rand.Next(Height);
             X = rand.Next(Width);
             Y = rand.Next(Height);
 
             int maxSpeed = 20;
 
-            dx = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
-            dy = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
+            dx1 = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
+            dy1 = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
+            dx2 = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
+            dy2 = (rand.Next(maxSpeed) + 1) * (rand.Next(2) == 0 ? 1 : -1);
 
-            Size = rand.Next(11) + 1;
+            Size = 1;
 
             A = rand.Next(256 - 75) + 75;
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
@@ -42,17 +49,29 @@ namespace my
 
         protected override void Move()
         {
-            X += dx;
-            Y += dy;
+            X += dx1;
+            Y += dy1;
+            x += dx2;
+            y += dy2;
 
             if (X < 0 || X > Width)
             {
-                dx *= -1;
+                dx1 *= -1;
             }
 
             if (Y < 0 || Y > Height)
             {
-                dy *= -1;
+                dy1 *= -1;
+            }
+
+            if (x < 0 || x > Width)
+            {
+                dx2 *= -1;
+            }
+
+            if (y < 0 || y > Height)
+            {
+                dy2 *= -1;
             }
 
             return;
@@ -62,16 +81,9 @@ namespace my
 
         protected override void Show()
         {
-            br.Color = Color.FromArgb(A, R, G, B);
-            g.FillRectangle(br, X, Y, Size, Size);
+            p.Color = Color.FromArgb(33, R, G, B);
 
-            if (Size > 3)
-            {
-                g.FillRectangle(Brushes.Black, X,            Y,            1, 1);
-                g.FillRectangle(Brushes.Black, X + Size - 1, Y,            1, 1);
-                g.FillRectangle(Brushes.Black, X,            Y + Size - 1, 1, 1);
-                g.FillRectangle(Brushes.Black, X + Size - 1, Y + Size - 1, 1, 1);
-            }
+            g.DrawLine(p, X, Y, x, y);
         }
 
         // -------------------------------------------------------------------------
@@ -80,13 +92,10 @@ namespace my
         {
             var list = new System.Collections.Generic.List<myObj_011>();
 
-            while (list.Count < 2)
+            while (list.Count < 10)
             {
                 list.Add(new myObj_011());
             }
-
-            p = new Pen(Color.Red);
-            p.Color = Color.FromArgb(133, 255, 11, 11);
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
@@ -94,11 +103,9 @@ namespace my
             {
                 foreach (var s in list)
                 {
-                    //s.Show();
+                    s.Show();
                     s.Move();
                 }
-
-                g.DrawLine(p, list[0].X, list[0].Y, list[1].X, list[1].Y);
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(50);
