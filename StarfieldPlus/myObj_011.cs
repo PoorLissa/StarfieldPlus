@@ -90,6 +90,8 @@ namespace my
 
         protected override void Process()
         {
+            int t = 50, cnt = 0;
+
             var list = new System.Collections.Generic.List<myObj_011>();
 
             while (list.Count < 10)
@@ -101,6 +103,18 @@ namespace my
 
             while (isAlive)
             {
+                // Darken all the picture
+                if (++cnt > 5000)
+                {
+                    br.Color = Color.FromArgb(1, 0, 0, 0);
+                    g.FillRectangle(br, 0, 0, Width, Height);
+
+                    if (cnt > 5200)
+                    {
+                        cnt = 0;
+                    }
+                }
+
                 foreach (var s in list)
                 {
                     s.Show();
@@ -108,7 +122,7 @@ namespace my
                 }
 
                 form.Invalidate();
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(t);
             }
 
             return;
