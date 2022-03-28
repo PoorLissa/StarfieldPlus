@@ -88,13 +88,13 @@ namespace StarfieldPlus
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random((int)DateTime.Now.Ticks).Next(18);
+            int id = new Random((int)DateTime.Now.Ticks).Next(20);
 
-            id = 5;
+            id = 7;
 
             if (false)
             {
-                _obj = new my.myObj_140();
+                _obj = new my.myObj_004_d();
                 return;
             }
 
@@ -143,63 +143,67 @@ namespace StarfieldPlus
                     _obj = new my.myObj_004_c();
                     break;
 
-                // Desktop pieces swapping
                 case 7:
+                    _obj = new my.myObj_004_d();
+                    break;
+
+                // Desktop pieces swapping
+                case 8:
                     _obj = new my.myObj_050();
                     break;
 
                 // Desktop pieces falling off -- 1
-                case 8:
+                case 9:
                     _obj = new my.myObj_070();
                     break;
 
                 // Desktop pieces falling off -- 2
-                case 9:
+                case 10:
                     _obj = new my.myObj_072();
                     break;
 
                 // Big Bang
-                case 10:
+                case 11:
                     _obj = new my.myObj_100();
                     break;
 
                 // Desktop -- Random pieces of the desktop are shown at their own slightly offset locations
-                case 11:
+                case 12:
                     _obj = new my.myObj_101();
                     break;
 
                 // Desktop 2
-                case 12:
+                case 13:
                     _obj = new my.myObj_102();
                     break;
 
                 // Desktop 3
-                case 13:
+                case 14:
                     _obj = new my.myObj_110();
                     break;
 
                 // Moving Lines
-                case 14:
+                case 15:
                     _obj = new my.myObj_120();
                     break;
 
                 // Growing shapes -- rain drops alike -- no refresh
-                case 15:
+                case 16:
                     _obj = new my.myObj_130();
                     break;
 
                 // Growing shapes -- rain drops alike
-                case 16:
+                case 17:
                     _obj = new my.myObj_131();
                     break;
 
                 // Splines
-                case 17:
+                case 18:
                     _obj = new my.myObj_132();
                     break;
 
                 // Grid with moving rectangle lenses -- test, looks strange
-                case 18:
+                case 19:
                     _obj = new my.myObj_140();
                     break;
 

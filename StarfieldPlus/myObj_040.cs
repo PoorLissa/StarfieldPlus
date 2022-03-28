@@ -106,7 +106,7 @@ shape = 0;
         protected override void Process()
         {
             int cnt = 0, t = 22;
-t = 5;
+t = 1;
             var list = new System.Collections.Generic.List<myObj_040>();
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
@@ -117,7 +117,6 @@ t = 5;
                 {
                     s.Show();
                     s.Move();
-                    //g.FillRectangle(Brushes.DarkRed, s.x, s.y, s.Size, s.Size);
                 }
 
                 form.Invalidate();
@@ -215,156 +214,9 @@ t = 5;
 };
 
 
-
-
-
-
-namespace my
-{
-    public class myObj_004_b : myObject
-    {
-        private int dx, dy, A;
-
-        static int x0 = 0, y0 = 0;
-
-        // todo: x0 and y0 as random
-
-        // -------------------------------------------------------------------------
-
-        public myObj_004_b()
-        {
-            if (colorPicker == null)
-            {
-                br = new SolidBrush(Color.White);
-                colorPicker = new myColorPicker(Width, Height);
-
-                x0 = Width  / 2;
-                y0 = Height / 2;
-
-                Log($"myObj_004_b");
-            }
-
-            generateNew();
-        }
-
-        // -------------------------------------------------------------------------
-
-        protected override void generateNew()
-        {
-            dx = 0;
-            dy = 0;
-
-            do
-            {
-                X = rand.Next(Width);
-                Y = rand.Next(Height);
-
-                A = 0;
-
-                int speed = 5;
-
-                //int dist = (int)Math.Sqrt((X - x0)*(X - x0) + (Y - y0)*(Y - y0));
-
-                double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
-
-                dx = (int)((X - x0) * speed / dist);
-                dy = (int)((Y - y0) * speed / dist);
-
-                Size = rand.Next(6) + 1;
-            }
-            while (dx == 0 && dy == 0);
-        }
-
-        // -------------------------------------------------------------------------
-
-        protected override void Move()
-        {
-            X += dx;
-            Y += dy;
-
-            X += dx + (int)(Math.Sin(Y) * 5);
-            Y += dy + (int)(Math.Sin(X) * 5);
-
-            if (X < 0 || X > Width || Y < 0 || Y > Height)
-            {
-                generateNew();
-            }
-
-            if (A != 255)
-                A++;
-
-            return;
-        }
-
-        // -------------------------------------------------------------------------
-
-        protected override void Show()
-        {
-            br.Color = Color.FromArgb(A, br.Color.R, br.Color.G, br.Color.B);
-
-            g.FillRectangle(br, X, Y, Size, Size);
-        }
-
-        // -------------------------------------------------------------------------
-
-        protected override void Process()
-        {
-            int cnt = 0, t = 11;
-
-            var list = new System.Collections.Generic.List<myObj_004_b>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(new myObj_004_b());
-            }
-
-            g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-
-            while (isAlive)
-            {
-                foreach (var obj in list)
-                {
-                    obj.Show();
-                    obj.Move();
-                }
-
-                form.Invalidate();
-                System.Threading.Thread.Sleep(t);
-
-                if (++cnt > 1001)
-                {
-                    //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-                    getNewBrush(br);
-                    cnt = 0;
-                }
-            }
-
-            return;
-        }
-
-        // -------------------------------------------------------------------------
-
-        private void getNewBrush(SolidBrush br)
-        {
-            int alpha = 0, R = 0, G = 0, B = 0, max = 256;
-
-            while (alpha + R + G + B < 100)
-            {
-                alpha = rand.Next(max - 75) + 75;
-                R = rand.Next(max);
-                G = rand.Next(max);
-                B = rand.Next(max);
-            }
-
-            br.Color = Color.FromArgb(alpha, R, G, B);
-        }
-    };
-};
-
-
-
-
-
+// ============================================================================================================
+// ============================================================================================================
+// ============================================================================================================
 
 
 namespace my
@@ -469,7 +321,7 @@ namespace my
 
         protected override void Process()
         {
-            int cnt = 0;
+            int cnt = 0, t = 0;
 
             var list = new System.Collections.Generic.List<myObj_004_c>();
 
@@ -502,9 +354,7 @@ namespace my
                     }
 
                     form.Invalidate();
-                    //System.Threading.Thread.Sleep(33);
-                    //System.Threading.Thread.Sleep(11);
-                    System.Threading.Thread.Sleep(0);
+                    System.Threading.Thread.Sleep(t);
 
                     if (++cnt > 1001)
                     {

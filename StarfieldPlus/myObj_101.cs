@@ -175,6 +175,7 @@ namespace my
         {
             if (rand.Next(2) == 0)
             {
+                // Original image, semitransparent
                 g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
 
                 using (SolidBrush br = new SolidBrush(Color.FromArgb(225, 255, 255, 255)))
@@ -184,6 +185,7 @@ namespace my
             }
             else
             {
+                // Black background
                 g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             }
 
