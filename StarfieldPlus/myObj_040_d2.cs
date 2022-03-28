@@ -37,7 +37,7 @@ namespace my
 
                 generationAllowed = true;
 
-                Log($"myObj_004_d");
+                Log($"myObj_004_d2");
             }
 
             generateNew();

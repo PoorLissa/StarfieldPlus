@@ -2,7 +2,8 @@
 using System.Drawing;
 
 /*
-    - moving vertical and horizontal lines
+    1. moving vertical and horizontal lines
+    2. moving vertical and horizontal sin/cos lines
 */
 
 namespace my
@@ -10,7 +11,7 @@ namespace my
     public class myObj_120 : myObject
     {
         int length = 0, dir = 0, dx = 0, dy = 0, A = 0, R = 0, G = 0, B = 0;
-        static int colorMode = 0;
+        static int colorMode = 0, moveMode = 0;
         static int gl_R = 0, gl_G = 0, gl_B = 0;
 
         // -------------------------------------------------------------------------
@@ -20,6 +21,7 @@ namespace my
             if (p == null)
             {
                 p = new Pen(Color.Red);
+                moveMode = rand.Next(2);
                 Log($"myObj_120");
             }
 
@@ -115,7 +117,57 @@ namespace my
 
             p.Color = Color.FromArgb(A, R, G, B);
 
-            g.DrawLine(p, X, Y, x2, y2);
+            if (moveMode == 0)
+            {
+                g.DrawLine(p, X, Y, x2, y2);
+            }
+            else
+            {
+                System.Collections.Generic.List<PointF> list = new System.Collections.Generic.List<PointF>();
+
+                int di = 10;
+
+                if (dir == 0)
+                {
+                    for (int i = X; i < x2; i += di)
+                    {
+                        int j = (int)(Math.Sin((X + i) / 100.0f) * 33);
+                        list.Add(new PointF(i, Y + j));
+                    }
+                }
+
+                if (dir == 1)
+                {
+                    for (int i = x2; i < X; i += di)
+                    {
+                        int j = (int)(Math.Sin((X + i) / 100.0f) * 33);
+                        list.Add(new PointF(i, Y + j));
+                    }
+                }
+
+                if (dir == 2)
+                {
+                    for (int i = Y; i < y2; i += di)
+                    {
+                        int j = (int)(Math.Sin((Y + i) / 100.0f) * 33);
+                        list.Add(new PointF(X + j, i));
+                    }
+                }
+
+                if (dir == 3)
+                {
+                    for (int i = y2; i < Y; i += di)
+                    {
+                        int j = (int)(Math.Sin((Y + i) / 100.0f) * 33);
+                        list.Add(new PointF(X + j, i));
+                    }
+                }
+
+                if (list.Count > 0)
+                {
+                    g.DrawCurve(p, list.ToArray());
+                }
+            }
         }
 
         // -------------------------------------------------------------------------

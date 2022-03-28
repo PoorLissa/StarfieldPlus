@@ -83,16 +83,15 @@ namespace StarfieldPlus
         // - sperm floating towards the center
         // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
         // - cover everything in spiralling traingles
-        // - travelling sin and cosin functions - the same as moving lines
 
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(20);
 
-            id = 7;
+            id = 15;
 
-            if (true)
+            if (false)
             {
                 _obj = new my.myObj_004_d2();
                 return;
