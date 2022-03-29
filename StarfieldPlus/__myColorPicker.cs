@@ -272,5 +272,51 @@ namespace my
         }
 
         // -------------------------------------------------------------------------
+
+        // Get new random color and update the brush with this color instantly
+        public void getNewBrush(SolidBrush br)
+        {
+            int alpha = 0, R = 0, G = 0, B = 0, max = 256;
+
+            while (alpha + R + G + B < 100)
+            {
+                R = _rand.Next(max);
+                G = _rand.Next(max);
+                B = _rand.Next(max);
+            }
+
+            br.Color = Color.FromArgb(alpha, R, G, B);
+        }
+
+        // -------------------------------------------------------------------------
+
+        // Get new random color and then gradually get closer to it with each iteration, until the color value is reached
+        // Update the brush with the current color on each iteration
+        public bool getNewBrush(SolidBrush br, bool doGenerate, int minVal = 100)
+        {
+            if (doGenerate)
+            {
+                while (gl_R + gl_G + gl_B < minVal)
+                {
+                    gl_R = _rand.Next(256);
+                    gl_G = _rand.Next(256);
+                    gl_B = _rand.Next(256);
+                }
+            }
+
+            int r = br.Color.R;
+            int g = br.Color.G;
+            int b = br.Color.B;
+
+            r += r == gl_R ? 0 : r > gl_R ? -1 : 1;
+            g += g == gl_G ? 0 : g > gl_G ? -1 : 1;
+            b += b == gl_B ? 0 : b > gl_B ? -1 : 1;
+
+            br.Color = Color.FromArgb(255, r, g, b);
+
+            return r == gl_R && g == gl_G && b == gl_B;
+        }
+
+        // -------------------------------------------------------------------------
     }
 };

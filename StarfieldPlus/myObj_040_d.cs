@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Drawing;
 
-
+/*
+    - Various shapes growing out from a single starting point
+    - Based initially on the starfield class -- where all the stars are generated at a center point
+*/
 
 namespace my
 {
     public class myObj_004_d : myObject
     {
+        private const int N = 31;       // Number of cases in Move() function -- update as needed
+
         private int dxi, dyi, A, oldX, oldY;
-        private int R = -1, G = -1, B = -1;
         private float dxf = 0, dyf = 0, x = 0, y = 0, time, dt;
         private bool isActive = false;
 
-        static int x0 = 0, y0 = 0, moveMode = -1, drawMode = -1, speedMode = -1, maxA = 255, t = -1;
+        static int x0 = 0, y0 = 0, moveMode = -1, drawMode = -1, speedMode = -1, colorMode = -1, maxA = 255, t = -1;
         static bool generationAllowed = false;
-        static float time_static = 0;
+        static bool isRandomMove = false;
+        static float time_static = 0, dtStatic = 0;
 
         // -------------------------------------------------------------------------
 
@@ -25,17 +30,23 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
                 colorPicker = new myColorPicker(Width, Height);
+                f = new Font("Segoe UI", 7, FontStyle.Regular, GraphicsUnit.Point);
 
                 drawMode = rand.Next(6);
-                moveMode = rand.Next(31);
+                moveMode = rand.Next(N);
                 speedMode = rand.Next(2);
+                colorMode = rand.Next(2);
                 maxA = rand.Next(100) + 100;
                 t = rand.Next(15) + 10;
+                dtStatic = 0.15f;
 
                 x0 = Width  / 2;
                 y0 = Height / 2;
 
+                getNewBrush(br);
+
                 generationAllowed = true;
+                isRandomMove = rand.Next(3) == 0;
 
                 Log($"myObj_004_d");
             }
@@ -51,36 +62,38 @@ namespace my
             {
                 int speed = (speedMode == 0) ? 5 : 3 + rand.Next(5);
 
-                dxi = 0;
-                dyi = 0;
-                dxf = 0;
-                dyf = 0;
-
-                A = rand.Next(maxA) + 1;
-
-                X = rand.Next(Width);
-                Y = rand.Next(Height);
-
-                double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
-
-                dxi = (int)((X - x0) * speed / dist);
-                dyi = (int)((Y - y0) * speed / dist);
-
-                getDxDy(speed, ref dxf, ref dyf);
-
+                A    = rand.Next(maxA) + 1;
+                X    = rand.Next(Width);
+                Y    = rand.Next(Height);
                 Size = rand.Next(6) + 1;
 
-                X = x0;
-                Y = y0;
-                oldX = x0;
-                oldY = y0;
-                x = x0;
-                y = y0;
+                //getDxDy(speed, ref dxi, ref dyi);
+                getDxDy(speed, ref dxf, ref dyf);
+
+                x = X = oldX = x0;
+                y = Y = oldY = y0;
+                time = dt = 0;
 
                 isActive = true;
-                time = 0;
-                dt = 0;
             }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        void getDxDy(int speed, ref int dxi, ref int dyi)
+        {
+            int x0 = Width  / 2;
+            int y0 = Height / 2;
+
+            int x = rand.Next(Width);
+            int y = rand.Next(Height);
+
+            double dist = Math.Sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
+
+            dxi = (int)((x - x0) * speed / dist);
+            dyi = (int)((y - y0) * speed / dist);
 
             return;
         }
@@ -111,14 +124,16 @@ namespace my
             oldY = Y;
 
             int const1 = 1;
+            float const2 = 0;
             float a = 0.25f;
             float b = 1.55f;
             float c = 0.10f;
             float sinx;
             float cosy;
 
-#if false
+#if true
             moveMode = 99;
+            moveMode = 1;
             drawMode = 2;
             t = 1;
 #endif
@@ -243,14 +258,17 @@ namespace my
                     y += (float)(Math.Cos(time + dxf) * const1 * time) * time;
                     break;
 
+                // Spiral
                 case 15:
-                    const1 = 1;
-                    dt = 0.25f;
+                    const2 = 0.33f;     // General size of the shape
+
+                    dt = 0.08f;         // more straight <--> more curving towards the circle
+                    dt = 0.25f;         // todo: see if we already have this circlic pattern and this more straight one, and add it we don't
                     time += dt;
 
-                    a = 0.25f;
-                    b = 1.55f;
-                    c = 0.10f;
+                    a = 0.25f;          // a's sign affects the direction of spiralling. Value +/- acts like b
+                    b = 1.55f;          // b affects distribution of spirals around the central point
+                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
 
                     x += dxf * c;
                     y += dyf * c;
@@ -258,8 +276,8 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const1 * time_static;
-                    y += cosy * const1 * time_static;
+                    x += sinx * const2 * time_static;
+                    y += cosy * const2 * time_static;
                     break;
 
                 case 16:
@@ -378,10 +396,117 @@ namespace my
 
                 // Research mode, don't use
                 case 99:
-                    time += 0.5f;
-                    x += dxf + (float)(Math.Sin(1 / time) * 1);
-                    y += dyf + (float)(Math.Sin(1 / time) * 1);
+                    // case 15
+                    const2 = 0.33f;     // General size of the shape
+                    //dt = 0.25f;
+                    dt = 0.08f;         // more straight <--> more curving towards the circle
+                    time += dt;
+
+                    a = 0.25f;          // a's sign affects the direction of spiralling. Value +/- acts like b
+                    b = 1.55f;          // b affects distribution of spirals around the central point
+                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    sinx = (float)(Math.Sin(a * time + b * dxf));
+                    cosy = (float)(Math.Cos(a * time + b * dxf));
+
+                    x += sinx * const2 * time_static;
+                    y += cosy * const2 * time_static;
                     break;
+
+                case 991:
+                    // case 15
+                    const2 = 0.33f;     // General size of the shape
+                    //dt = 0.25f;
+                    dt = 0.08f;         // more straight <--> more curving towards the circle
+                    time += dt;
+
+                    a = 0.25f;
+                    b = 1.55f;
+                    c = (float)(Math.Sin(time_static));     // this turns spirals into random tentacles
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    sinx = (float)(Math.Sin(a * time + b * dxf));
+                    cosy = (float)(Math.Cos(a * time + b * dxf));
+
+                    x += sinx * const2 * time_static;
+                    y += cosy * const2 * time_static;
+                    break;
+
+                case 992:
+                    // case 15
+                    const2 = 1.33f;     // General size of the shape
+                    //dt = 0.25f;
+                    dt = 0.08f;         // more straight <--> more curving towards the circle
+                    time += dt;
+
+                    a = 0.25f;          // a
+                    b = 1.55f;          // b affects distribution of spirals around the central point
+
+                    b = time_static * time; // this makes it fractal-like
+
+                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    sinx = (float)(Math.Sin(a * time + b * dxf));
+                    cosy = (float)(Math.Cos(a * time + b * dxf));
+
+                    x += sinx * const2 * time_static;
+                    y += cosy * const2 * time_static;
+                    break;
+
+                case 993:
+                    // case 15
+                    const2 = 0.33f;     // General size of the shape
+                    dt = 0.08f;         // more straight <--> more curving towards the circle
+                    time += dt;
+
+                    a = 0.25f;          // a
+                    b = 1.55f;          // b affects distribution of spirals around the central point
+
+                    b = (float)(Math.Sin(time_static)); // <------ + play with dt
+                    //b = (float)(Math.Sin(time_static * dyf * dxf));   // <-- gives alien tail shapes
+
+                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    sinx = (float)(Math.Sin(a * time + b * dxf));
+                    cosy = (float)(Math.Cos(a * time + b * dxf));
+
+                    x += sinx * const2 * time_static;
+                    y += cosy * const2 * time_static;
+                    break;
+
+                case 994:
+                    // case 15
+                    const2 = 0.33f;     // General size of the shape
+                    //dt = 0.25f;
+                    dt = 0.08f;         // more straight <--> more curving towards the circle
+                    time += dt;
+
+                    //a = 0.25f;          // a's sign affects the direction of spiralling
+                    a = 0.25f * (rand.Next(3) - 1);
+                    b = 1.55f;          // b affects distribution of spirals around the central point
+                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    sinx = (float)(Math.Sin(a * time + b * dxf));
+                    cosy = (float)(Math.Cos(a * time + b * dxf));
+
+                    x += sinx * const2 * time_static;
+                    y += cosy * const2 * time_static;
+                    break;
+
             }
 
             if (isActive)
@@ -469,10 +594,16 @@ namespace my
                     cntActive += obj.isActive ? 1 : 0;
                 }
 
+#if DEBUG
+                string str = $"moveMode = {moveMode};";
+                g.FillRectangle(Brushes.Black, 33, 33, 120, 21);
+                g.DrawString(str, f, Brushes.Red, 35, 33);
+#endif
+
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
 
-                time_static += 0.15f;
+                time_static += dtStatic;
 
                 // Wait untill every object finishes, then start from new point
                 if (++cnt > threshold)
@@ -486,12 +617,14 @@ namespace my
                         x0 = rand.Next(Width);
                         y0 = rand.Next(Height);
 
+                        moveMode = isRandomMove ? rand.Next(N) : moveMode;
+
                         getNewBrush(br);
 
                         time_static = 0.0f;
 
-                        generationAllowed = true;
                         cnt = 0;
+                        generationAllowed = true;
                         System.Threading.Thread.Sleep(333);
                     }
                 }
@@ -504,44 +637,20 @@ namespace my
 
         private void getNewBrush(SolidBrush br)
         {
-            int alpha = 0, R = 0, G = 0, B = 0, max = 256;
-
-            while (alpha + R + G + B < 100)
+            if (colorMode == 0)
             {
-                alpha = rand.Next(max - 75) + 75;
-                R = rand.Next(max);
-                G = rand.Next(max);
-                B = rand.Next(max);
+                colorPicker.getNewBrush(br);
+            }
+            else
+            {
+                int r = -1, g = -1, b = -1, alpha = rand.Next(256 - 75) + 75;
+
+                colorPicker.getColor(x0, y0, ref r, ref g, ref b);
+
+                br.Color = Color.FromArgb(alpha, r, g, b);
             }
 
-            br.Color = Color.FromArgb(alpha, R, G, B);
-        }
-
-        // -------------------------------------------------------------------------
-
-        private bool getNewBrush(SolidBrush br, bool doGenerate)
-        {
-            if (doGenerate)
-            {
-                while (R + G + B < 100)
-                {
-                    R = rand.Next(256);
-                    G = rand.Next(256);
-                    B = rand.Next(256);
-                }
-            }
-
-            int r = br.Color.R;
-            int g = br.Color.G;
-            int b = br.Color.B;
-
-            r += r == R ? 0 : r > R ? -1 : 1;
-            g += g == G ? 0 : g > G ? -1 : 1;
-            b += b == B ? 0 : b > B ? -1 : 1;
-
-            br.Color = Color.FromArgb(255, r, g, b);
-
-            return r == R && g == G && b == B;
+            return;
         }
 
         // -------------------------------------------------------------------------

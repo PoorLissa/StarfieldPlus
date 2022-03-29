@@ -84,13 +84,14 @@ namespace StarfieldPlus
         // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
         // - cover everything in spiralling traingles
         // - try bezier curves: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
+        // try rotating rectangles: https://stackoverflow.com/questions/10210134/using-a-matrix-to-rotate-rectangles-individually
 
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
-            //id = 8;
+            id = 8;
 
             if (false)
             {
@@ -142,7 +143,7 @@ namespace StarfieldPlus
                     _obj = new my.myObj_004_c();
                     break;
 
-                // Various shapes 
+                // Various shapes growing out from a single starting point
                 case 8:
                     _obj = new my.myObj_004_d();
                     break;
