@@ -109,7 +109,7 @@ namespace my
 
             while (isAlive)
             {
-                // Remove traces constantly (if needed)
+                // Dim traces constantly (if needed)
                 if (removeTraces == 1 && cnt % 3 == 0)
                 {
                     br.Color = Color.FromArgb(5, 0, 0, 0);

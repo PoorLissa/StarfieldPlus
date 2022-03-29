@@ -93,9 +93,9 @@ namespace StarfieldPlus
 
             id = 8;
 
-            if (false)
+            if (true)
             {
-                _obj = new my.myObj_060();
+                _obj = new my.myObj_080();
                 return;
             }
 

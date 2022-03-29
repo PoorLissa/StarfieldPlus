@@ -19,7 +19,13 @@ namespace my
         static int x0 = 0, y0 = 0, moveMode = -1, drawMode = -1, speedMode = -1, colorMode = -1, maxA = 255, t = -1;
         static bool generationAllowed = false;
         static bool isRandomMove = false;
+        static bool doUpdateConstants = true;
         static float time_static = 0, dtStatic = 0;
+
+        static int   const1 = 0;
+        static float const2 = 0;
+        static float a = 0.25f, b = 1.55f, c = 0.10f;
+        static float sinx, cosy;
 
         // -------------------------------------------------------------------------
 
@@ -44,9 +50,20 @@ namespace my
                 y0 = Height / 2;
 
                 getNewBrush(br);
+                updateConstants();
 
                 generationAllowed = true;
                 isRandomMove = rand.Next(3) == 0;
+
+#if true
+                // Override Move()
+                moveMode = 99;
+                moveMode = 0;
+                drawMode = 2;
+                t = 1;
+                isRandomMove = false;
+                updateConstants();
+#endif
 
                 Log($"myObj_004_d");
             }
@@ -118,34 +135,29 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        float zz = 0.01f;
+
         protected override void Move()
         {
             oldX = X;
             oldY = Y;
 
-            int const1 = 1;
-            float const2 = 0;
-            float a = 0.25f;
-            float b = 1.55f;
-            float c = 0.10f;
-            float sinx;
-            float cosy;
-
-#if true
-            moveMode = 99;
-            moveMode = 1;
-            drawMode = 2;
-            t = 1;
-#endif
-
             switch (moveMode)
             {
                 case 0:
-                    x += dxf * 2;
-                    y += dyf * 2;
 
-                    x += (int)(Math.Sin(Y) * 5);
-                    y += (int)(Math.Sin(X) * 5);
+/*
+                    const1 = 0;                 // old 5
+                    const2 = 0.03f;              // old 2
+
+                    const2 += zz;
+                    //zz += 0.001f;
+*/
+                    x += dxf * const2;
+                    y += dyf * const2;
+
+                    x += (int)(Math.Sin(Y) * const1);
+                    y += (int)(Math.Sin(X) * const1);
                     break;
 
                 case 1:
@@ -529,6 +541,22 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        // Update global constants
+        private void updateConstants()
+        {
+            switch (moveMode)
+            {
+                case 0:
+                    const1 = rand.Next(10)+1;                   // old 5
+                    const2 = (rand.Next(50) + 1) / 10.0f;       // old 2
+                    break;
+            }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
         protected override void Show()
         {
             switch (drawMode)
@@ -619,6 +647,11 @@ namespace my
 
                         moveMode = isRandomMove ? rand.Next(N) : moveMode;
 
+                        if (doUpdateConstants)
+                        {
+                            updateConstants();
+                        }
+                        
                         getNewBrush(br);
 
                         time_static = 0.0f;
