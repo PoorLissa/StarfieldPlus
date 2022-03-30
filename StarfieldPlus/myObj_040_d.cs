@@ -20,11 +20,12 @@ namespace my
         static bool generationAllowed = false;
         static bool isRandomMove = false;
         static bool doUpdateConstants = true;
-        static float time_static = 0, dtStatic = 0;
+        static float time_global = 0, dtGlobal = 0, dtCommon = 0;
 
         static int removeTraces = 1;
-        static int   const1 = 0;
-        static float const2 = 0;
+        static int   si1 = 0;
+        static float sf2 = 0;
+        static float sf3 = 0;
         static float a = 0.25f, b = 1.55f, c = 0.10f;
         static float sinx, cosy;
 
@@ -36,7 +37,7 @@ namespace my
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
-                colorPicker = new myColorPicker(Width, Height);
+                colorPicker = new myColorPicker(Width, Height, 3);
                 f = new Font("Segoe UI", 7, FontStyle.Regular, GraphicsUnit.Point);
 
                 drawMode = rand.Next(6);
@@ -45,7 +46,7 @@ namespace my
                 colorMode = rand.Next(2);
                 maxA = rand.Next(100) + 100;
                 t = rand.Next(15) + 10;
-                dtStatic = 0.15f;
+                dtGlobal = 0.15f;
 
                 x0 = Width  / 2;
                 y0 = Height / 2;
@@ -59,7 +60,7 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 7;
+                moveMode = 19;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -145,15 +146,15 @@ namespace my
                 case 2:
                 case 3:
                 case 4:
-                    // const1 : Lower values for rather straigt beams;
+                    // si1 : Lower values for rather straigt beams;
                     // Higher values make the beams lightning-like
                     // Hight values make the beams erratic
 
-                    x += dxf * const2;
-                    y += dyf * const2;
+                    x += dxf * sf2;
+                    y += dyf * sf2;
 
-                    x += (int)(Math.Sin(Y) * const1);
-                    y += (int)(Math.Sin(X) * const1);
+                    x += (int)(Math.Sin(Y) * si1);
+                    y += (int)(Math.Sin(X) * si1);
                     break;
 
                 // --- option 2 ---
@@ -166,16 +167,66 @@ namespace my
                 case 6:
                     time += (float)(rand.Next(999) / 1000.0f);
 
-                    x += dxf + (float)(Math.Sin(time) * const2);
-                    y += dyf + (float)(Math.Cos(time) * const2);
+                    x += dxf + (float)(Math.Sin(time) * sf2);
+                    y += dyf + (float)(Math.Cos(time) * sf2);
                     break;
 
                 // --- option 4 ---
                 case 7:
                     time += 0.1f;
 
-                    x += dxf + (float)(Math.Sin(time) * const2);
-                    y += dyf + (float)(Math.Cos(time) * const2);
+                    x += dxf + (float)(Math.Sin(time) * sf2);
+                    y += dyf + (float)(Math.Cos(time) * sf2);
+                    break;
+
+                // --- option 5 ---
+                case 8:
+                    time += 0.001f + (rand.Next(10)) * 0.005f;
+
+                    x += dxf + (float)(Math.Sin(time) * sf2);
+                    y += dyf + (float)(Math.Cos(time) * sf2);
+                    break;
+
+                // --- option 6 --- Hair like 
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    time += dtCommon;
+
+                    x += dxf + (float)(Math.Sin(time * dxf) * sf2);
+                    y += dyf + (float)(Math.Sin(time * dyf) * sf2);
+                    break;
+
+                // --- option 7 --- Spiraling Wheels
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                    time += dtCommon;
+
+                    x += (float)Math.Sin(time + dyf) * time * sf2;
+                    y += (float)Math.Cos(time + dyf) * time * sf2;
+                    break;
+
+                // --- option 8 --- Stars with Spiraling Rays
+                case 1117:
+                    time += dtCommon;
+
+                    x += (float)(Math.Sin(time + dyf) * sf2) * time;
+                    y += (float)(Math.Cos(time + dyf) * sf2) * time;
+                    break;
+
+
+                case 117:
+                    time += 0.1f;
+
+                    x += (float)(Math.Sin(time * dyf) * 2) * time;
+                    y += (float)(Math.Cos(time * dyf) * 2) * time;
                     break;
             }
 
@@ -207,41 +258,6 @@ namespace my
 
             switch (moveMode)
             {
-                case 4:
-                    time += 0.01f;
-
-                    x += dxf + (float)(Math.Sin(time) * 1);
-                    y += dyf + (float)(Math.Cos(time) * 1);
-                    break;
-
-                case 5:
-                    time += 0.1f;   // change this
-
-                    x += dxf + (float)(Math.Sin(time * dxf) * 2);   // change const
-                    y += dyf + (float)(Math.Sin(time * dyf) * 2);
-                    break;
-
-                case 6:
-                    time += 0.01f;
-
-                    x += dxf + (float)(Math.Sin(time * dxf) * 2);
-                    y += dyf + (float)(Math.Sin(time * dyf) * 2);
-                    break;
-
-                case 7:
-                    time += 0.1f;
-
-                    x += (float)(Math.Sin(time + dyf) * 2) * time;
-                    y += (float)(Math.Cos(time + dyf) * 2) * time;
-                    break;
-
-                case 8:
-                    time += 0.1f;
-
-                    x += (float)(Math.Sin(time * dyf) * 2) * time;
-                    y += (float)(Math.Cos(time * dyf) * 2) * time;
-                    break;
-
                 case 9:
                     time += 0.25f;   // try 0.2, 0.3, 0.5
 
@@ -258,11 +274,11 @@ namespace my
                     break;
 
                 case 11:
-                    const1 = 12;
+                    si1 = 12;
                     dt = 0.25f;
-                    time += dt;   // try various const1 and dt
+                    time += dt;   // try various si1 and dt
 
-                    time += (float)(Math.Tan(time)) / const1;
+                    time += (float)(Math.Tan(time)) / si1;
 
                     x += (float)(Math.Sin(time + dxf) * dyf) * time;
                     y += (float)(Math.Cos(time + dxf) * dyf) * time;
@@ -270,7 +286,7 @@ namespace my
 
                 case 12:
                     dt += (dt == 0) ? 0.25f : 0.05f;
-                    time += dt;   // try various const1 and dt
+                    time += dt;   // try various si1 and dt
 
                     //time += (float)(Math.Sin(time)) / 100;
 
@@ -280,7 +296,7 @@ namespace my
 
                 case 13:
                     dt += (dt == 0) ? 0.25f : 0.05f;
-                    time += dt;   // try various const1 and dt
+                    time += dt;   // try various si1 and dt
 
                     time += (float)(Math.Sin(time)) / 100;
 
@@ -290,17 +306,17 @@ namespace my
 
                 // ?..
                 case 14:
-                    const1 = 12;
+                    si1 = 12;
                     dt = 0.05f;
                     time += dt;
 
-                    x += (float)(Math.Sin(time + dxf) * const1 * time) * time;
-                    y += (float)(Math.Cos(time + dxf) * const1 * time) * time;
+                    x += (float)(Math.Sin(time + dxf) * si1 * time) * time;
+                    y += (float)(Math.Cos(time + dxf) * si1 * time) * time;
                     break;
 
                 // Spiral
                 case 15:
-                    const2 = 0.33f;     // General size of the shape
+                    sf2 = 0.33f;     // General size of the shape
 
                     dt = 0.08f;         // more straight <--> more curving towards the circle
                     dt = 0.25f;         // todo: see if we already have this circlic pattern and this more straight one, and add it we don't
@@ -316,8 +332,8 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const2 * time_static;
-                    y += cosy * const2 * time_static;
+                    x += sinx * sf2 * time_global;
+                    y += cosy * sf2 * time_global;
                     break;
 
                 case 16:
@@ -356,35 +372,35 @@ namespace my
                     break;
 
                 case 21:
-                    const1 = 1;
+                    si1 = 1;
                     time += 0.01f;
 
-                    x += (int)(Math.Sin(time * dyf) * 21 + time * const1);
-                    y += (int)(Math.Cos(time * dxf) * 21 + time * const1);
+                    x += (int)(Math.Sin(time * dyf) * 21 + time * si1);
+                    y += (int)(Math.Cos(time * dxf) * 21 + time * si1);
                     break;
 
                 case 22:
-                    const1 = 1;
+                    si1 = 1;
                     time += 0.01f;
 
-                    x += (int)(Math.Sin(time + dyf) * 21 + time * const1);
-                    y += (int)(Math.Cos(time + dxf) * 21 + time * const1);
+                    x += (int)(Math.Sin(time + dyf) * 21 + time * si1);
+                    y += (int)(Math.Cos(time + dxf) * 21 + time * si1);
                     break;
 
                 case 23:
-                    const1 = 1;
+                    si1 = 1;
                     time += 0.01f;
 
-                    x += (int)(Math.Sin(time + dyf) * 3 + time * const1);
-                    y += (int)(Math.Cos(time + dxf) * 3 + time * const1);
+                    x += (int)(Math.Sin(time + dyf) * 3 + time * si1);
+                    y += (int)(Math.Cos(time + dxf) * 3 + time * si1);
                     break;
 
                 case 24:
-                    const1 = 1;
+                    si1 = 1;
                     time += 0.1f;
 
-                    x += (int)(Math.Sin(time + dyf) * 3 + time * const1);
-                    y += (int)(Math.Cos(time + dxf) * 3 + time * const1);
+                    x += (int)(Math.Sin(time + dyf) * 3 + time * si1);
+                    y += (int)(Math.Cos(time + dxf) * 3 + time * si1);
                     break;
 
                 case 25:
@@ -437,7 +453,7 @@ namespace my
                 // Research mode, don't use
                 case 99:
                     // case 15
-                    const2 = 0.33f;     // General size of the shape
+                    sf2 = 0.33f;     // General size of the shape
                     //dt = 0.25f;
                     dt = 0.08f;         // more straight <--> more curving towards the circle
                     time += dt;
@@ -452,20 +468,20 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const2 * time_static;
-                    y += cosy * const2 * time_static;
+                    x += sinx * sf2 * time_global;
+                    y += cosy * sf2 * time_global;
                     break;
 
                 case 991:
                     // case 15
-                    const2 = 0.33f;     // General size of the shape
+                    sf2 = 0.33f;     // General size of the shape
                     //dt = 0.25f;
                     dt = 0.08f;         // more straight <--> more curving towards the circle
                     time += dt;
 
                     a = 0.25f;
                     b = 1.55f;
-                    c = (float)(Math.Sin(time_static));     // this turns spirals into random tentacles
+                    c = (float)(Math.Sin(time_global));     // this turns spirals into random tentacles
 
                     x += dxf * c;
                     y += dyf * c;
@@ -473,13 +489,13 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const2 * time_static;
-                    y += cosy * const2 * time_static;
+                    x += sinx * sf2 * time_global;
+                    y += cosy * sf2 * time_global;
                     break;
 
                 case 992:
                     // case 15
-                    const2 = 1.33f;     // General size of the shape
+                    sf2 = 1.33f;     // General size of the shape
                     //dt = 0.25f;
                     dt = 0.08f;         // more straight <--> more curving towards the circle
                     time += dt;
@@ -487,7 +503,7 @@ namespace my
                     a = 0.25f;          // a
                     b = 1.55f;          // b affects distribution of spirals around the central point
 
-                    b = time_static * time; // this makes it fractal-like
+                    b = time_global * time; // this makes it fractal-like
 
                     c = 0.10f;          // c here affects straight/curve ratio of the spiral
 
@@ -497,20 +513,20 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const2 * time_static;
-                    y += cosy * const2 * time_static;
+                    x += sinx * sf2 * time_global;
+                    y += cosy * sf2 * time_global;
                     break;
 
                 case 993:
                     // case 15
-                    const2 = 0.33f;     // General size of the shape
+                    sf2 = 0.33f;     // General size of the shape
                     dt = 0.08f;         // more straight <--> more curving towards the circle
                     time += dt;
 
                     a = 0.25f;          // a
                     b = 1.55f;          // b affects distribution of spirals around the central point
 
-                    b = (float)(Math.Sin(time_static)); // <------ + play with dt
+                    b = (float)(Math.Sin(time_global)); // <------ + play with dt
                     //b = (float)(Math.Sin(time_static * dyf * dxf));   // <-- gives alien tail shapes
 
                     c = 0.10f;          // c here affects straight/curve ratio of the spiral
@@ -521,13 +537,13 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const2 * time_static;
-                    y += cosy * const2 * time_static;
+                    x += sinx * sf2 * time_global;
+                    y += cosy * sf2 * time_global;
                     break;
 
                 case 994:
                     // case 15
-                    const2 = 0.33f;     // General size of the shape
+                    sf2 = 0.33f;     // General size of the shape
                     //dt = 0.25f;
                     dt = 0.08f;         // more straight <--> more curving towards the circle
                     time += dt;
@@ -543,8 +559,8 @@ namespace my
                     sinx = (float)(Math.Sin(a * time + b * dxf));
                     cosy = (float)(Math.Cos(a * time + b * dxf));
 
-                    x += sinx * const2 * time_static;
-                    y += cosy * const2 * time_static;
+                    x += sinx * sf2 * time_global;
+                    y += cosy * sf2 * time_global;
                     break;
 
             }
@@ -555,38 +571,124 @@ namespace my
         // Update global constants
         private void updateConstants()
         {
+            if (!doUpdateConstants)
+                return;
+
             switch (moveMode)
             {
                 // --- option 1 ---
                 case 0:
                 case 1:
-                    const1 = rand.Next(10)+1;
-                    const2 = (rand.Next(10) + 1) / 100.0f;
+                    si1 = rand.Next(10)+1;
+                    sf2 = (rand.Next(10) + 1) / 100.0f;
                     break;
 
                 case 2:
                 case 3:
-                    const1 = rand.Next(20) + 1;
-                    const2 = (rand.Next(100) + 1) / 100.0f;
+                    si1 = rand.Next(20) + 1;
+                    sf2 = (rand.Next(100) + 1) / 100.0f;
                     break;
 
                 case 4:
-                    const1 = rand.Next(30) + 1;
-                    const2 = (rand.Next(300) + 1) / 100.0f;
+                    si1 = rand.Next(30) + 1;
+                    sf2 = (rand.Next(300) + 1) / 100.0f;
+                    break;
+
+                // --- option 2 ---
+                case 5:
                     break;
 
                 // --- option 3 ---
                 case 6:
-                    const2 = rand.Next(7) + 2;          // 0.2 - 8
+                    sf2 = rand.Next(7) + 2;          // 0.2 - 8
 
                     if (rand.Next(11) > 3)
-                        const2 *= 0.1f;
+                        sf2 *= 0.1f;
                     break;
 
                 // --- option 4 ---
                 case 7:
-                    const2 = rand.Next(19) + 2;         // 0.2 - 2
-                    const2 *= 0.1f;
+                    sf2 = rand.Next(19) + 2;         // 0.2 - 2
+                    sf2 *= 0.1f;
+                    break;
+
+                // --- option 5 ---
+                case 8:
+                    sf2 = rand.Next(30) + 1;
+                    sf2 *= 0.1f;
+                    break;
+
+                // --- option 6 ---
+                case 9:
+                    dtCommon = 0.025f + rand.Next(5) * 0.025f;
+                    sf2 = 0.5f + rand.Next(11) * 0.1f;
+                    break;
+
+                case 10:
+                    dtCommon = 0.5f + rand.Next(115) * 0.25f;
+                    sf2 = 0.5f + rand.Next(11) * 0.1f;
+                    break;
+
+                case 11:
+                    dtCommon = 0.025f + rand.Next(5) * 0.025f;
+                    sf2 = 1.0f + rand.Next(21) * 0.1f;
+                    break;
+
+                case 12:
+                    dtCommon = 0.5f + rand.Next(115) * 0.25f;
+                    sf2 = 1.0f + rand.Next(21) * 0.1f;
+                    break;
+
+                case 13:
+                    dtCommon = 0.025f + rand.Next(5) * 0.025f;
+                    sf2 = 1.5f + rand.Next(123) * 0.1f;
+                    break;
+
+                case 14:
+                    dtCommon = 0.5f + rand.Next(115) * 0.25f;
+                    sf2 = 1.5f + rand.Next(123) * 0.1f;
+                    break;
+
+                case 15:
+                    dtCommon = 0.005f + rand.Next(7) * 0.0025f;
+                    sf2 = 1.0f + rand.Next(10) * 0.5f;
+                    break;
+
+                case 16:
+                    dtCommon = 0.005f + rand.Next(7) * 0.0025f;
+                    sf2 = 3.0f + rand.Next(33) * 0.5f;
+                    break;
+
+                // --- option 7 ---
+                case 17:
+                    dtCommon = (rand.Next(2) == 0) ? 0.1f : -0.1f;
+                    sf2 = 0.5f;
+                    sf2 += rand.Next(20) * 0.0125f;
+                    sf2 *= 2.0f;
+                    break;
+
+                case 18:
+                    dtCommon = (rand.Next(2) == 0) ? 0.1f : -0.1f;
+                    sf2 = 0.5f;
+                    sf2 += rand.Next(100) * 0.125f;
+                    break;
+
+                case 19:
+                    dtCommon = (rand.Next(2) == 0) ? 0.1f : -0.1f;
+                    dtCommon *= (rand.Next(101) * 0.025f + 1.0f);
+
+                    sf2 = 0.5f;
+                    sf2 += rand.Next(20) * 0.0125f;
+                    sf2 *= (rand.Next(3) + 1);
+                    break;
+
+                // --- option 8 ---
+                case 1117:
+                    //dtCommon = (rand.Next(2) == 0) ? 0.1f : -0.1f;    \
+                    //                                                   -> circle becomes spirals
+                    //dtCommon *= 0.5f; and lower                       /
+                    dtCommon = (rand.Next(2) == 0) ? 0.01f : -0.01f;
+                    sf2 = 2.0f;
                     break;
             }
 
@@ -643,7 +745,7 @@ namespace my
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-            var dimBrush = new SolidBrush(Color.FromArgb(5, 0, 0, 0));
+            var dimBrush = new SolidBrush(Color.FromArgb(10, 0, 0, 0));
 
             while (isAlive)
             {
@@ -671,7 +773,7 @@ namespace my
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
 
-                time_static += dtStatic;
+                time_global += dtGlobal;
 
                 // Wait untill every object finishes, then start from new point
                 if (++cnt > threshold)
@@ -687,14 +789,10 @@ namespace my
 
                         moveMode = isRandomMove ? rand.Next(N) : moveMode;
 
-                        if (doUpdateConstants)
-                        {
-                            updateConstants();
-                        }
-                        
+                        updateConstants();
                         getNewBrush(br);
 
-                        time_static = 0.0f;
+                        time_global = 0.0f;
 
                         cnt = 0;
                         generationAllowed = true;
