@@ -22,6 +22,7 @@ namespace my
         static bool doUpdateConstants = true;
         static float time_static = 0, dtStatic = 0;
 
+        static int removeTraces = 1;
         static int   const1 = 0;
         static float const2 = 0;
         static float a = 0.25f, b = 1.55f, c = 0.10f;
@@ -58,7 +59,7 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 0;
+                moveMode = 6;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -129,31 +130,24 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        float zz = 0.01f;
-
         protected override void Move()
         {
             oldX = X;
             oldY = Y;
 
+            // Every option that uses constants will have them changed in updateConstants()
+
             switch (moveMode)
             {
+                // --- option 1 ---
                 case 0:
-/*
-                    const1 = 0;                 // old 5
-                    const2 = 0.03f;              // old 2
-
-                    const2 += zz;
-                    //zz += 0.001f;
-*/
-                    // Lower values for rather straigt beams;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    // const1 : Lower values for rather straigt beams;
                     // Higher values make the beams lightning-like
                     // Hight values make the beams erratic
-                    // 1 - 30
-                    //const1 = 30;
-
-                    // 0.01 - 30
-                    //const2 = 2.0f;              // old 2
 
                     x += dxf * const2;
                     y += dyf * const2;
@@ -162,18 +156,49 @@ namespace my
                     y += (int)(Math.Sin(X) * const1);
                     break;
 
-                case 1:
+                // --- option 2 ---
+                case 5:
                     x += dxf;
                     y += dyf;
                     break;
 
-                case 2:
+                // --- option 3 ---
+                case 6:
                     time += (float)(rand.Next(999) / 1000.0f);
 
                     x += dxf + (float)(Math.Sin(time) * 1);
                     y += dyf + (float)(Math.Cos(time) * 1);
                     break;
+            }
 
+
+            if (isActive)
+            {
+                X = (int)x;
+                Y = (int)y;
+            }
+
+            if (A != 0)
+                A--;
+
+            if (X < 0 || X > Width || Y < 0 || Y > Height || A == 0)
+            {
+                isActive = false;
+                generateNew();
+            }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void Move_Old()
+        {
+            oldX = X;
+            oldY = Y;
+
+            switch (moveMode)
+            {
                 case 3:
                     time += 0.1f;
 
@@ -522,23 +547,6 @@ namespace my
                     break;
 
             }
-
-            if (isActive)
-            {
-                X = (int)x;
-                Y = (int)y;
-            }
-
-            if (A != 0)
-                A--;
-
-            if (X < 0 || X > Width || Y < 0 || Y > Height || A == 0)
-            {
-                isActive = false;
-                generateNew();
-            }
-
-            return;
         }
 
         // -------------------------------------------------------------------------
@@ -548,10 +556,25 @@ namespace my
         {
             switch (moveMode)
             {
+                // --- option 1 ---
                 case 0:
-                    const1 = rand.Next(30)+1;                   // 1-30
-                    const2 = (rand.Next(300) + 1) / 100.0f;    // 0.01 - 30
+                case 1:
+                    const1 = rand.Next(10)+1;
+                    const2 = (rand.Next(10) + 1) / 100.0f;
                     break;
+
+                case 2:
+                case 3:
+                    const1 = rand.Next(20) + 1;
+                    const2 = (rand.Next(100) + 1) / 100.0f;
+                    break;
+
+                case 4:
+                    const1 = rand.Next(30) + 1;
+                    const2 = (rand.Next(300) + 1) / 100.0f;
+                    break;
+
+                // --- option 2 ---
             }
 
             return;
@@ -607,6 +630,8 @@ namespace my
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
+            var dimBrush = new SolidBrush(Color.FromArgb(5, 0, 0, 0));
+
             while (isAlive)
             {
                 int cntActive = 0;
@@ -661,6 +686,12 @@ namespace my
                         cnt = 0;
                         generationAllowed = true;
                         System.Threading.Thread.Sleep(333);
+
+                        // Dim traces constantly (if needed)
+                        //if (removeTraces == 1 && cnt % 3 == 0)
+                        {
+                            g.FillRectangle(dimBrush, 0, 0, Width, Height);
+                        }
                     }
                 }
             }
