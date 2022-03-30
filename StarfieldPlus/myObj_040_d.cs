@@ -79,9 +79,7 @@ namespace my
             {
                 int speed = (speedMode == 0) ? 5 : 3 + rand.Next(5);
 
-                A    = rand.Next(maxA) + 1;
-                X    = rand.Next(Width);
-                Y    = rand.Next(Height);
+                A = rand.Next(maxA) + 1;
                 Size = rand.Next(6) + 1;
 
                 //getDxDy(speed, ref dxi, ref dyi);
@@ -101,16 +99,14 @@ namespace my
 
         void getDxDy(int speed, ref int dxi, ref int dyi)
         {
-            int x0 = Width  / 2;
-            int y0 = Height / 2;
-
+            int x0 = Width / 2;
             int x = rand.Next(Width);
-            int y = rand.Next(Height);
+            int y = rand.Next(Width);
 
-            double dist = Math.Sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
+            double dist = Math.Sqrt((x - x0) * (x - x0) + (y - x0) * (y - x0));
 
             dxi = (int)((x - x0) * speed / dist);
-            dyi = (int)((y - y0) * speed / dist);
+            dyi = (int)((y - x0) * speed / dist);
 
             return;
         }
@@ -119,16 +115,14 @@ namespace my
 
         void getDxDy(int speed, ref float dxf, ref float dyf)
         {
-            int x0 = Width  / 2;
-            int y0 = Height / 2;
-
+            int x0 = Width / 2;
             int x = rand.Next(Width);
-            int y = rand.Next(Height);
+            int y = rand.Next(Width);
 
-            double dist = Math.Sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
+            double dist = Math.Sqrt((x - x0) * (x - x0) + (y - x0) * (y - x0));
 
             dxf = (float)((x - x0) * speed / dist);
-            dyf = (float)((y - y0) * speed / dist);
+            dyf = (float)((y - x0) * speed / dist);
 
             return;
         }
@@ -145,7 +139,6 @@ namespace my
             switch (moveMode)
             {
                 case 0:
-
 /*
                     const1 = 0;                 // old 5
                     const2 = 0.03f;              // old 2
@@ -153,6 +146,15 @@ namespace my
                     const2 += zz;
                     //zz += 0.001f;
 */
+                    // Lower values for rather straigt beams;
+                    // Higher values make the beams lightning-like
+                    // Hight values make the beams erratic
+                    // 1 - 30
+                    //const1 = 30;
+
+                    // 0.01 - 30
+                    //const2 = 2.0f;              // old 2
+
                     x += dxf * const2;
                     y += dyf * const2;
 
@@ -547,8 +549,8 @@ namespace my
             switch (moveMode)
             {
                 case 0:
-                    const1 = rand.Next(10)+1;                   // old 5
-                    const2 = (rand.Next(50) + 1) / 10.0f;       // old 2
+                    const1 = rand.Next(30)+1;                   // 1-30
+                    const2 = (rand.Next(300) + 1) / 100.0f;    // 0.01 - 30
                     break;
             }
 

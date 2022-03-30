@@ -40,7 +40,7 @@ namespace my
 
             gl_Count = 1;
 
-            p.Color = Color.FromArgb(11, 233, 33, 33);
+            p.Color = Color.FromArgb(33, 233, 33, 33);
         }
 
         // -------------------------------------------------------------------------
@@ -57,14 +57,21 @@ namespace my
             {
                 //br.Color = Color.FromArgb(gl_Count % 255, 255, 255, 255);
 
-                br.Color = Color.FromArgb(255, 255, 255, 255);
+                br.Color = Color.FromArgb((gl_Count % 255) / 13, 233, 33, 33);
+                p.Color = Color.FromArgb((gl_Count % 255)/2, 233, 33, 33);
 
                 //if (gl_Count % 17 == 13)
                 //if (step % 13 == 7)
                 {
-                    //g.FillRectangle(br, x0, y0, 1, 1);
+                    g.FillRectangle(Brushes.White, x0, y0, 1, 1);
 
-                    g.DrawRectangle(p, x0 - 10, y0 - 10, 20, 20);
+                    //g.DrawRectangle(p, x0 - 10, y0 - 10, 20, 20);
+
+/*
+                    Size = 33;
+                    g.FillEllipse(br, x0 - Size, y0 - Size, 2* Size, 2* Size);
+                    g.DrawEllipse(p, x0 - Size, y0 - Size, 2 * Size, 2 * Size);
+*/
                 }
             }
         }
@@ -193,6 +200,8 @@ namespace my
             int t = 1, cnt = 0;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+            //g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
 
             while (isAlive)
             {
