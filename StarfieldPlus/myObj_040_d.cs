@@ -59,7 +59,7 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 6;
+                moveMode = 7;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -166,8 +166,16 @@ namespace my
                 case 6:
                     time += (float)(rand.Next(999) / 1000.0f);
 
-                    x += dxf + (float)(Math.Sin(time) * 1);
-                    y += dyf + (float)(Math.Cos(time) * 1);
+                    x += dxf + (float)(Math.Sin(time) * const2);
+                    y += dyf + (float)(Math.Cos(time) * const2);
+                    break;
+
+                // --- option 4 ---
+                case 7:
+                    time += 0.1f;
+
+                    x += dxf + (float)(Math.Sin(time) * const2);
+                    y += dyf + (float)(Math.Cos(time) * const2);
                     break;
             }
 
@@ -199,13 +207,6 @@ namespace my
 
             switch (moveMode)
             {
-                case 3:
-                    time += 0.1f;
-
-                    x += dxf + (float)(Math.Sin(time) * 1);
-                    y += dyf + (float)(Math.Cos(time) * 1);
-                    break;
-
                 case 4:
                     time += 0.01f;
 
@@ -574,7 +575,19 @@ namespace my
                     const2 = (rand.Next(300) + 1) / 100.0f;
                     break;
 
-                // --- option 2 ---
+                // --- option 3 ---
+                case 6:
+                    const2 = rand.Next(7) + 2;          // 0.2 - 8
+
+                    if (rand.Next(11) > 3)
+                        const2 *= 0.1f;
+                    break;
+
+                // --- option 4 ---
+                case 7:
+                    const2 = rand.Next(19) + 2;         // 0.2 - 2
+                    const2 *= 0.1f;
+                    break;
             }
 
             return;
