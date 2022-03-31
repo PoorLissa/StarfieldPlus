@@ -501,7 +501,7 @@ namespace my
                 case 67:
                     time += dtCommon;
 
-                    // This is what makes it fractal-like
+                    // This is what makes it look fractal-like
                     sf3 = b * time_global * time;
 
                     x += dxf * c;
@@ -1149,7 +1149,7 @@ namespace my
                     default:
                         isBorderScared = false;
                         dtCommon = 0.08f;
-                        a = 110.1f;
+                        a = 0.1f;
                         sf2 = 125.0f;
                         break;
                 }
