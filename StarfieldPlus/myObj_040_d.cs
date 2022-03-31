@@ -68,10 +68,10 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 62;
+                moveMode = 641;
                 drawMode = 2;
                 t = 1;
-                isRandomMove = false;
+                    isRandomMove = false;
                 updateConstants();
 #endif
 
@@ -452,9 +452,53 @@ namespace my
                     y += (float)(trigFunc2(a * time + b * dxf)) * sf2 * time_global;
                     break;
 
-                // --- option 31 --- Fractal-like Flowers
+                // --- option 31 --- Pasta Monsters - 2
                 case 62:
                 case 63:
+                case 64:
+                    time += dtCommon;
+
+                    switch (moveMode)
+                    {
+                        case 62:
+                            sf3 = (float)(Math.Sin(time_global)); // <------ + play with dt
+                            break;
+
+                        case 63:
+                            sf3 = (float)(Math.Sin(time_global * dyf * dxf));   // This produces Alien Tail Shapes
+                            break;
+
+                        case 64:
+                            a = 0.25f * (rand.Next(3) - 1);
+                            sf3 = 1.55f;
+                            c = 0.10f;
+                            break;
+                    }
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    x += (float)(Math.Sin(a * time + sf3 * dxf)) * sf2 * time_global;
+                    y += (float)(Math.Cos(a * time + sf3 * dxf)) * sf2 * time_global;
+                    break;
+
+                // --- option 32 --- Fractal-like Flowers
+                case 65:
+                case 66:
+                    time += dtCommon;
+
+                    // This is what makes it fractal-like
+                    sf3 = b * time_global * time;
+
+                    x += dxf * c;
+                    y += dyf * c;
+
+                    x += (float)Math.Sin(a * time + sf3 * dxf) * sf2 * time_global;
+                    y += (float)Math.Cos(a * time + sf3 * dxf) * sf2 * time_global;
+                    break;
+
+                // --- option 33 ---
+                case 67:
                     time += dtCommon;
 
                     // This is what makes it fractal-like
@@ -468,11 +512,15 @@ namespace my
                     break;
 
                 default:
+                    time += dtCommon;
+
+                    sf3 = time_global * time;
+
+                    x += (float)Math.Sin(a * time + sf3) * sf2;
+                    y += (float)Math.Cos(a * time + sf3) * sf2;
 
                     break;
             }
-
-
 
 #if false
     // 1: diagonal strangeness
@@ -565,82 +613,6 @@ namespace my
             }
 
             return;
-        }
-
-        // -------------------------------------------------------------------------
-
-        private void Move_Old()
-        {
-            switch (moveMode)
-            {
-                // Research mode, don't use
-                case 99:
-                    // case 15
-                    sf2 = 0.33f;     // General size of the shape
-                    //dt = 0.25f;
-                    dt = 0.08f;         // more straight <--> more curving towards the circle
-                    time += dt;
-
-                    a = 0.25f;          // a's sign affects the direction of spiralling. Value +/- acts like b
-                    b = 1.55f;          // b affects distribution of spirals around the central point
-                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
-
-                    x += dxf * c;
-                    y += dyf * c;
-
-                    sinx = (float)(Math.Sin(a * time + b * dxf));
-                    cosy = (float)(Math.Cos(a * time + b * dxf));
-
-                    x += sinx * sf2 * time_global;
-                    y += cosy * sf2 * time_global;
-                    break;
-
-                case 993:
-                    // case 15
-                    sf2 = 0.33f;     // General size of the shape
-                    dt = 0.08f;         // more straight <--> more curving towards the circle
-                    time += dt;
-
-                    a = 0.25f;          // a
-                    b = 1.55f;          // b affects distribution of spirals around the central point
-
-                    b = (float)(Math.Sin(time_global)); // <------ + play with dt
-                    //b = (float)(Math.Sin(time_static * dyf * dxf));   // <-- gives alien tail shapes
-
-                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
-
-                    x += dxf * c;
-                    y += dyf * c;
-
-                    sinx = (float)(Math.Sin(a * time + b * dxf));
-                    cosy = (float)(Math.Cos(a * time + b * dxf));
-
-                    x += sinx * sf2 * time_global;
-                    y += cosy * sf2 * time_global;
-                    break;
-
-                case 994:
-                    // case 15
-                    sf2 = 0.33f;     // General size of the shape
-                    //dt = 0.25f;
-                    dt = 0.08f;         // more straight <--> more curving towards the circle
-                    time += dt;
-
-                    //a = 0.25f;          // a's sign affects the direction of spiralling
-                    a = 0.25f * (rand.Next(3) - 1);
-                    b = 1.55f;          // b affects distribution of spirals around the central point
-                    c = 0.10f;          // c here affects straight/curve ratio of the spiral
-
-                    x += dxf * c;
-                    y += dyf * c;
-
-                    sinx = (float)(Math.Sin(a * time + b * dxf));
-                    cosy = (float)(Math.Cos(a * time + b * dxf));
-
-                    x += sinx * sf2 * time_global;
-                    y += cosy * sf2 * time_global;
-                    break;
-            }
         }
 
         // -------------------------------------------------------------------------
@@ -1139,12 +1111,22 @@ namespace my
                     // --- option 31 ---
                     case 62:
                     case 63:
+                    case 64:
+                        dtCommon = 0.08f;
+                        a = 0.25f;
+                        c = 0.10f;
+                        sf2 = 0.25f + rand.Next(101) * 0.01f;
+                        break;
+
+                    // --- option 32 ---
+                    case 65:
+                    case 66:
                         isBorderScared = false;
                         dtCommon = 0.08f;
 
                         a = 0.25f;
 
-                        if (moveMode == 62)
+                        if (moveMode == 65)
                         {
                             b = 1.55f;
                         }
@@ -1160,7 +1142,15 @@ namespace my
                         sf2 = 1.0f + 0.01f * rand.Next(101);
                         break;
 
+                    // --- option 33 ---
+                    case 67:
+                        break;
+
                     default:
+                        isBorderScared = false;
+                        dtCommon = 0.08f;
+                        a = 110.1f;
+                        sf2 = 125.0f;
                         break;
                 }
             }
