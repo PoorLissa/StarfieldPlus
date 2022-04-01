@@ -68,7 +68,7 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 73;
+                moveMode = 74;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -531,14 +531,27 @@ namespace my
                     y += (int)(Math.Cos(a * time_global + sf3) * c) * sf2;
                     break;
 
+                case 74:
+                case 75:
+                    time += dtCommon;
+
+                    sf3 = time_global * time;
+
+                    x += (float)Math.Sin(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
+                    y += (float)Math.Cos(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
+                    break;
+
                 default:
+                    dtCommon = 0.8f;
+                    time += dtCommon;
 
-                    time += 0.23f;
+                    a = 0.1f;
+                    sf2 = 25.0f;
+                    sf3 = time_global * time;
 
-                    sf3 = time_global * time * b;
+                    x += (float)Math.Sin(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
+                    y += (float)Math.Cos(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
 
-                    x += (int)(Math.Sin(a * time_global + sf3) * 2.5f) * sf2;
-                    y += (int)(Math.Cos(a * time_global + sf3) * 2.5f) * sf2;
                     break;
             }
 
@@ -602,6 +615,16 @@ namespace my
     y += (int)(Math.Cos(X + time * dyf) * sf2 * time) * si1;
 
     // 11
+    dtCommon = 0.08f;
+    time += dtCommon;
+
+    a = 0.1f;
+    sf2 = 25.0f;
+    sf3 = time_global * time;
+
+    x += (float)Math.Sin(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
+    y += (float)Math.Cos(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
+
 
 #endif
 
@@ -1218,15 +1241,22 @@ namespace my
                         sf2 = 10 + 0.1f * rand.Next(33);
                         break;
 
-                    default:
-
+                    case 74:
                         isBorderScared = false;
-                        dtCommon += 0.1f;
-                        a = 1.23f;
-                        b = 1.32f;
-                        sf2 = 10 + 0.1f * rand.Next(33);
+                        dtCommon += 0.01f;
+                        a = 0.1f;
+                        sf2 = 10.0f + rand.Next(333) * 0.1f;
+                        break;
 
+                    case 75:
+                        isBorderScared = false;
+                        dtCommon += 0.01f;
+                        a = 1.1f;                                   // <--- diff ---
+                        sf2 = 10.0f + rand.Next(333) * 0.1f;
+                        break;
 
+                    default:
+                        isBorderScared = false;
                         break;
                 }
             }
