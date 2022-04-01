@@ -12,7 +12,7 @@ namespace my
         private int dx, dy, a, oldx, oldy, iterCounter;
         private bool isStatic = false;
 
-        private static int moveMode = 0, maxA = 33, maxSize = 0, spd = 0, divider = 0, t = 0;
+        private static int moveMode = 0, showMode = 0, maxA = 33, maxSize = 0, spd = 0, divider = 0, t = 0;
         private static float moveConst = 0.0f, time = 0.0f;
         private static bool showStatics = false;
 
@@ -27,6 +27,7 @@ namespace my
 
                 spd = (rand.Next(2) == 0) ? -1 : rand.Next(20) + 1;
                 maxSize = rand.Next(4) + 1;
+                showMode = rand.Next(2);
                 moveMode = rand.Next(18);
 
                 // Get moveConst as a Gaussian distribution [1 .. 10] skewed to the left
@@ -69,7 +70,6 @@ namespace my
                 showStatics = true;
                 t = 0;
 #endif
-
                 Log($"myObj_004_c");
             }
 
@@ -84,7 +84,7 @@ namespace my
                 X = rand.Next(Width);
                 Y = rand.Next(Height);
 
-                int x0 = Width / 2;
+                int x0 = Width  / 2;
                 int y0 = Height / 2;
 
                 int speed = (spd > 0) ? spd : rand.Next(20) + 1;
@@ -229,6 +229,32 @@ namespace my
                     X += (int)(Math.Sin(Y * dy) * moveConst) / divider;
                     Y += (int)(Math.Cos(X * dy) * moveConst) / divider;
                     break;
+/*
+                case 995:
+                    X += (int)(Math.Sin(Y * Math.Tan(time)) * 3);
+                    Y += (int)(Math.Sin(X * Math.Tan(time)) * 3);
+                    break;
+
+                case 994:
+                    X += (int)(Math.Sin(Y * Math.Sin(time)) * 3);
+                    Y += (int)(Math.Sin(X * Math.Cos(time)) * 3);
+                    break;
+
+                case 993:
+                    X += (int)(Math.Sin(Y * Math.Sin(time)) * 3);
+                    Y += (int)(Math.Sin(X * Math.Sin(time)) * 3);
+                    break;
+
+                case 992:
+                    X += (int)(Math.Sin(Y * time) * 3);
+                    Y += (int)(Math.Sin(X * time) * 3);
+                    break;
+
+                case 991:
+                    X += (int)(Math.Sin(Y * time) * 3);
+                    Y += (int)(Math.Cos(X * time) * 3);
+                    break;
+*/
             }
 
             if (!isStatic)
@@ -252,18 +278,39 @@ namespace my
 
         protected override void Show()
         {
-            if (showStatics)
+            switch (showMode)
             {
-                br.Color = Color.FromArgb(a, br.Color.R, br.Color.G, br.Color.B);
-                g.FillRectangle(br, X, Y, Size, Size);
-            }
-            else
-            {
-                if (!isStatic)
-                {
-                    br.Color = Color.FromArgb(a, br.Color.R, br.Color.G, br.Color.B);
-                    g.FillRectangle(br, X, Y, Size, Size);
-                }
+                case 0:
+                    if (showStatics)
+                    {
+                        br.Color = Color.FromArgb(a, br.Color.R, br.Color.G, br.Color.B);
+                        g.FillRectangle(br, X, Y, Size, Size);
+                    }
+                    else
+                    {
+                        if (!isStatic)
+                        {
+                            br.Color = Color.FromArgb(a, br.Color.R, br.Color.G, br.Color.B);
+                            g.FillRectangle(br, X, Y, Size, Size);
+                        }
+                    }
+                    break;
+
+                case 1:
+                    if (showStatics)
+                    {
+                        p.Color = Color.FromArgb(a, br.Color.R, br.Color.G, br.Color.B);
+                        g.DrawRectangle(p, X, Y, Size, Size);
+                    }
+                    else
+                    {
+                        if (!isStatic)
+                        {
+                            p.Color = Color.FromArgb(a, br.Color.R, br.Color.G, br.Color.B);
+                            g.DrawRectangle(p, X, Y, Size, Size);
+                        }
+                    }
+                    break;
             }
 
             return;
@@ -291,6 +338,7 @@ namespace my
             while (isAlive)
             {
                 int staticsCnt = 0;
+                time += 0.01f;
 
                 foreach (var s in list)
                 {

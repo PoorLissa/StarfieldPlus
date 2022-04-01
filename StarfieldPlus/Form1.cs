@@ -102,7 +102,7 @@ this.TopMost = false;
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
-            id = 7;
+            id = 8;
 
             if (false)
             {
@@ -155,7 +155,7 @@ this.TopMost = false;
                     _obj = new my.myObj_004_b();
                     break;
 
-                // Lines 3 -- Patchwork
+                // Lines 3 -- Patchwork / Micro Schematics
                 case 7:
                     _obj = new my.myObj_004_c();
                     break;

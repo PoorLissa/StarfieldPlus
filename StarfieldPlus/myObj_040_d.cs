@@ -15,7 +15,7 @@ namespace my
         // Number of cases in Move() function -- update as needed
         private const int N = 56;
 
-        private int dxi, dyi, A, oldX, oldY;
+        private int A, oldX, oldY;
         private float dxf = 0, dyf = 0, x = 0, y = 0, time, dt;
         private bool isActive = false;
 
@@ -23,6 +23,7 @@ namespace my
         static bool generationAllowed = false;
         static bool isRandomMove = false;
         static bool isBorderScared = false;
+        static bool isFirstIteration = true;
         static bool doUpdateConstants = true;
         static float time_global = 0, dtGlobal = 0, dtCommon = 0;
 
@@ -31,7 +32,6 @@ namespace my
         static float sf2 = 0;
         static float sf3 = 0;
         static float a = 0.0f, b = 0.0f, c = 0.0f;
-        static float sinx, cosy;
 
         static trigonometricFunc trigFunc1 = null;
         static trigonometricFunc trigFunc2 = null;
@@ -68,10 +68,10 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 641;
+                moveMode = 73;
                 drawMode = 2;
                 t = 1;
-                    isRandomMove = false;
+                isRandomMove = false;
                 updateConstants();
 #endif
 
@@ -439,7 +439,7 @@ namespace my
                     y += dyf + (int)(Math.Sin(time * dyf) * sf2) * sf3;
                     break;
 
-                // --- option 30 --- Pasta Monsters
+                // --- option 30 --- Pasta Monsters - 1
                 case 60:
                 case 61:
                     time += dtCommon;
@@ -482,9 +482,10 @@ namespace my
                     y += (float)(Math.Cos(a * time + sf3 * dxf)) * sf2 * time_global;
                     break;
 
-                // --- option 32 --- Fractal-like Flowers
+                // --- option 32 --- Fractal-like Flowers - 1
                 case 65:
                 case 66:
+                case 67:
                     time += dtCommon;
 
                     // This is what makes it fractal-like
@@ -493,32 +494,51 @@ namespace my
                     x += dxf * c;
                     y += dyf * c;
 
-                    x += (float)Math.Sin(a * time + sf3 * dxf) * sf2 * time_global;
-                    y += (float)Math.Cos(a * time + sf3 * dxf) * sf2 * time_global;
+                    if (moveMode != 67)
+                    {
+                        x += (float)Math.Sin(a * time + sf3 * dxf) * sf2 * time_global;
+                        y += (float)Math.Cos(a * time + sf3 * dxf) * sf2 * time_global;
+                    }
+                    else
+                    {
+                        // todo: mostly everything with sin/cos can be turned square this way
+                        x += (int)(Math.Sin(a * time + sf3 * dxf) * 1.25f) * sf2 * time_global;
+                        y += (int)(Math.Cos(a * time + sf3 * dxf) * 1.25f) * sf2 * time_global;
+                    }
                     break;
 
-                // --- option 33 ---
-                case 67:
+                // --- option 33 --- Fractal-like Flowers - 2
+                case 68:
+                case 69:
+                case 70:
+                case 71:
                     time += dtCommon;
 
-                    // This is what makes it look fractal-like
-                    sf3 = b * time_global * time;
-
-                    x += dxf * c;
-                    y += dyf * c;
-
-                    x += (float)Math.Sin(a * time + sf3 * dxf) * sf2 * time_global;
-                    y += (float)Math.Cos(a * time + sf3 * dxf) * sf2 * time_global;
-                    break;
-
-                default:
-                    time += dtCommon;
-
-                    sf3 = time_global * time;
+                    sf3 = time_global * time * b;
 
                     x += (float)Math.Sin(a * time + sf3) * sf2;
                     y += (float)Math.Cos(a * time + sf3) * sf2;
+                    break;
 
+                // --- option 34 --- Fractal-like Flowers - 3 -- to int
+                case 72:
+                case 73:
+                    time += dtCommon;
+
+                    sf3 = time_global * time * b;
+
+                    x += (int)(Math.Sin(a * time_global + sf3) * c) * sf2;
+                    y += (int)(Math.Cos(a * time_global + sf3) * c) * sf2;
+                    break;
+
+                default:
+
+                    time += 0.23f;
+
+                    sf3 = time_global * time * b;
+
+                    x += (int)(Math.Sin(a * time_global + sf3) * 2.5f) * sf2;
+                    y += (int)(Math.Cos(a * time_global + sf3) * 2.5f) * sf2;
                     break;
             }
 
@@ -1121,6 +1141,7 @@ namespace my
                     // --- option 32 ---
                     case 65:
                     case 66:
+                    case 67:
                         isBorderScared = false;
                         dtCommon = 0.08f;
 
@@ -1143,14 +1164,69 @@ namespace my
                         break;
 
                     // --- option 33 ---
-                    case 67:
+                    case 68:
+                    case 69:
+                        isBorderScared = false;
+                        dtCommon = (moveMode == 68)
+                                        ? 0.08f
+                                        : rand.Next(1000) * 0.1f;
+
+                        a = 0.1f + rand.Next(1000) * 0.001f;
+                        b = 0.2f + rand.Next(100) * 0.1f;
+
+                        sf2 = 15.0f + 0.1f * rand.Next(500);
+                        break;
+
+                    case 70:
+                        isBorderScared = false;
+                        dtCommon = 4.25f + rand.Next(45) * 0.01f;       // Dragon Tails
+                        a = 1.1f;
+                        b = 1.2f;
+                        sf2 = 15.0f + 0.1f * rand.Next(100);
+                        break;
+
+                    case 71:
+                        if (isFirstIteration)
+                        {
+                            isFirstIteration = false;
+                            a = 1.0f + rand.Next(700) * 0.01f;
+                            b = 1.0f + rand.Next(700) * 0.01f;
+                            dtCommon = 0.0f;
+                        }
+
+                        isBorderScared = false;
+                        dtCommon += 0.1f;                               // Ever increasing dt with fixed 'a' and 'b'
+                        sf2 = 15.0f + 0.1f * rand.Next(100);
+                        break;
+
+                    // --- option 34 ---
+                    case 72:
+                        isBorderScared = false;
+                        dtCommon += 0.1f;
+                        a = 1.23f;
+                        b = 1.32f;
+                        c = 1.25f;
+                        sf2 = 10 + 0.1f * rand.Next(33);
+                        break;
+
+                    case 73:
+                        isBorderScared = false;
+                        dtCommon += 0.1f;
+                        a = 1.23f;
+                        b = 1.32f;
+                        c = 2.5f;
+                        sf2 = 10 + 0.1f * rand.Next(33);
                         break;
 
                     default:
+
                         isBorderScared = false;
-                        dtCommon = 0.08f;
-                        a = 0.1f;
-                        sf2 = 25.0f;
+                        dtCommon += 0.1f;
+                        a = 1.23f;
+                        b = 1.32f;
+                        sf2 = 10 + 0.1f * rand.Next(33);
+
+
                         break;
                 }
             }
