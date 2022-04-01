@@ -296,6 +296,8 @@ namespace my
         {
             if (doGenerate)
             {
+                gl_R = gl_G = gl_B = 0;
+
                 while (gl_R + gl_G + gl_B < minVal)
                 {
                     gl_R = _rand.Next(256);

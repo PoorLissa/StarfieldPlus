@@ -91,7 +91,7 @@ namespace StarfieldPlus
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
-            id = 8;
+            id = 7;
 
             if (false)
             {
@@ -138,7 +138,7 @@ namespace StarfieldPlus
                     _obj = new my.myObj_004_b();
                     break;
 
-                // Lines 3
+                // Lines 3 -- Patchwork
                 case 7:
                     _obj = new my.myObj_004_c();
                     break;

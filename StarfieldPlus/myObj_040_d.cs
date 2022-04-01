@@ -1150,7 +1150,7 @@ namespace my
                         isBorderScared = false;
                         dtCommon = 0.08f;
                         a = 0.1f;
-                        sf2 = 125.0f;
+                        sf2 = 25.0f;
                         break;
                 }
             }
