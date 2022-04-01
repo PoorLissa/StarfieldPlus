@@ -12,6 +12,7 @@ namespace my
         public static int Width  { get; set; }
         public static int Height { get; set; }
         public static int Count  { get; set; }
+        public static bool ShowInfo { get; set; } = false;
 
         public int X        { get; set; }
         public int Y        { get; set; }

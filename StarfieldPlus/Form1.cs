@@ -31,7 +31,7 @@ namespace StarfieldPlus
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Bounds = bounds;
-            //this.TopMost = true;
+this.TopMost = false;
             this.DoubleBuffered = true;
 
             my.myObject.Height = this.Height;
@@ -48,7 +48,18 @@ namespace StarfieldPlus
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            appExit();
+            switch (e.KeyCode)
+            {
+                case Keys.Tab:
+                    my.myObject.ShowInfo = !my.myObject.ShowInfo;
+                    break;
+
+                default:
+                    appExit();
+                    break;
+            }
+
+            return;
         }
 
         // -------------------------------------------------------------------
@@ -92,6 +103,12 @@ namespace StarfieldPlus
             int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
             id = 7;
+
+            if (false)
+            {
+                _obj = new my.distributionTester();
+                return;
+            }
 
             if (false)
             {
