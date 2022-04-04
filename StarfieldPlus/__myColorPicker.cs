@@ -243,9 +243,12 @@ namespace my
                 {
                     _img = new Bitmap(currentWallpaper);
 
-                    if (_img.Width < Width || _img.Height < Height)
+                    //if (_img.Width <= Width || _img.Height <= Height)
                     {
                         // Stretch the image, if its size is less than the desktop size
+
+                        // todo: see why some of my 3840x1600 images are displayed incorrectly if not resized here
+
                         _img = resizeImage(_img, Width, Height, scaleParams.scaleToWidth);
                     }
 

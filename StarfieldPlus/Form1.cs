@@ -102,7 +102,7 @@ this.TopMost = false;
             // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(21);
 
-            //id = 9;
+            id = 10;
 
             if (false)
             {
