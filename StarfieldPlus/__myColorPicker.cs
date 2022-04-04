@@ -351,7 +351,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        // Get new random color and then gradually get closer to it with each iteration, until the color value is reached
+        // Get new random color and then gradually get closer to it with each iteration, until the color value is matched
         // Update the brush with the current color on each iteration
         public bool getNewBrush(SolidBrush br, bool doGenerate, int minVal = 100)
         {
