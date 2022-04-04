@@ -14,6 +14,8 @@ namespace my
 
         private static int gl_R = 0, gl_G = 0, gl_B = 0;
 
+        private enum scaleParams { scaleToWidth, scaleToHeight };
+
         // -------------------------------------------------------------------------
 
         public myColorPicker(int Width, int Height, int mode = -1)
@@ -153,6 +155,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        // Select a random image file from a certain directory
         private string getRandomFile(string dir)
         {
             string res = "";
@@ -165,7 +168,7 @@ namespace my
 
                     if (files != null)
                     {
-                        string[] Extensions = { ".bmp", ".gif", ".png", ".jpg" };
+                        string[] Extensions = { ".bmp", ".gif", ".png", ".jpg", ".jpeg" };
 
                         var list = new System.Collections.Generic.List<string>();
 
@@ -201,6 +204,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        // Take a snapshot of a current desktop
         private void getSnapshot(int Width, int Height)
         {
             try
@@ -242,9 +246,7 @@ namespace my
                     if (_img.Width < Width || _img.Height < Height)
                     {
                         // Stretch the image, if its size is less than the desktop size
-                        // todo: check out this high quality resize
-                        // https://stackoverflow.com/questions/1922040/how-to-resize-an-image-c-sharp
-                        _img = new Bitmap(_img, Width, Height);
+                        _img = resizeImage(_img, Width, Height, scaleParams.scaleToWidth);
                     }
 
                     if (_g != null)
@@ -269,6 +271,65 @@ namespace my
             }
 
             return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        // High quality resize: https://stackoverflow.com/questions/1922040/how-to-resize-an-image-c-sharp
+        private Bitmap resizeImage(Image src, int width, int height, scaleParams scaleParam)
+        {
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            //destImage.SetResolution(src.HorizontalResolution, src.VerticalResolution);
+
+            float desktopRatio = (float)width / (float)height;
+            float srcRatio = (float)src.Width / (float)src.Height;
+            float ratioDiff = Math.Abs(desktopRatio - srcRatio);
+
+            // todo: need to find out what max ratio value do we need here
+            if (ratioDiff > 0.05f)
+            {
+                switch (scaleParam)
+                {
+                    case scaleParams.scaleToHeight:
+                        destRect.Width = src.Width * height / src.Height;
+
+                        if (destRect.Width < width)
+                        {
+                            destRect.X = (width - destRect.Width) / 2;
+                        }
+                        break;
+
+                    case scaleParams.scaleToWidth:
+                        destRect.Height = src.Height * width / src.Width;
+
+                        if (destRect.Height > height)
+                        {
+                            int yOffset = destRect.Height - height;
+                            yOffset = _rand.Next(yOffset);
+                            destRect.Y = -yOffset;
+                        }
+                        break;
+                }
+            }
+
+            using (var gr = Graphics.FromImage(destImage))
+            {
+                gr.CompositingMode    = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                gr.InterpolationMode  = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                gr.SmoothingMode      = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                gr.PixelOffsetMode    = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new System.Drawing.Imaging.ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
+                    gr.DrawImage(src, destRect, 0, 0, src.Width, src.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
         }
 
         // -------------------------------------------------------------------------

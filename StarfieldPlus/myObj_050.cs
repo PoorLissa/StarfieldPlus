@@ -20,6 +20,7 @@ namespace my
             {
                 // Use only Desktop snapshots or static images
                 colorPicker = new myColorPicker(Width, Height, rand.Next(2));
+
                 mode = rand.Next(2);
 
                 Log($"myObj_050: colorPicker({colorPicker.getMode()}), mode({mode})");
@@ -132,6 +133,7 @@ namespace my
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             g.DrawImage(colorPicker.getImg(), 0, 0, form.Bounds, GraphicsUnit.Pixel);
+            System.Threading.Thread.Sleep(666);
 
             while (isAlive)
             {
