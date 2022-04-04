@@ -70,7 +70,6 @@ namespace my
 #if true
                 // Override Move()
                 moveMode = 99;
-                moveMode = 91;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -537,6 +536,7 @@ namespace my
                 case 74:
                 case 75:
                 case 76:
+                case 77:
                     time += dtCommon;
 
                     sf3 = time_global * time;
@@ -546,9 +546,9 @@ namespace my
                     break;
 
                 // --- option 36 --- Diagonal Strangeness
-                case 77:
                 case 78:
                 case 79:
+                case 80:
                     sf2 = dxf;  // tmp to swap
                     dxf = dyf;
                     dyf = sf2;
@@ -558,7 +558,7 @@ namespace my
                     break;
 
                 // --- option 37 ---
-                case 80:
+                case 81:
                     dxf *= (float)Math.Sin(dxf);
                     dyf *= (float)Math.Cos(dyf);
                     x += (int)(dxf * a);
@@ -566,14 +566,14 @@ namespace my
                     break;
 
                 // --- option 38 ---
-                case 81:
+                case 82:
                     dxf += (float)Math.Sin(dxf);
                     dyf += (float)Math.Sin(dyf);
                     x += (dxf * a);
                     y += (dyf * b);
                     break;
 
-                case 82:
+                case 83:
                     dxf += (float)Math.Sin(dxf);
                     dyf += (float)Math.Sin(dyf);
                     x += (int)(dxf * a);
@@ -581,7 +581,7 @@ namespace my
                     break;
 
                 // --- option 39 ---
-                case 83:
+                case 84:
                     dxf += dxf > 0 ? a : -a;
                     dyf += dyf > 0 ? b : -b;
 
@@ -590,76 +590,83 @@ namespace my
                     break;
 
                 // --- option 40 ---
-                case 84:
+                case 85:
                     x += (float)Math.Sin(X * dxf) * c;
                     y += (float)Math.Cos(Y * dyf) * c;
                     break;
 
-                case 85:
+                case 86:
                     x += (int)(Math.Sin(X * dxf) * 2.0f) * c;
                     y += (int)(Math.Cos(Y * dyf) * 2.0f) * c;
                     break;
 
                 // --- option 41 ---
-                case 86:
+                case 87:
                     x += (float)Math.Tan(X * dxf) * c;
                     y += (float)Math.Tan(Y * dyf) * c;
                     break;
 
-                case 87:
+                case 88:
                     x += (int)Math.Tan(X * dxf) * c;
                     y += (int)Math.Tan(Y * dyf) * c;
                     break;
 
                 // --- option 42 ---
-                case 88:
+                case 89:
                     x += (int)(Math.Sin(x + dxf) * c);
                     y += (int)(Math.Sin(y + dyf) * c);
                     break;
 
                 // --- option 43 ---
-                case 89:
+                case 90:
                     x += (int)(Math.Sin(x + dxf / 5000) * c);
                     y += (int)(Math.Cos(y + dyf / 5000) * c);
                     break;
 
                 // --- option 44 ---
-                case 90:
+                case 91:
                     x += (int)(Math.Sin(x + dxf / si1) * c);
                     y += (int)(Math.Cos(y + dyf / si1) * c);
                     break;
 
-                case 91:
+                // --- option 45 ---
+                case 92:
                     // 9: hair like and also with less dt is a better distributed metro maps
                     time += dtCommon;
-                    x += (int)(Math.Sin(time + dyf) * 3 + dxf * time * si1);
-                    y += (int)(Math.Cos(time + dxf) * 3 + dyf * time * si1);
+                    x += (int)(Math.Sin(time + dyf) * sf2 + dxf * time) / si1;
+                    y += (int)(Math.Cos(time + dxf) * sf2 + dyf * time) / si1;
                     break;
 
-                case 92:break;
-                case 93:break;
-                case 94:break;
-                case 95:break;
-                case 96:break;
-                case 97:break;
-                case 98:break;
-                case 99:break;
+                // --- option 46 ---
+                case 93:
+                case 94:
+                case 95:
+                case 96:
+                case 97:
+                    time += dtCommon;
+
+                    x += (int)(Math.Sin(Y + time * dxf) * sf2 * time) * si1;
+                    y += (int)(Math.Cos(X + time * dyf) * sf2 * time) * si1;
+                    break;
+
+                case 98:
+                    x +=   (int)(Math.Sin(x + dxf) * c) * 3;
+                    y += (float)(Math.Sin(y + dyf) * c) * 3;
+                    break;
+
+                case 99:
+                    time += dtCommon;
+
+                    x += dxf * (int)(Math.Sin(time) * 1.33f) * sf2;
+                    y += dyf * (float)(Math.Sin(time) * 1.33f) * sf2;
+                    break;
 
                 default:
+
                     break;
             }
 
 #if false
-
-    // 10 nice results
-    //time += 0.001f;   si1 = 20;   sf2 = 30.0f;
-    //time += 0.001f;   si1 = 15;   sf2 = 30.0f;
-    //time += 0.001f;   si1 = 25;   sf2 = 30.0f;
-    //time += 0.0005f;  si1 = 66;   sf2 = 66.0f;
-    //time += 0.01f;    si1 = 2;    sf2 = 20.0f;
-
-    x += (int)(Math.Sin(Y + time * dxf) * sf2 * time) * si1;
-    y += (int)(Math.Cos(X + time * dyf) * sf2 * time) * si1;
 
     // 11
     dtCommon = 0.08f;
@@ -1317,14 +1324,20 @@ namespace my
                         sf2 = 10.0f + rand.Next(333) * 0.1f;
                         break;
 
-                    // --- option 36 ---
                     case 77:
+                        dtCommon = 0.08f;
+                        a = 0.1f;
+                        sf2 = 25.0f;
+                        break;
+
+                    // --- option 36 ---
+                    case 78:
                         isBorderScared = false;
                         a = b = (rand.Next(300) + 33) * 0.1f;
                         sf3 = 1.0f;
                         break;
 
-                    case 78:
+                    case 79:
                         if (isFirstIteration)
                         {
                             isFirstIteration = false;
@@ -1335,7 +1348,7 @@ namespace my
                         a = b = (rand.Next(300) + 33) * 0.1f;
                         break;
 
-                    case 79:
+                    case 80:
                         if (isFirstIteration)
                         {
                             isFirstIteration = false;
@@ -1352,67 +1365,118 @@ namespace my
                         break;
 
                     // --- option 37 ---
-                    case 80:
+                    case 81:
                         a = (rand.Next(333) + 1) * 0.1f;
                         b = (rand.Next(333) + 1) * 0.1f;
                         break;
 
                     // --- option 38 ---
-                    case 81:
                     case 82:
+                    case 83:
                         a = b = (rand.Next(33) + 1) * 0.1f;
                         break;
 
                     // --- option 39 ---
-                    case 83:
+                    case 84:
                         a = b = 0.25f + rand.Next(10) * 0.05f;
                         c = (rand.Next(333) + 1) * 0.1f;
                         break;
 
                     // --- option 40 ---
-                    case 84:
                     case 85:
+                    case 86:
                         c = rand.Next(20) + 7;
                         break;
 
                     // --- option 41 ---
-                    case 86:
                     case 87:
+                    case 88:
                         c = 1.0f + rand.Next(401) * 0.01f;
                         break;
 
                     // --- option 42 ---
-                    case 88:
+                    case 89:
                         c = 10.0f + rand.Next(3000) * 0.01f;
                         break;
 
                     // --- option 43 ---
-                    case 89:
-                        c = 15 + rand.Next(60);
-                        si1 = rand.Next(10000) + 1;
-                        break;
-
                     case 90:
                         c = 15 + rand.Next(60);
                         si1 = rand.Next(10000) + 1;
                         break;
 
+                    // --- option 44 ---
                     case 91:
-                        dtCommon = 0.05f;
-                        si1 = 1;
+                        c = 15 + rand.Next(60);
+                        si1 = rand.Next(10000) + 1;
                         break;
 
-                    case 92:break;
-                    case 93:break;
-                    case 94:break;
-                    case 95:break;
-                    case 96:break;
-                    case 97:break;
-                    case 98:break;
-                    case 99:break;
+                    // --- option 45 ---
+                    case 92:
+                        if (isFirstIteration)
+                        {
+                            isFirstIteration = false;
+                            dtCommon = 0.0001f;
+                        }
+
+                        dtCommon += 0.005f;
+                        sf2 = (rand.Next(333) + 1) * 0.1f;
+                        si1 = rand.Next(11) + 1;
+                        break;
+
+                    // --- option 46 ---
+                    case 93:
+                        dtCommon = 0.001f;
+                        si1 = 20;
+                        sf2 = 30.0f;
+                        break;
+
+                    case 94:
+                        dtCommon = 0.001f;
+                        si1 = 15;
+                        sf2 = 30.0f;
+                        break;
+
+                    case 95:
+                        dtCommon = 0.001f;
+                        si1 = 25;
+                        sf2 = 30.0f;
+                        break;
+
+                    case 96:
+                        dtCommon = 0.0005f;
+                        si1 = 66;
+                        sf2 = 66.0f;
+                        break;
+
+                    case 97:
+                        dtCommon = 0.01f;
+                        si1 = 2;
+                        sf2 = 20.0f;
+                        break;
+
+                    case 98:
+                        if (isFirstIteration)
+                        {
+                            isFirstIteration = false;
+                            c = 0.95f;
+                        }
+
+                        c += 0.05f;
+                        break;
+
+                    case 99:
+                        if (isFirstIteration)
+                        {
+                            isFirstIteration = false;
+                            dtCommon = 0.001f;
+                        }
+
+                        dtCommon += 0.0015f;
+                        sf2 = 0.5f * (rand.Next(11) + 1) * 0.25f;
+                        break;
 
                     default:
-
                         break;
                 }
             }
