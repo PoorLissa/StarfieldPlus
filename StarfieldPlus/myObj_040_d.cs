@@ -27,7 +27,6 @@ namespace my
         static bool doUpdateConstants = true;
         static float time_global = 0, dtGlobal = 0, dtCommon = 0;
 
-        static int removeTraces = 1;
         static int si1 = 0;
         static float sf2 = 0;
         static float sf3 = 0;
@@ -46,7 +45,7 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
                 colorPicker = new myColorPicker(Width, Height, 3);
-                f = new Font("Segoe UI", 7, FontStyle.Regular, GraphicsUnit.Point);
+                f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
 
                 drawMode = rand.Next(7);
                 moveMode = rand.Next(N);
@@ -69,7 +68,7 @@ namespace my
 
 #if true
                 // Override Move()
-                moveMode = 99;
+                moveMode = 105;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -657,31 +656,100 @@ namespace my
                 case 99:
                     time += dtCommon;
 
-                    x += dxf * (int)(Math.Sin(time) * 1.33f) * sf2;
+                    x += dxf *   (int)(Math.Sin(time) * 1.33f) * sf2;
                     y += dyf * (float)(Math.Sin(time) * 1.33f) * sf2;
                     break;
 
-                default:
+                // --- option 47 ---
+                case 100:
+                    a = rand.Next(si1) + 2;
+                    b = rand.Next(si1) + 2;
 
+                    x += (int)(dxf / a) * a * sf2;
+                    y += (int)(dyf / b) * b * sf2;
+                    break;
+
+                // --- option 48 --- Swasticas
+                case 101:
+                case 102:
+                    time += dtCommon;
+
+                    x += (int)(Math.Sin(time + dxf * dyf) * a) * sf2 * time / 5;
+                    y += (int)(Math.Cos(time + dxf * dyf) * b) * sf2 * time / 5;
+                    break;
+
+                case 103:
+                    time += dtCommon;
+
+                    x += (float)(Math.Sin(time * dxf) * a);
+                    y += (float)(Math.Sin(time * dyf) * b);
+
+                    x += (int)(Math.Sin(time + dxf * dyf) * a) * sf2 * time / 5;
+                    y += (int)(Math.Cos(time + dxf * dyf) * b) * sf2 * time / 5;
+                    break;
+
+                // --- option 49 ---
+                case 104:
+                    time += dtCommon;
+                    x += (int)(Math.Sin(time * dxf) * a);
+                    y += (int)(Math.Sin(time * dyf) * b);
+                    break;
+
+                // --- option 50 ---
+                case 105:
+                    time += dtCommon;
+
+                    sf2 = (float)(Math.Sin(time_global * time) * a + 0.0001f);
+
+                    x += 5 * dxf / (sf2);
+                    y += 5 * dyf / (sf2);
+                    break;
+
+                // --- option 51 ---
+                case 106:
+                    time += dtCommon;
+
+                    sf2 = (float)(Math.Sin(time_global * time) * a + 0.0001f);
+                    sf3 = (float)(Math.Cos(time_global * time) * a + 0.0001f);
+
+                    x += 5 * dxf / (sf2);
+                    y += 5 * dyf / (sf3);
+                    break;
+
+
+                default:
                     break;
             }
 
 #if false
+                    // 1
+                    dxf += (float)(Math.Sin(time * dxf) * a);
+                    dyf += (float)(Math.Sin(time * dyf) * b);
 
-    // 11
-    dtCommon = 0.08f;
-    time += dtCommon;
+                    x += dxf * 0.1f;
+                    y += dyf * 0.1f;
 
-    a = 0.1f;
-    sf2 = 25.0f;
-    sf3 = time_global * time;
+                    // 2
+                    dxf += (float)(Math.Sin(time * dxf) * a);
+                    dyf += (float)(Math.Cos(time * dyf) * b);
 
-    x += (float)Math.Sin(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
-    y += (float)Math.Cos(a * time + sf3) * (float)Math.Sin(sf3) * sf2;
+                    x += dxf * 0.1f;
+                    y += dyf * 0.1f;
 
+                    // 3
+                    dtCommon = 0.1f;
+
+                    a = 13.0f;
+                    b = 13.0f;
+
+                    time += dtCommon;
+
+                    x += (float)(Math.Sin(time_global) * a) + (float)(Math.Sin(time) * b);
+                    y += (float)(Math.Cos(time_global) * a) + (float)(Math.Cos(time) * b);
+
+                    // 4
 
 #endif
-
 
             if (isActive)
             {
@@ -1476,7 +1544,57 @@ namespace my
                         sf2 = 0.5f * (rand.Next(11) + 1) * 0.25f;
                         break;
 
+                    // --- option 47 ---
+                    case 100:
+                        si1 = rand.Next(20) + 20;
+                        sf2 = (rand.Next(150) + 13) * 0.1f;
+                        break;
+
+                    // --- option 48 ---
+                    case 101:
+                        isBorderScared = false;
+                        dtCommon = 0.1f;
+
+                        a = b = 1.0f + 0.01f * (rand.Next(200) + 1);
+                        sf2 = (rand.Next(150) + 13) * 0.1f;
+                        break;
+
+                    case 102:
+                    case 103:
+                        if (isFirstIteration)
+                        {
+                            isFirstIteration = false;
+                            dtCommon = 0.0f;
+                        }
+
+                        isBorderScared = false;
+                        dtCommon += 0.005f;
+
+                        a = b = 1.0f + 0.01f * (rand.Next(200) + 1);
+                        sf2 = (rand.Next(150) + 13) * 0.1f;
+                        break;
+
+                    // --- option 49 ---
+                    case 104:
+                        dtCommon = 0.1f;
+                        a = b = 10;
+                        break;
+
+                    // --- option 50 ---
+                    case 105:
+                        dtCommon = 0.1f;
+                        a = 13.5f;
+                        break;
+
+                    // --- option 51 ---
+                    case 106:
+                        dtCommon = 0.1f;
+                        a = 13.5f;
+                        break;
+
                     default:
+                        isBorderScared = false;
+
                         break;
                 }
             }
@@ -1554,6 +1672,8 @@ namespace my
 
         protected override void Process()
         {
+            string strInfo = "";
+
             int cnt = 0, threshold = 200;
             var list = new System.Collections.Generic.List<myObj_004_d>();
 
@@ -1580,11 +1700,28 @@ namespace my
                     cntActive += obj.isActive ? 1 : 0;
                 }
 
-#if DEBUG
-                string str = $"moveMode = {moveMode};";
-                g.FillRectangle(Brushes.Black, 33, 33, 120, 21);
-                g.DrawString(str, f, Brushes.Red, 35, 33);
-#endif
+                // View some info (need to press Tab)
+                if (my.myObject.ShowInfo)
+                {
+                    if (strInfo.Length == 0)
+                    {
+                        strInfo = $" obj = myObj_004_d\n moveMode = {moveMode}\n drawMode = {drawMode}\n speedMode = {speedMode}\n a = {a}\n b = {b}\n c = {c}\n si1 = {si1}\n sf2 = {sf2}\n sf3 = {sf3}";
+                    }
+
+                    if (cnt % 100 == 0)
+                    {
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 220);
+                        g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                    }
+                }
+                else
+                {
+                    if (strInfo.Length > 0)
+                    {
+                        strInfo = "";
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 220);
+                    }
+                }
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
@@ -1614,11 +1751,8 @@ namespace my
                         generationAllowed = true;
                         System.Threading.Thread.Sleep(333);
 
-                        // Dim traces constantly (if needed)
-                        //if (removeTraces == 1 && cnt % 3 == 0)
-                        {
-                            g.FillRectangle(dimBrush, 0, 0, Width, Height);
-                        }
+                        // Dim traces constantly
+                        g.FillRectangle(dimBrush, 0, 0, Width, Height);
                     }
                 }
             }
