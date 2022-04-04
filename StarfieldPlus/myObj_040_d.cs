@@ -13,7 +13,7 @@ namespace my
     public class myObj_004_d : myObject
     {
         // Number of cases in Move() function -- update as needed
-        private const int N = 76;
+        private const int N = 107;
 
         private int A, oldX, oldY;
         private float dxf = 0, dyf = 0, x = 0, y = 0, time, dt;
@@ -66,9 +66,9 @@ namespace my
                 generationAllowed = true;
                 isRandomMove = rand.Next(10) == 0;
 
-#if true
+#if false
                 // Override Move()
-                moveMode = 105;
+                moveMode = 107;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -699,10 +699,13 @@ namespace my
                 case 105:
                     time += dtCommon;
 
-                    sf2 = (float)(Math.Sin(time_global * time) * a + 0.0001f);
+                    sf2 = (float)(Math.Sin(time_global * time) * a);
 
-                    x += 5 * dxf / (sf2);
-                    y += 5 * dyf / (sf2);
+                    if (sf2 != 0)
+                    {
+                        x += 5 * dxf / (sf2);
+                        y += 5 * dyf / (sf2);
+                    }
                     break;
 
                 // --- option 51 ---
@@ -716,8 +719,11 @@ namespace my
                     y += 5 * dyf / (sf3);
                     break;
 
-
                 default:
+
+                    x += (dyf / dxf);
+                    y += (dxf / dyf);
+
                     break;
             }
 
