@@ -37,13 +37,17 @@ namespace my
             {
                 case 0: {
 
+                        // Get height value for a row
                         var list = new System.Collections.Generic.List<int>();
 
                         for (int i = 1; i < 100; i++)
                             if (Height % i == 0)
                                 list.Add(i);
 
-                        Size = list[rand.Next(list.Count)];
+                        // Prefer sizes from the smaller half of the list
+                        Size = list.Count > 5 ? list.Count/2 : list.Count;
+                        Size = list[rand.Next(Size)];
+
                         X = -1;
                         Y = -1;
 
@@ -110,11 +114,13 @@ namespace my
         {
             switch (mode)
             {
-                // Draw random src line at random position of dest
+                // Swap 2 lines
                 case 0:
                     rect1.Y = Y;
                     rect2.Y = X;
+
                     g.DrawImage(colorPicker.getImg(), rect1, rect2, GraphicsUnit.Pixel);
+                    g.DrawImage(colorPicker.getImg(), rect2, rect1, GraphicsUnit.Pixel);
                     break;
 
                 // Swap 2 Rectangles
@@ -137,8 +143,8 @@ namespace my
 
             while (isAlive)
             {
-                Show();
                 Move();
+                Show();
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
