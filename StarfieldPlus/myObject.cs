@@ -100,7 +100,8 @@ namespace my
         {
             isAlive = false;
 
-            while (isAlive == false);
+            while (isAlive == false)
+                ;
 
             return;
         }
@@ -109,12 +110,21 @@ namespace my
 
         protected void Log(string str)
         {
-#if DEBUG
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText("zzz.log"))
+//#if DEBUG
+
+            try
             {
-                sw.WriteLine(str);
+                using (System.IO.StreamWriter sw = System.IO.File.AppendText("zzz.log"))
+                {
+                    sw.WriteLine(str);
+                }
             }
-#endif
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Log Exception", MessageBoxButtons.OK);
+            }
+
+//#endif
         }
 
         // -------------------------------------------------------------------------
