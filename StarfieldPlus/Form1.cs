@@ -92,10 +92,10 @@ this.TopMost = false;
         // - posterization (color % int)
         // - divide in squares and each square gets its own blur factor
         // - sperm floating towards the center
-        // - divide all the screen as a grid. moving ball bounces from the walls and while under the ball, each cell is enlarged
         // - cover everything in spiralling traingles
         // - try bezier curves: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
-        // try rotating rectangles: https://stackoverflow.com/questions/10210134/using-a-matrix-to-rotate-rectangles-individually
+        // - try rotating rectangles: https://stackoverflow.com/questions/10210134/using-a-matrix-to-rotate-rectangles-individually
+        // - something like myObj_101, but the pieces are moved via sine/cosine function (up-down or elliptically)
 
         private void getScreenSaverObject()
         {
