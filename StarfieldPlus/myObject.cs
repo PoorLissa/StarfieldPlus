@@ -110,7 +110,7 @@ namespace my
 
         protected void Log(string str)
         {
-//#if DEBUG
+#if DEBUG
 
             try
             {
@@ -124,7 +124,7 @@ namespace my
                 MessageBox.Show(ex.Message, "Log Exception", MessageBoxButtons.OK);
             }
 
-//#endif
+#endif
         }
 
         // -------------------------------------------------------------------------
