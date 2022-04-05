@@ -101,6 +101,14 @@ namespace my
 
         // -------------------------------------------------------------------------
 
+        public void getColor(SolidBrush br, int x, int y)
+        {
+            getColor(x, y, ref gl_R, ref gl_G, ref gl_B);
+            br.Color = Color.FromArgb(200, gl_R, gl_B, gl_B);
+        }
+
+        // -------------------------------------------------------------------------
+
         public void getColor(int x, int y, ref int R, ref int G, ref int B)
         {
             switch (_mode)

@@ -100,9 +100,9 @@ this.TopMost = false;
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random((int)DateTime.Now.Ticks).Next(21);
+            int id = new Random((int)DateTime.Now.Ticks).Next(22);
 
-            id = 8;
+            id = 21;
 
             if (false)
             {
@@ -112,7 +112,7 @@ this.TopMost = false;
 
             if (false)
             {
-                _obj = new my.myObj_080();
+                //_obj = new my.myObj_080();
                 return;
             }
 
@@ -223,6 +223,11 @@ this.TopMost = false;
                 // Grid with moving rectangle lenses -- test, looks strange
                 case 20:
                     _obj = new my.myObj_140();
+                    break;
+
+                // Cellular Automaton: Conway's Life
+                case 21:
+                    _obj = new my.myObj_150();
                     break;
 
                 default:
