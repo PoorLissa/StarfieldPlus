@@ -93,10 +93,10 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public void setPixel(int x, int y)
+        public void setPixel(int x, int y, int A = 255)
         {
             if (x > -1 && y > -1 && x < _img.Width && y < _img.Height)
-                _img.SetPixel(x, y, Color.FromArgb(255, 0, 0, 0));
+                _img.SetPixel(x, y, Color.FromArgb(A, 0, 0, 0));
         }
 
         // -------------------------------------------------------------------------

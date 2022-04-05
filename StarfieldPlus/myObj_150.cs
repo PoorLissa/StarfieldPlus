@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 /*
     - Cellular Automaton: Conway's Life
@@ -10,12 +11,11 @@ namespace my
     public class myObj_150 : myObject
     {
         static int step = 0, startX = 0, startY = 0, drawMode = 0;
-        static System.Collections.Generic.List<myObj_150> list = null;
+        static List<myObject> list = null;
         static Rectangle rect;
 
-        bool alive = false;
-        bool clear = false;
-        int liveCnt = 0, lifeSpanCnt = 0;
+        private bool alive = false, clear = false;
+        private int liveCnt = 0, lifeSpanCnt = 0;
 
         // -------------------------------------------------------------------------
 
@@ -27,20 +27,24 @@ namespace my
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
-                list = new System.Collections.Generic.List<myObj_150>();
+                list = new List<myObject>();
 
-                step = 25;
-                step = 35;
-                step = 40;
+                step = rand.Next(30) + 25;
 
                 rect.Width  = step - 3;
                 rect.Height = step - 3;
 
-                // Exclude drawing mode which draws parts of an image, when the colorPicker does not taget any image
+                // In case the colorPicker does not taget any image, exclude unsupported drawing mode (mode #3)
                 drawMode = colorPicker.getMode() < 2 ? rand.Next(3) : rand.Next(2);
 
                 Log($"myObj_150: colorPicker({colorPicker.getMode()})");
             }
+
+            alive = false;
+            clear = false;
+
+            liveCnt = -1;
+            lifeSpanCnt = 0;
         }
 
         // -------------------------------------------------------------------------
@@ -70,9 +74,9 @@ namespace my
                 {
                     for (int j = y - 1; j < y + 2; j++)
                     {
-                        var obj = getObj(i, j);
+                        myObj_150 obj = getObj(i, j) as myObj_150;
 
-                        if (obj != null && getObj(i, j).alive)
+                        if (obj != null && obj.alive)
                         {
                             liveCnt++;
                         }
@@ -189,11 +193,6 @@ namespace my
 
                     obj.X = i;
                     obj.Y = j;
-                    obj.alive = false;
-                    obj.clear = false;
-
-                    obj.liveCnt = -1;
-                    obj.lifeSpanCnt = 0;
 
                     list.Add(obj);
                 }
@@ -209,29 +208,36 @@ namespace my
 
                 int index = rand.Next(list.Count);
 
-                if (!list[index].alive)
+                myObj_150 obj = list[index] as myObj_150;
+
+                if (!obj.alive)
                 {
-                    list[index].alive = true;
-                    list[index].Show();
-                    form.Invalidate();
-                    System.Threading.Thread.Sleep(3);
+                    obj.alive = true;
+                    obj.Show();
+
+                    if (i % 3 == 0)
+                    {
+                        form.Invalidate();
+                        System.Threading.Thread.Sleep(3);
+                    }
                 }
             }
 
             if (isAlive)
             {
                 // Display the first generation
-                foreach (var s in list)
+                foreach (myObj_150 s in list)
                     s.Show();
 
+                form.Invalidate();
                 System.Threading.Thread.Sleep(t * 3);
 
                 while (isAlive)
                 {
-                    foreach (var s in list)
+                    foreach (myObj_150 s in list)
                         s.Move();
 
-                    foreach (var s in list)
+                    foreach (myObj_150 s in list)
                     {
                         s.Move();
                         s.Show();
@@ -287,7 +293,7 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        private myObj_150 getObj(int x, int y)
+        private myObject getObj(int x, int y)
         {
             int index = y * (Width / step + 2) + x;
 
@@ -312,5 +318,3 @@ namespace my
         // -------------------------------------------------------------------------
     }
 };
-
-
