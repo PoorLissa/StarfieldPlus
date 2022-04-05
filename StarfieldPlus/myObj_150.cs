@@ -115,7 +115,7 @@ namespace my
             {
                 switch (drawMode)
                 {
-                    // Solid color
+                    // Single solid color
                     case 0:
                         g.FillRectangle(Brushes.LightGray, X + 2, Y + 2, step - 3, step - 3);
                         g.DrawRectangle(Pens.Red, X + 2, Y + 2, step - 4, step - 4);
@@ -123,7 +123,21 @@ namespace my
 
                     // Solid color from colorPicker
                     case 1:
-                        colorPicker.getColor(br, X < 0 ? 1 : X + 3, Y < 0 ? 1 : Y + 3, 200);
+
+                        int x = (X < 0) ? 1 : (X > Width  - 1 ? Width  - 1 : X + 3);
+                        int y = (Y < 0) ? 1 : (Y > Height - 1 ? Height - 1 : Y + 3);
+
+                        if (colorPicker.getMode() < 2)
+                        {
+                            int a = lifeSpanCnt < 150 ? lifeSpanCnt : 150;
+
+                            colorPicker.getColor(br, x, y, 100 + a);
+                        }
+                        else
+                        {
+                            colorPicker.getColor(br, x, y, 200);
+                        }
+
                         g.FillRectangle(br, X + 2, Y + 2, step - 3, step - 3);
                         break;
 
@@ -275,10 +289,7 @@ namespace my
 
         private myObj_150 getObj(int x, int y)
         {
-            int w = Width  / step + 2;
-            int h = Height / step + 2;
-
-            int index = y * w + x;
+            int index = y * (Width / step + 2) + x;
 
             if (index >= 0 && index < list.Count)
             {
