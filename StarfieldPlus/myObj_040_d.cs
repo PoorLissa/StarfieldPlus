@@ -1713,7 +1713,7 @@ namespace my
                 {
                     if (strInfo.Length == 0)
                     {
-                        strInfo = $" obj = myObj_004_d\n moveMode = {moveMode}\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\nspeedMode = {speedMode}\n a = {a}\n b = {b}\n c = {c}\n si1 = {si1}\n sf2 = {sf2}\n sf3 = {sf3}";
+                        strInfo = $" obj = myObj_004_d\n moveMode = {moveMode}\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n speedMode = {speedMode}\n a = {a}\n b = {b}\n c = {c}\n si1 = {si1}\n sf2 = {sf2}\n sf3 = {sf3}";
                     }
 
                     if (cnt % 100 == 0)

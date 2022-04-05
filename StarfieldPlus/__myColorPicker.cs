@@ -101,14 +101,25 @@ namespace my
 
         // -------------------------------------------------------------------------
 
-        public void getColor(SolidBrush br, int x, int y)
+        // Get color at a point, as a brush
+        public void getColor(SolidBrush br, int x, int y, int A = 255)
         {
             getColor(x, y, ref gl_R, ref gl_G, ref gl_B);
-            br.Color = Color.FromArgb(200, gl_R, gl_B, gl_B);
+            br.Color = Color.FromArgb(A, gl_R, gl_B, gl_B);
         }
 
         // -------------------------------------------------------------------------
 
+        // Get color at a point, as a pen
+        public void getColor(Pen p, int x, int y, int A = 255)
+        {
+            getColor(x, y, ref gl_R, ref gl_G, ref gl_B);
+            p.Color = Color.FromArgb(A, gl_R, gl_B, gl_B);
+        }
+
+        // -------------------------------------------------------------------------
+
+        // Get color at a point, as R-G-B
         public void getColor(int x, int y, ref int R, ref int G, ref int B)
         {
             switch (_mode)

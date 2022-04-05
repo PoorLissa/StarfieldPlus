@@ -14,6 +14,7 @@ namespace my
         static Rectangle rect;
 
         bool alive = false;
+        bool clear = false;
         int liveCnt = 0, lifeSpanCnt = 0;
 
         // -------------------------------------------------------------------------
@@ -30,6 +31,7 @@ namespace my
 
                 step = 25;
                 step = 35;
+                step = 40;
 
                 rect.Width  = step - 3;
                 rect.Height = step - 3;
@@ -121,7 +123,7 @@ namespace my
 
                     // Solid color from colorPicker
                     case 1:
-                        colorPicker.getColor(br, X < 0 ? 1 : X + 3, Y < 0 ? 1 : Y + 3);
+                        colorPicker.getColor(br, X < 0 ? 1 : X + 3, Y < 0 ? 1 : Y + 3, 200);
                         g.FillRectangle(br, X + 2, Y + 2, step - 3, step - 3);
                         break;
 
@@ -135,10 +137,17 @@ namespace my
 
                 //g.DrawString(liveCnt.ToString(), f, Brushes.Red, X + 2, Y + 2);
                 //g.DrawString(lifeSpanCnt.ToString(), f, Brushes.Red, X + 2, Y + 2);
+
+                clear = false;
             }
             else
             {
-                g.FillRectangle(Brushes.White, X + 2, Y + 2, step - 3, step - 3);
+                if (!clear)
+                {
+                    g.FillRectangle(Brushes.White, X + 2, Y + 2, step - 3, step - 3);
+                }
+
+                clear = true;
             }
         }
 
@@ -146,8 +155,9 @@ namespace my
 
         protected override void Process()
         {
-            int t = 500, Cnt = 0;
+            string strInfo = "";
 
+            int t = 666, Cnt = 0;
             int w = Width  / step + 1;
             int h = Height / step + 1;
 
@@ -166,6 +176,8 @@ namespace my
                     obj.X = i;
                     obj.Y = j;
                     obj.alive = false;
+                    obj.clear = false;
+
                     obj.liveCnt = -1;
                     obj.lifeSpanCnt = 0;
 
@@ -209,6 +221,28 @@ namespace my
                     {
                         s.Move();
                         s.Show();
+                    }
+
+                    // View some info (need to press Tab)
+                    if (my.myObject.ShowInfo)
+                    {
+                        if (strInfo.Length == 0)
+                        {
+                            strInfo = $" obj = myObj_150\n step = {step}\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n";
+                        }
+
+                        {
+                            g.FillRectangle(Brushes.Black, 30, 33, 155, 100);
+                            g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                        }
+                    }
+                    else
+                    {
+                        if (strInfo.Length > 0)
+                        {
+                            strInfo = "";
+                            g.FillRectangle(Brushes.Black, 30, 33, 155, 100);
+                        }
                     }
 
                     form.Invalidate();
