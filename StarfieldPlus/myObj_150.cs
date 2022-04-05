@@ -10,7 +10,7 @@ namespace my
 {
     public class myObj_150 : myObject
     {
-        static int step = 0, startX = 0, startY = 0, drawMode = 0;
+        static int step = 0, startX = 0, startY = 0, drawMode = 0, lightMode = 0;
         static List<myObject> list = null;
         static Rectangle rect;
 
@@ -36,6 +36,7 @@ namespace my
 
                 // In case the colorPicker does not taget any image, exclude unsupported drawing mode (mode #3)
                 drawMode = colorPicker.getMode() < 2 ? rand.Next(3) : rand.Next(2);
+                lightMode = 1;
 
                 Log($"myObj_150: colorPicker({colorPicker.getMode()})");
             }
@@ -74,7 +75,7 @@ namespace my
                 {
                     for (int j = y - 1; j < y + 2; j++)
                     {
-                        myObj_150 obj = getObj(i, j) as myObj_150;
+                        var obj = getObj(i, j) as myObj_150;
 
                         if (obj != null && obj.alive)
                         {
@@ -162,7 +163,14 @@ namespace my
             {
                 if (!clear)
                 {
-                    g.FillRectangle(Brushes.White, X + 2, Y + 2, step - 3, step - 3);
+                    if (lightMode == 0)
+                    {
+                        g.FillRectangle(Brushes.White, X + 2, Y + 2, step - 3, step - 3);
+                    }
+                    else
+                    {
+                        g.FillRectangle(Brushes.Black, X + 2, Y + 2, step - 3, step - 3);
+                    }
                 }
 
                 clear = true;
@@ -175,7 +183,7 @@ namespace my
         {
             string strInfo = "";
 
-            int t = 666, Cnt = 0;
+            int t = 500, Cnt = 0;
             int w = Width  / step + 1;
             int h = Height / step + 1;
 
@@ -208,7 +216,7 @@ namespace my
 
                 int index = rand.Next(list.Count);
 
-                myObj_150 obj = list[index] as myObj_150;
+                var obj = list[index] as myObj_150;
 
                 if (!obj.alive)
                 {
@@ -277,16 +285,29 @@ namespace my
 
         private void drawGrid()
         {
-            g.FillRectangle(Brushes.White, 0, 0, Width, Height);
-
             startX = (Width  % step) / 2;
             startY = (Height % step) / 2;
 
-            for (int i = startX; i < Width; i += step)
-                g.DrawLine(Pens.Black, i, 0, i, Height);
+            if (lightMode == 0)
+            {
+                g.FillRectangle(Brushes.White, 0, 0, Width, Height);
 
-            for (int i = startY; i < Height; i += step)
-                g.DrawLine(Pens.Black, 0, i, Width, i);
+                for (int i = startX; i < Width; i += step)
+                    g.DrawLine(Pens.Black, i, 0, i, Height);
+
+                for (int i = startY; i < Height; i += step)
+                    g.DrawLine(Pens.Black, 0, i, Width, i);
+            }
+            else
+            {
+                g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+                for (int i = startX; i < Width; i += step)
+                    g.DrawLine(Pens.DarkGray, i, 0, i, Height);
+
+                for (int i = startY; i < Height; i += step)
+                    g.DrawLine(Pens.DarkGray, 0, i, Width, i);
+            }
 
             return;
         }
