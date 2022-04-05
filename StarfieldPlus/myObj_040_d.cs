@@ -4,6 +4,8 @@ using System.Drawing;
 /*
     - Various shapes growing out from a single starting point
     - Based initially on the starfield class -- where all the stars are generated at a center point
+
+    -- case 100 x drawMode 5
 */
 
 namespace my
@@ -44,7 +46,7 @@ namespace my
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
-                colorPicker = new myColorPicker(Width, Height, 3);
+                colorPicker = new myColorPicker(Width, Height);
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
 
                 drawMode = rand.Next(7);
@@ -68,7 +70,7 @@ namespace my
 
 #if false
                 // Override Move()
-                moveMode = 107;
+                moveMode = 106;
                 drawMode = 2;
                 t = 1;
                 isRandomMove = false;
@@ -708,7 +710,7 @@ namespace my
                     }
                     break;
 
-                // --- option 51 ---
+                // --- option 51 --- Submarine Blueprints
                 case 106:
                     time += dtCommon;
 
@@ -1711,7 +1713,7 @@ namespace my
                 {
                     if (strInfo.Length == 0)
                     {
-                        strInfo = $" obj = myObj_004_d\n moveMode = {moveMode}\n drawMode = {drawMode}\n speedMode = {speedMode}\n a = {a}\n b = {b}\n c = {c}\n si1 = {si1}\n sf2 = {sf2}\n sf3 = {sf3}";
+                        strInfo = $" obj = myObj_004_d\n moveMode = {moveMode}\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\nspeedMode = {speedMode}\n a = {a}\n b = {b}\n c = {c}\n si1 = {si1}\n sf2 = {sf2}\n sf3 = {sf3}";
                     }
 
                     if (cnt % 100 == 0)

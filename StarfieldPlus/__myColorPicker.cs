@@ -105,8 +105,9 @@ namespace my
         {
             switch (_mode)
             {
-                // Get Color from Image
+                // Get Color from Snapshot
                 case 0:
+                // Get Color from custom image
                 case 1:
 
                     if (_img != null)
