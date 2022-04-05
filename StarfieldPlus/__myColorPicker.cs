@@ -266,10 +266,16 @@ namespace my
                     //if (_img.Width <= Width || _img.Height <= Height)
                     {
                         // Stretch the image, if its size is less than the desktop size
-
                         // todo: see why some of my 3840x1600 images are displayed incorrectly if not resized here
 
-                        _img = resizeImage(_img, Width, Height, scaleParams.scaleToWidth);
+                        scaleParams param = scaleParams.scaleToWidth;
+
+                        if (Width <= Height)
+                        {
+                            param = scaleParams.scaleToHeight;
+                        }
+
+                        _img = resizeImage(_img, Width, Height, param);
                     }
 
                     if (_g != null)

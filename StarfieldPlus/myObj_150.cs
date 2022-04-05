@@ -134,9 +134,8 @@ namespace my
 
                         if (colorPicker.getMode() < 2)
                         {
-                            int a = lifeSpanCnt < 150 ? lifeSpanCnt : 150;
-
-                            colorPicker.getColor(br, x, y, 100 + a);
+                            int alpha = lifeSpanCnt < 150 ? lifeSpanCnt : 150;
+                            colorPicker.getColor(br, x, y, 100 + alpha);
                         }
                         else
                         {
@@ -183,7 +182,7 @@ namespace my
         {
             string strInfo = "";
 
-            int t = 500, Cnt = 0;
+            int t = 500, Cnt = 0, cnt = 0;
             int w = Width  / step + 1;
             int h = Height / step + 1;
 
@@ -259,6 +258,7 @@ namespace my
                             strInfo = $" obj = myObj_150\n step = {step}\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n";
                         }
 
+                        if (cnt % 3 == 0)
                         {
                             g.FillRectangle(Brushes.Black, 30, 33, 155, 100);
                             g.DrawString(strInfo, f, Brushes.Red, 35, 33);
@@ -273,8 +273,24 @@ namespace my
                         }
                     }
 
+                    if (cnt % 1001 == 0 && cnt > 0)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            int index = rand.Next(list.Count);
+
+                            var obj = list[index] as myObj_150;
+
+                            if (!obj.alive)
+                            {
+                                obj.alive = true;
+                            }
+                        }
+                    }
+
                     form.Invalidate();
                     System.Threading.Thread.Sleep(t);
+                    cnt++;
                 }
             }
 
