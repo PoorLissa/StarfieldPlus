@@ -187,6 +187,7 @@ namespace my
             int h = Height / step + 1;
 
             drawGrid();
+            form.Invalidate();
             System.Threading.Thread.Sleep(t);
 
             // Create an object for every cell out there
