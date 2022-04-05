@@ -189,6 +189,7 @@ namespace my
             drawGrid();
             System.Threading.Thread.Sleep(t);
 
+            // Create an object for every cell out there
             for (int j = startY - step; j < step * h; j += step)
             {
                 for (int i = startX - step; i < step * w; i += step)
@@ -205,6 +206,7 @@ namespace my
                 }
             }
 
+            // Set some of the objects to be alive
             Cnt = list.Count / 7;
             Cnt = rand.Next(Cnt/2) + Cnt;
 
@@ -230,6 +232,7 @@ namespace my
                 }
             }
 
+            // Main loop
             if (isAlive)
             {
                 // Display the first generation
@@ -273,9 +276,10 @@ namespace my
                         }
                     }
 
-                    if (cnt % 1001 == 0 && cnt > 0)
+                    // Add some new random cells
+                    if (cnt % 101 == 0 && cnt > 0)
                     {
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < 100; i++)
                         {
                             int index = rand.Next(list.Count);
 

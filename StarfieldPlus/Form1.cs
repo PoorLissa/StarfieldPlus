@@ -246,7 +246,19 @@ this.TopMost = false;
 
             new System.Threading.Tasks.Task(() => {
 
-                _obj.Process(this);
+                try
+                {
+
+                    _obj.Process(this);
+
+                }
+                catch (Exception ex)
+                {
+
+                    this.Bounds = new Rectangle(100, 100, 666, 333);
+                    MessageBox.Show($"{_obj.ToString()} says:\n{ex.Message}", "Process Exception}", MessageBoxButtons.OK);
+
+                }
 
             }).Start();
 
