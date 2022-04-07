@@ -9,8 +9,6 @@ namespace my
 {
     public class myObj_000 : myObject
     {
-        static char q = (char)0;
-
         protected float x, y, dx, dy, acceleration = 1.0f;
         protected int cnt = 0;
         protected int max = 0;
@@ -20,9 +18,9 @@ namespace my
 
         public myObj_000()
         {
-            if (q == 0)
+            if (br == null)
             {
-                q = (char)1;
+                br = new SolidBrush(Color.Black);
                 Log($"myObj_000");
             }
 

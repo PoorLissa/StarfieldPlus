@@ -59,7 +59,8 @@ float_B = 1.0f;
             shape = rand.Next(77);
             isDimmable = rand.Next(2) == 0;
 
-//shape = 1300;
+shape = 1300;
+//shape = 77;
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -140,6 +141,7 @@ dA = 1;
                 case 74:
                 case 75:
                 case 76:
+                case 77:
 
                 case 1300:
 
@@ -1016,15 +1018,66 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
+                case 77:
+                    sf2 *= (sf2 > 333) ? 1 : 2;
+                    sf1 = sf2 / 2;
+
+                    // need all of these
+                    //sf3 = 2.0f;
+                    //sf3 = 1.5f;
+                    //sf3 = 1.0f;
+                    //sf3 = 0.75f;
+                    //sf3 = 0.5f;
+                    //sf3 = 0.3f;
+                    //sf3 = 0.25f;
+                    //sf3 = 0.2f;
+                    //sf3 = 0.075f;
+                    //sf3 = 0.05f;
+                    //sf3 = 0.025f;
+                    //sf3 = 0.01f;
+                    sf3 = 0.0f;
+
+                    sf3 = 0.5f;
+
+                    x1 = x0 + ((float)(Math.Sin(time * sf3 + c) * sf1) + (float)(Math.Sin(time + sf3) * (sf1 / 2)));
+                    y1 = y0 + ((float)(Math.Cos(time * sf3 - c) * sf1) + (float)(Math.Cos(time + sf3) * (sf1 / 2)));
+
+                    x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
+                    y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
+                    break;
+
                 case 1300:
 
                     //sf1 = 300;
 
-                    //sf1 /= sf1 > 1000 ? 2 : 1;
-                    //sf2 /= sf1 > 1000 ? 2 : 1;
+                    sf2 *= (sf2 > 333) ? 1 : 2;
+                    sf1 = sf2 / 2;
 
-                    x1 = x0 + (int)(Math.Sin(time * sf3) * si1) * sf1 / (1.0f * si1);
-                    y1 = y0 + (int)(Math.Cos(time * sf3) * si1) * sf1 / (1.0f * si1);
+                    sf3 = 0.5f;
+
+                    // 1. play with sf1/2 -- divide it or multiply it. the shape changes good
+                    x1 = x0 + ((float)(Math.Sin(time * sf3 + c) * sf1) + (float)(Math.Sin(time + sf3) * (sf1/2)));
+                    y1 = y0 + ((float)(Math.Cos(time * sf3 - c) * sf1) + (float)(Math.Cos(time + sf3) * (sf1/2)));
+
+                    // 2. water drop
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1/2));
+                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1*2));
+
+                    // 3. water drop 2
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1 / 2));
+                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1 / 2));
+
+                    // 4. colb
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1 / 1));
+                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1 / 1));
+
+                    // 5. the circles are the same, ok
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1 * time * sf3) * sf1 / 1));
+                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1 / 1));
+
+                    // 6. and so on
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1 * time * sf3) * sf1 / 1));
+                    y1 = y0 + ((float)(Math.Cos(2 * time * sf3) * sf1) + (float)(Math.Cos(2 * time * sf3) * sf1 / 1));
 
                     x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
@@ -1189,6 +1242,13 @@ t = 3;
                 case 74:
                 case 75:
                 case 76:
+                case 77:
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 1300:
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
