@@ -17,7 +17,7 @@ namespace my
 
         protected int maxSize = 0, A = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
 
-        float time, time2, dt2, dx, dy, float_B, x1, y1, x2, y2;
+        float time, time2, dt2, dx, dy, float_B, x1, y1, x2, y2, x3, y3, x4, y4;
 
         // -------------------------------------------------------------------------
 
@@ -56,10 +56,10 @@ float_B = 1.0f;
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             p.Color = Color.FromArgb(100, R, G, B);
             maxSize = rand.Next(333) + 33;
-            shape = rand.Next(25);
+            shape = rand.Next(77);
             isDimmable = rand.Next(2) == 0;
 
-shape = 1300;
+//shape = 1300;
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -83,24 +83,28 @@ dA = 1;
         {
             switch (shape)
             {
-                case 115:
+                case 0:
+                case 1:
+                    fdLifeCnt = 0.5f;
+                    break;
+
+                case 44:
                     sf1 = rand.Next(333) + 100;
                     sf2 = rand.Next(10) + 10;
                     sf3 = rand.Next(100) * 0.25f;
                     fdLifeCnt = 0.5f;
                     break;
 
-                case 116:
-                case 117:
-                case 118:
+                case 45:
+                case 46:
+                case 47:
                     sf1 = rand.Next(333) + 100;
                     sf2 = rand.Next(333) + 10;
-                    sf2 = 5;
                     sf3 = rand.Next(100) * 0.25f;
                     fdLifeCnt = 0.5f;
                     break;
 
-                case 119:
+                case 48:
                     sf1 = rand.Next(333) + 100;
                     sf2 = rand.Next(333) + 100;
                     sf3 = rand.Next(1000) * 0.05f;
@@ -108,35 +112,34 @@ dA = 1;
                     fdLifeCnt = 0.5f;
                     break;
 
-                case 120:
-                case 121:
-                case 122:
-                case 123:
-                case 124:
-                case 125:
-                case 126:
-                case 127:
-                case 128:
-                case 129:
-                case 130:
-                case 131:
-                case 132:
-                case 133:
-                case 134:
-                case 135:
-                case 136:
-                case 137:
-                case 138:
-                case 139:
-                case 140:
-                case 141:
-                case 142:
-                case 143:
-                case 144:
-                case 145:
-                case 146:
-                case 147:
-
+                case 49:
+                case 50:
+                case 51:
+                case 52:
+                case 53:
+                case 54:
+                case 55:
+                case 56:
+                case 57:
+                case 58:
+                case 59:
+                case 60:
+                case 61:
+                case 62:
+                case 63:
+                case 64:
+                case 65:
+                case 66:
+                case 67:
+                case 68:
+                case 69:
+                case 70:
+                case 71:
+                case 72:
+                case 73:
+                case 74:
+                case 75:
+                case 76:
 
                 case 1300:
 
@@ -281,8 +284,6 @@ t = 3;
                     y1 = 2 * Size - dx;
                     x2 = Size * dx;
                     y2 = Size * dy;
-                    g.DrawLine(p, X, Y, x1, y1);
-                    g.DrawLine(p, X, Y, x2, y2);
                     break;
 
                 case 1:
@@ -290,8 +291,6 @@ t = 3;
                     y1 = Size + dy2;
                     x2 = X / 2;
                     y2 = Y / 2;
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawLine(p, x2, y2, x1, y1);
                     break;
 
                 case 2:
@@ -303,9 +302,6 @@ t = 3;
 
                     x2 = X / 2;
                     y2 = Y / 2;
-
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawLine(p, x2, y2, x1, y1);
                     break;
 
                 case 3:
@@ -314,18 +310,10 @@ t = 3;
                     x2 = Width - Size + dx2;
                     y2 = Height - Size + dy2;
 
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
-
-                    x1 = Width - Size + dx2;
-                    y1 = Size + dy2;
-                    x2 = Size + dx2;
-                    y2 = Height - Size + dy2;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    x3 = Width - Size + dx2;
+                    y3 = Size + dy2;
+                    x4 = Size + dx2;
+                    y4 = Height - Size + dy2;
                     break;
 
                 case 4:
@@ -334,18 +322,10 @@ t = 3;
                     x2 = Width - Size + dx2 * dx / 10;
                     y2 = Height - Size + dy2;
 
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
-
-                    x1 = Width - Size + dx2 * dx / 10;
-                    y1 = Size + dy2;// * dy/10;
-                    x2 = Size + dx2 * dx / 10;
-                    y2 = Height - Size + dy2;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    x3 = Width - Size + dx2 * dx / 10;
+                    y3 = Size + dy2;// * dy/10;
+                    x4 = Size + dx2 * dx / 10;
+                    y4 = Height - Size + dy2;
                     break;
 
                 case 5:
@@ -358,10 +338,6 @@ t = 3;
                     y2 = Height - y1;
 
                     float_B += 1.123f;  // try changing this value
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 6:
@@ -375,10 +351,6 @@ t = 3;
                     y2 = Height - y1;
 
                     float_B += 0.23f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 7:
@@ -394,10 +366,6 @@ t = 3;
                     y2 = y1;
 
                     float_B += 0.23f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 8:
@@ -405,10 +373,6 @@ t = 3;
                     y1 = Size + dy2;
                     x2 = 4 * Width  / 5 + dx2 * Size / 20;
                     y2 = 2 * Height / 5 + dy2 * Size / 20;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 9:
@@ -418,10 +382,6 @@ t = 3;
                     y1 = 1 * Height / 2 + dy2 * Size / const1;
                     x2 = 4 * Width  / 5 - dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 10:
@@ -431,10 +391,6 @@ t = 3;
                     y1 = 1 * Height / 2 - dy2 * Size / const1;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 11:
@@ -444,10 +400,6 @@ t = 3;
                     y1 = 1 * Height / 2 + dx2 * Size / const1;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 12:
@@ -457,10 +409,6 @@ t = 3;
                     y1 = 1 * Height / 2 + dy  * Size / const1;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 13:
@@ -470,10 +418,6 @@ t = 3;
                     y1 = 1 * Height / 2 + dy  * Size / const1 / const1;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 14:
@@ -483,10 +427,6 @@ t = 3;
                     y1 = 1 * Height / 2 - dy  * Size / const1 / const1;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 15:
@@ -496,10 +436,6 @@ t = 3;
                     y1 = 1 * Height / 2 - dy  * Size / const1 / const1;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 16:
@@ -509,10 +445,6 @@ t = 3;
                     y1 = 1 * Height / 2 - dy  * Size / const1 / 2;
                     x2 = 4 * Width  / 5 + dx2 * Size / const1 / 1;
                     y2 = 1 * Height / 2 - dy2 * Size / const1 / 1;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 17:
@@ -524,10 +456,6 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * Size / const1 * float_B;
 
                     float_B += 0.0001f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 18:
@@ -537,10 +465,6 @@ t = 3;
                     y1 = 1 * Height / 2 - dy  * Size / const1 / 2;
                     x2 = 4 * Width  / 5 + dx2 * 33;
                     y2 = 1 * Height / 2 - dy2 * 33;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 19:
@@ -550,10 +474,6 @@ t = 3;
                     y1 = 1 * Height / 2 - dy  * Size / const1 / 33;
                     x2 = 4 * Width  / 5 + dx2 * 33;
                     y2 = 1 * Height / 2 - dy2 * 33;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 20:
@@ -565,10 +485,6 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
 
                     float_B += 0.001f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 21:
@@ -578,10 +494,6 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * 33;
 
                     float_B += 0.001f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 22:
@@ -591,10 +503,6 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * 33 * float_B;
 
                     float_B += 0.01f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 23:
@@ -604,10 +512,6 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * 33 * float_B;
 
                     float_B += 0.01f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 24:
@@ -618,10 +522,6 @@ t = 3;
                     y2 = 1 * Height / 2 + dy2 * 33 * (float)Math.Sin(float_B);
 
                     float_B += 0.01f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 25:
@@ -632,10 +532,6 @@ t = 3;
                     y2 = 3 * Height / 5 + dx2 * 33 * (float)Math.Sin(float_B);
 
                     float_B += 0.01f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 26:
@@ -646,10 +542,6 @@ t = 3;
                     y2 = 1 * Height / 2 + dx2 * 33;
 
                     float_B += 0.01f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 27:
@@ -660,13 +552,9 @@ t = 3;
                     y2 = 1 * Height / 2 + dy2 * 33 / float_B;
 
                     float_B += 0.01f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 99:
+                case 28:
                     x1 = 1 * Width  / 5 + 600 * (float)Math.Sin(float_B);
                     y1 = 1 * Height / 2 + dy2 * 66 / float_B;
 
@@ -675,13 +563,9 @@ t = 3;
 
                     float_B += 0.01f;       // try changing it
                     //float_B += 0.001f;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 100:
+                case 29:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 50;
                     y1 = Height / 2 + (int)(dy2 * 33 / float_B) * 10;
 
@@ -689,12 +573,9 @@ t = 3;
 
                     x2 = 2 * Width  / 5 - 1500 * (float)Math.Sin(float_B);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 101:
+                case 30:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
                     y1 = Height / 2 + (int)(dy2 * 33 / float_B) * 10 - 10000;
 
@@ -702,12 +583,9 @@ t = 3;
 
                     x2 = 6 * Width / 12 - 1500 * (float)(Math.Sin(Math.Cos(float_B) * Math.Cos(1 / float_B)) * 1.25f);
                     y2 = 3 * Height / 4 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 102:
+                case 31:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 10;
 
@@ -715,12 +593,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 103:
+                case 32:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 10;
 
@@ -728,12 +603,9 @@ t = 3;
 
                     x2 = 7 * Width / 12 - 1000 * (float)(Math.Sin(Math.Cos(time) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 104:
+                case 33:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 10;
 
@@ -741,12 +613,9 @@ t = 3;
 
                     x2 = 7 * Width / 12 - 1000 * (float)(Math.Sin(Math.Sin(time) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 105:
+                case 34:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 10;
 
@@ -755,12 +624,9 @@ t = 3;
                     // try different values of 2
                     x2 = 7 * Width / 12 - 1000 * (float)(Math.Sin(Math.Sin(2 * time) + Math.Cos(2 * time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 106:
+                case 35:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 10;
 
@@ -769,13 +635,9 @@ t = 3;
                     // try different values of 2
                     x2 = 7 * Width / 12 - 1000 * (float)(Math.Sin(2.5f * Math.Sin(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 107:
-                    // based on 102
+                case 36:
                     x1 = (int)(Math.Sin(float_B) * 5.0f);
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 2; // <-- diff
 
@@ -783,13 +645,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 108:
-                    // based on 102
+                case 37:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) + 1111;
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 2; // <-- diff
 
@@ -797,13 +655,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 109:
-                    // based on 102
+                case 38:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) + 2500; // randomize this value 2500
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 2; // <-- diff
 
@@ -811,13 +665,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 110:
-                    // based on 102
+                case 39:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) + 2500; // randomize this value 2500
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 2; // <-- diff
 
@@ -825,13 +675,9 @@ t = 3;
 
                     x2 = 6 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(0.2f*time) + Math.Cos(time)) * 1.0f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 111:
-                    // based on 109
+                case 40:
                     x1 = (float)(Math.Sin(time + time) * 100.0f) + 2500; // randomize this value 2500
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 2; // <-- diff
 
@@ -839,14 +685,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 112:
-                    // based on 109
+                case 41:
                     x1 = (float)(Math.Sin(time + 1.33f) * 100.0f) + 2500; // randomize this value 2500
                     y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 2; // <-- diff
 
@@ -854,14 +695,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 113:
-                    // based on 109
+                case 42:
                     x1 = (float)(Math.Sin(time + 2.0f) * 300.0f) + 2500; // randomize this value 2500
                     y1 = 1 * Height / 2 + (float)(dy2 * 33 / float_B) * 0.5f; // <-- diff
 
@@ -869,14 +705,9 @@ t = 3;
 
                     x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B) + Math.Cos(time)) * 1.25f);
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
-                case 114:
-                    // based on 109
+                case 43:
                     x1 = (float)(Math.Sin(time + 2.0f) * 1500.0f) + 2000; // randomize this value 2500
                     y1 = 1 * Height / 2 + (float)(dy2 * 33 / float_B) * 1.5f; // <-- diff
 
@@ -886,7 +717,7 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
                     break;
 
-                case 115:
+                case 44:
 /*
                     x1 = 1 * Width  / 5 + (float)(Math.Sin(time)) * sf1;
                     y1 = 1 * Height / 2 + (float)(Math.Cos(time)) * sf1;
@@ -905,7 +736,7 @@ t = 3;
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
                     break;
 
-                case 116:
+                case 45:
                     x1 = 1 * Width  / 5 + (float)(Math.Sin(time)) * sf1;
                     y1 = 1 * Height / 2 + (float)(Math.Cos(time)) * sf1;
 
@@ -913,7 +744,7 @@ t = 3;
                     y2 = 1 * Height / 2 + (float)(Math.Sin(time)) * sf2;
                     break;
 
-                case 117:
+                case 46:
                     x1 = 1 * Width  / 5 + (float)(Math.Sin(time)) * sf1;
                     y1 = 1 * Height / 2 + (float)(Math.Cos(time)) * sf1;
 
@@ -921,7 +752,7 @@ t = 3;
                     y2 = 1 * Height / 2 + (float)(Math.Sin(fLifeCnt)) * sf2;
                     break;
 
-                case 118:
+                case 47:
                     x1 = 1 * Width  / 5 + (float)(Math.Sin(time)) * sf1;
                     y1 = 1 * Height / 2 + (float)(Math.Cos(time)) * sf1;
 
@@ -929,7 +760,7 @@ t = 3;
                     y2 = 1 * Height / 2 + (float)(Math.Sin(fLifeCnt + time)) * sf2;
                     break;
 
-                case 119:
+                case 48:
                     x1 = 1 * Width  / 5 + (int)(Math.Sin(time * 1.0f) * sf3) / sf3 * sf1;
                     y1 = 1 * Height / 2 + (int)(Math.Cos(time * 1.0f) * sf3) / sf3 * sf1;
 
@@ -938,7 +769,7 @@ t = 3;
                     break;
 
                 // Cool one -- ok
-                case 120:
+                case 49:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3)) * sf1;
 
@@ -946,8 +777,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // Cool one -- ok
-                case 121:
+                case 50:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3)) * sf1;
 
@@ -958,8 +788,7 @@ t = 3;
                     sf2 += b;
                     break;
 
-                // ok
-                case 122:
+                case 51:
                     x1 = x0 + (float)(Math.Sin(time + sf3)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time + sf3)) * sf1;
 
@@ -970,8 +799,7 @@ t = 3;
                     sf4 += b;
                     break;
 
-                // ok
-                case 123:
+                case 52:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf4)) * sf1;
 
@@ -982,8 +810,7 @@ t = 3;
                     sf4 += b;
                     break;
 
-                // ok
-                case 124:
+                case 53:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1 + (float)(Math.Cos(time + sf3)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3)) * sf1 + (float)(Math.Sin(time + sf3)) * sf1;
 
@@ -991,8 +818,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 125:
+                case 54:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1 + (float)(Math.Sin(time / si1)) * sf1 / si1;
                     y1 = y0 + (float)(Math.Cos(time * sf3)) * sf1 + (float)(Math.Cos(time / si1)) * sf1 / si1;
 
@@ -1000,8 +826,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 126:
+                case 55:
                     sf1 /= sf1 > 1000 ? 2 : 1;
 
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1 + (float)(Math.Sin(time * si1)) * sf1;
@@ -1011,8 +836,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 127:
+                case 56:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * sf1 * (float)(Math.Sin(time * si1)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3)) * sf1 * (float)(Math.Cos(time * si1)) * sf1;
 
@@ -1020,8 +844,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 128:
+                case 57:
                     x1 = (float)(Math.Sin(time * sf3)) * (float)(Math.Sin(time * si1)) * sf1 * 2;
                     y1 = (float)(Math.Cos(time * sf3)) * (float)(Math.Cos(time * si1)) * sf1 * 2;
 
@@ -1034,8 +857,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 129:
+                case 58:
                     x1 = x0 + (float)(Math.Sin(time * sf3)) * (float)(Math.Cos(time * si1)) * sf1 / 2;
                     y1 = y0 + (float)(Math.Cos(time * sf3)) * (float)(Math.Sin(time * si1)) * sf1 / 2;
 
@@ -1043,8 +865,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 130:
+                case 59:
                     x1 = x0 + (float)(Math.Sin(time * sf3) * Math.Sin(1 + time / si1)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3) * Math.Sin(1 + time / si1)) * sf1;
 
@@ -1052,8 +873,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 131:
+                case 60:
                     x1 = x0 + (float)(Math.Sin(time * sf3) * Math.Sin(si1 + time / si1)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3) * Math.Sin(si1 + time / si1)) * sf1;
 
@@ -1061,8 +881,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 132:
+                case 61:
                     x1 = x0 + (float)(Math.Sin(time * sf3) + Math.Sin(time / si1 / si1)) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3) + Math.Cos(time / si1 / si1)) * sf1;
 
@@ -1070,8 +889,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 133:
+                case 62:
                     x1 = x0 + (int)(Math.Sin(a * time) * sf1);
                     y1 = y0 + (int)(Math.Cos(b * time) * sf1);
 
@@ -1079,8 +897,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 134:
+                case 63:
                     sf1 /= sf1 > 1000 ? 2 : 1;
                     sf2 /= sf1 > 1000 ? 2 : 1;
 
@@ -1091,8 +908,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4 * b)) * sf2;
                     break;
 
-                // ok
-                case 135:
+                case 64:
                     sf1 /= sf1 > 1000 ? 2 : 1;
                     sf2 /= sf1 > 1000 ? 2 : 1;
 
@@ -1103,8 +919,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4 * b)) * sf2;
                     break;
 
-                // ok
-                case 136:
+                case 65:
                     x1 = x0 + (float)(Math.Sin(a * time) * Math.Sin(b * time) * sf1);
                     y1 = y0 + (float)(Math.Cos(a * time) * Math.Cos(b * time) * sf1);
 
@@ -1112,8 +927,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok
-                case 137:
+                case 66:
                     x1 = x0 + (float)((Math.Sin(a * time2) + Math.Cos(b * time2)) * sf1);
                     y1 = y0 + (float)((Math.Cos(a * time2) + Math.Sin(b * time2)) * sf1);
 
@@ -1121,8 +935,8 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                // ok -- probably is the same as 137
-                case 138:
+                // probably is the same as 137
+                case 67:
                     x1 = x0 + (float)((Math.Sin(a * time * sf3) + Math.Cos(b * time * sf3)) * sf1);
                     y1 = y0 + (float)((Math.Cos(a * time * sf3) + Math.Sin(b * time * sf3)) * sf1);
 
@@ -1130,7 +944,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 139:
+                case 68:
                     x1 = x0 + (int)((Math.Sin(a * time * sf3) + Math.Cos(b * time * sf3))) * sf1;
                     y1 = y0 + (int)((Math.Cos(a * time * sf3) + Math.Sin(b * time * sf3))) * sf1;
 
@@ -1138,7 +952,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 140:
+                case 69:
                     x1 = x0 + (int)((Math.Sin(a * time * sf3) + Math.Cos(b * time * sf3)) * a) * sf1;
                     y1 = y0 + (int)((Math.Cos(a * time * sf3) + Math.Sin(b * time * sf3)) * a) * sf1;
 
@@ -1146,7 +960,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 141:
+                case 70:
                     x1 = x0 + (int)((Math.Sin(a * time * sf3) + Math.Cos(b * time * sf3)) * c) * sf1;
                     y1 = y0 + (int)((Math.Cos(a * time * sf3) + Math.Sin(b * time * sf3)) * c) * sf1;
 
@@ -1154,7 +968,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 142:
+                case 71:
                     x1 = x0 + (int)((Math.Sin(a * time * sf3) * Math.Cos(b * time * sf3)) * c) * sf1;
                     y1 = y0 + (int)((Math.Cos(a * time * sf3) * Math.Sin(b * time * sf3)) * c) * sf1;
 
@@ -1162,7 +976,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 143:
+                case 72:
                     x1 = x0 + (int)(Math.Sin(time * sf3) * c) * sf1;
                     y1 = y0 + (int)(Math.Cos(time * sf3) * c) * sf1;
 
@@ -1170,7 +984,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 144:
+                case 73:
                     x1 = x0 + (int)(Math.Sin(time * sf3 / 10) * c) * sf1;
                     y1 = y0 + (int)(Math.Cos(time * sf3 / 10) * c) * sf1;
 
@@ -1178,7 +992,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 145:
+                case 74:
                     x1 = x0 + (float)(Math.Sin(time * sf3) * c) * sf1;
                     y1 = y0 + (float)(Math.Cos(time * sf3) * c) * sf1;
 
@@ -1186,7 +1000,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 146:
+                case 75:
                     x1 = x0 + (int)(Math.Sin(time * sf3) * 10) / 10 * sf1;
                     y1 = y0 + (int)(Math.Cos(time * sf3) * 10) / 10 * sf1;
 
@@ -1194,7 +1008,7 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
-                case 147:
+                case 76:
                     x1 = x0 + (int)(Math.Sin(time * sf3) * si1) * sf1 / (1.0f * si1);
                     y1 = y0 + (int)(Math.Cos(time * sf3) * si1) * sf1 / (1.0f * si1);
 
@@ -1268,12 +1082,119 @@ t = 3;
         {
             switch (shape)
             {
-                case 114:
-                case 115:
-                default:
+                case 0:
+                    g.DrawLine(p, X, Y, x1, y1);
+                    g.DrawLine(p, X, Y, x2, y2);
+                    break;
+
+                case 1:
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawLine(p, x2, y2, x1, y1);
+                    break;
+
+                case 2:
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawLine(p, x2, y2, x1, y1);
+                    break;
+
+                case 3:
+                case 4:
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawLine(p, x3, y3, x4, y4);
+
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x3, y3, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x4, y4, 3, 3);
+                    break;
+
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                case 33:
+                case 34:
+                case 35:
+                case 36:
+                case 37:
+                case 38:
+                case 39:
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 40:
+                case 41:
+                case 42:
+                case 43:
+                case 44:
+                case 45:
+                case 46:
+                case 47:
+                case 48:
+                case 49:
+                case 50:
+                case 51:
+                case 52:
+                case 53:
+                case 54:
+                case 55:
+                case 56:
+                case 57:
+                case 58:
+                case 59:
+                case 60:
+                case 61:
+                case 62:
+                case 63:
+                case 64:
+                case 65:
+                case 66:
+                case 67:
+                case 68:
+                case 69:
+                case 70:
+                case 71:
+                case 72:
+                case 73:
+                case 74:
+                case 75:
+                case 76:
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                default:
                     break;
             }
         }
