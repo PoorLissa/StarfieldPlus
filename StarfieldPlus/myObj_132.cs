@@ -11,7 +11,7 @@ namespace my
     {
         static int max_dSize = 0;
         static int t = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
-        static bool isDimmable = true, doStartNew = false;
+        static bool isDimmable = true, needNewScreen = false;
         static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, a = 0, b = 0, c = 0, fLifeCnt = 0, fdLifeCnt = 0;
         static List<myObject> list = null;
 
@@ -60,7 +60,7 @@ float_B = 1.0f;
             isDimmable = rand.Next(2) == 0;
 
 shape = 1300;
-//shape = 77;
+shape = 78;
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -71,7 +71,7 @@ dA = 1;
             time2 = 0.0f;
             dt2 = 0.01f;
 
-            doStartNew = true;
+            needNewScreen = true;
 
             changeConstants();
 
@@ -141,96 +141,24 @@ dA = 1;
                 case 74:
                 case 75:
                 case 76:
+                    constSetUp1();
+                    t = 3;      // tmp, remove later
+                    break;
+
                 case 77:
+                    constSetUp2();
+                    t = 3;      // tmp, remove later
+                    break;
+
+                case 78:
+                    constSetUp3();
+                    t = 3;      // tmp, remove later
+                    break;
 
                 case 1300:
-
-                    switch (rand.Next(2))
-                    {
-                        case 0:
-                            sf1 = rand.Next(2000) + 100;
-                            break;
-
-                        case 1:
-                            sf1 = rand.Next(1000) + 100;
-                            break;
-                    }
-
-                    switch (rand.Next(2))
-                    {
-                        case 0:
-                            sf2 = rand.Next(2000) + 100;
-                            break;
-
-                        case 1:
-                            sf2 = rand.Next(1000) + 100;
-                            break;
-                    }
-
-                    switch (rand.Next(3))
-                    {
-                        case 0:
-                            sf3 = rand.Next(5000);
-                            break;
-
-                        case 1:
-                            sf3 = rand.Next(500);
-                            break;
-
-                        case 2:
-                            sf3 = rand.Next(50);
-                            break;
-                    }
-
-                    switch (rand.Next(3))
-                    {
-                        case 0:
-                            sf4 = rand.Next(5000);
-                            break;
-
-                        case 1:
-                            sf4 = rand.Next(500);
-                            break;
-
-                        case 2:
-                            sf4 = rand.Next(50);
-                            break;
-                    }
-
-                    sf3 = (sf3 + 1) * 0.01f;
-                    sf4 = (sf4 + 1) * 0.01f;
-#if false
-                    // Old
-                    sf1 = rand.Next(2000) + 100;
-                    sf2 = rand.Next(2000) + 100;
-
-                    sf3 = rand.Next(1000) * 0.05f;
-                    sf4 = rand.Next(1000) * 0.05f;
-#endif
-                    si1 = rand.Next(100) + 1;
-                    si2 = rand.Next(100) + 1;
-
-                    x0 = Width  / 2;
-                    y0 = Height / 2;
-
-                    a = (rand.Next(201) * 0.01f) - 1.0f;
-                    b = (rand.Next(201) * 0.01f) - 1.0f;
-                    c = 1.0f + rand.Next(300) * 0.01f;
-
-                    if (rand.Next(3) == 0)
-                        a *= (rand.Next(11) + 1);
-
-                    if (rand.Next(3) == 0)
-                        b *= (rand.Next(11) + 1);
-
-                    fdLifeCnt = 0.25f;
-
-                    // Affects moving speed of the red dot along its path
-                    dt2 = 0.01f + rand.Next(20) * 0.005f;
-
-                    // Affects life span of the shape
-                    fdLifeCnt = 0.20f;
-t = 3;
+                    constSetUp1();
+                    t = 3;      // tmp, remove later
+                    t = 3;
                     break;
             }
         }
@@ -1018,29 +946,20 @@ t = 3;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
+                // Various shapes vs a circle
+                // The shapes are of a single family, so we'll have a separate setup func for these
                 case 77:
-                    sf2 *= (sf2 > 333) ? 1 : 2;
-                    sf1 = sf2 / 2;
-
-                    // need all of these
-                    //sf3 = 2.0f;
-                    //sf3 = 1.5f;
-                    //sf3 = 1.0f;
-                    //sf3 = 0.75f;
-                    //sf3 = 0.5f;
-                    //sf3 = 0.3f;
-                    //sf3 = 0.25f;
-                    //sf3 = 0.2f;
-                    //sf3 = 0.075f;
-                    //sf3 = 0.05f;
-                    //sf3 = 0.025f;
-                    //sf3 = 0.01f;
-                    sf3 = 0.0f;
-
-                    sf3 = 0.5f;
-
                     x1 = x0 + ((float)(Math.Sin(time * sf3 + c) * sf1) + (float)(Math.Sin(time + sf3) * (sf1 / 2)));
                     y1 = y0 + ((float)(Math.Cos(time * sf3 - c) * sf1) + (float)(Math.Cos(time + sf3) * (sf1 / 2)));
+
+                    x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
+                    y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
+                    break;
+
+                // The same as the one before, but with more params at play
+                case 78:
+                    x1 = x0 + ((float)(Math.Sin(time * sf3 + c) * sf1) + (float)(Math.Sin(time + sf3) * (sf1 / a)));
+                    y1 = y0 + ((float)(Math.Cos(time * sf3 - c) * sf1) + (float)(Math.Cos(time + sf3) * (sf1 / a)));
 
                     x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
@@ -1243,6 +1162,7 @@ t = 3;
                 case 75:
                 case 76:
                 case 77:
+                case 78:
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
@@ -1275,10 +1195,10 @@ t = 3;
 
             while (isAlive)
             {
-                if (doStartNew)
+                if (needNewScreen)
                 {
-                    doStartNew = false;
                     g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+                    needNewScreen = false;
                 }
 
                 foreach (myObj_132 s in list)
@@ -1305,5 +1225,168 @@ t = 3;
 
             return;
         }
+
+        // -------------------------------------------------------------------------
+
+        private void constSetUp1()
+        {
+            switch (rand.Next(2))
+            {
+                case 0:
+                    sf1 = rand.Next(2000) + 100;
+                    break;
+
+                case 1:
+                    sf1 = rand.Next(1000) + 100;
+                    break;
+            }
+
+            switch (rand.Next(2))
+            {
+                case 0:
+                    sf2 = rand.Next(2000) + 100;
+                    break;
+
+                case 1:
+                    sf2 = rand.Next(1000) + 100;
+                    break;
+            }
+
+            switch (rand.Next(3))
+            {
+                case 0:
+                    sf3 = rand.Next(5000);
+                    break;
+
+                case 1:
+                    sf3 = rand.Next(500);
+                    break;
+
+                case 2:
+                    sf3 = rand.Next(50);
+                    break;
+            }
+
+            switch (rand.Next(3))
+            {
+                case 0:
+                    sf4 = rand.Next(5000);
+                    break;
+
+                case 1:
+                    sf4 = rand.Next(500);
+                    break;
+
+                case 2:
+                    sf4 = rand.Next(50);
+                    break;
+            }
+
+            sf3 = (sf3 + 1) * 0.01f;
+            sf4 = (sf4 + 1) * 0.01f;
+
+#if false
+            // Old
+            sf1 = rand.Next(2000) + 100;
+            sf2 = rand.Next(2000) + 100;
+
+            sf3 = rand.Next(1000) * 0.05f;
+            sf4 = rand.Next(1000) * 0.05f;
+#endif
+
+            si1 = rand.Next(100) + 1;
+            si2 = rand.Next(100) + 1;
+
+            x0 = Width  / 2;
+            y0 = Height / 2;
+
+            a = (rand.Next(201) * 0.01f) - 1.0f;
+            b = (rand.Next(201) * 0.01f) - 1.0f;
+            c = 1.0f + rand.Next(300) * 0.01f;
+
+            if (rand.Next(3) == 0)
+                a *= (rand.Next(11) + 1);
+
+            if (rand.Next(3) == 0)
+                b *= (rand.Next(11) + 1);
+
+            fdLifeCnt = 0.25f;
+
+            // Affects moving speed of the red dot along its path
+            dt2 = 0.01f + rand.Next(20) * 0.005f;
+
+            // Affects life span of the shape
+            fdLifeCnt = 0.20f;
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void constSetUp2()
+        {
+            // Set up all the constants
+            constSetUp1();
+
+            // Adjust both radiuses a bit
+            sf2 *= (sf2 > 333) ? 1 : 2;
+            sf1 = sf2 / 2;
+
+            // sf3 here will affect the form of the shape.
+            // These values were found manually and result in closed-loop shapes:
+
+            switch (rand.Next(14))
+            {
+                case  0: sf3 = 2.000f; break;
+                case  1: sf3 = 1.500f; break;
+                case  2: sf3 = 1.000f; break;
+                case  3: sf3 = 0.750f; break;
+                case  4: sf3 = 0.500f; break;
+                case  5: sf3 = 0.300f; break;
+                case  6: sf3 = 0.250f; break;
+                case  7: sf3 = 0.200f; break;
+                case  8: sf3 = 0.075f; break;       // elliptic spiral
+                case  9: sf3 = 0.050f; break;       // elliptic spiral
+                case 10: sf3 = 0.025f; break;       // spiraling circle
+                case 11: sf3 = 0.010f; break;       // spiraling circle
+                case 12: sf3 = 0.000f; break;       // circle
+
+                default:
+                    sf3 = 0.0001f * rand.Next(10000);
+                    break;
+            }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void constSetUp3()
+        {
+            constSetUp2();
+
+            // Let's change a:
+
+            sf3 = 0.0f;     // no real impact from a. a < 1 makes the circle larger than the other circle
+
+            sf3 = 0.01f;
+            a = 300;        // increasing a makes the spiral denser
+            a = 0.01f;      // decreasing enlarges the shape to the point of endless circle
+
+            sf3 = 0.025f;
+            a = 200;        // increasing a makes the spiral denser
+            a = 0.001f;     // decreasing enlarges the shape to the point of endless circle
+
+            sf3 = 0.050f;
+            a = 300;        // increasing a makes the spiral denser. need more life span
+            a = 1.0f;       // decreasing enlarges the shape. no need to go less than 1
+
+            sf3 = 0.075f;
+            a = 2.0f;       //
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
     }
 };
