@@ -9,12 +9,12 @@ namespace my
 {
     public class distributionTester : myObject
     {
-        private int dx, dy, a, oldx, oldy, iterCounter;
-        private bool isStatic = false;
+        //private int dx, dy, a, oldx, oldy, iterCounter;
+        //private bool isStatic = false;
 
-        private static int moveMode = 0, maxA = 33, maxSize = 0, spd = 0, divider = 0, t = 0;
-        private static float moveConst = 0;
-        private static bool showStatics = false;
+        //private static int moveMode = 0, maxA = 33, maxSize = 0, spd = 0, divider = 0, t = 0;
+        //private static float moveConst = 0;
+        //private static bool showStatics = false;
 
         public distributionTester()
         {

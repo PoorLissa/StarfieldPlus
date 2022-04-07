@@ -197,7 +197,7 @@ namespace my
 
         protected override void Process()
         {
-            int t = 1, cnt = 0;
+            int cnt = 0;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 

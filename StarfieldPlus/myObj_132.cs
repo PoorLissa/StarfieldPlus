@@ -56,11 +56,11 @@ float_B = 1.0f;
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             p.Color = Color.FromArgb(100, R, G, B);
             maxSize = rand.Next(333) + 33;
-            shape = rand.Next(77);
+            shape = rand.Next(79);
             isDimmable = rand.Next(2) == 0;
 
-shape = 1300;
-shape = 78;
+//shape = 1300;
+//shape = 78;
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -142,23 +142,19 @@ dA = 1;
                 case 75:
                 case 76:
                     constSetUp1();
-                    t = 3;      // tmp, remove later
                     break;
 
                 case 77:
                     constSetUp2();
-                    t = 3;      // tmp, remove later
                     break;
 
                 case 78:
                     constSetUp3();
-                    t = 3;      // tmp, remove later
                     break;
 
                 case 1300:
                     constSetUp1();
                     t = 3;      // tmp, remove later
-                    t = 3;
                     break;
             }
         }

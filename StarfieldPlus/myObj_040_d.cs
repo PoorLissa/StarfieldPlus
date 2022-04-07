@@ -18,7 +18,7 @@ namespace my
         private const int N = 107;
 
         private int A, oldX, oldY;
-        private float dxf = 0, dyf = 0, x = 0, y = 0, time, dt;
+        private float dxf = 0, dyf = 0, x = 0, y = 0, time;
         private bool isActive = false;
 
         static int x0 = 0, y0 = 0, moveMode = -1, drawMode = -1, speedMode = -1, colorMode = -1, maxA = 255, t = -1;
@@ -99,7 +99,7 @@ namespace my
 
                 x = X = oldX = x0;
                 y = Y = oldY = y0;
-                time = dt = 0;
+                time = 0;
 
                 isActive = true;
             }
