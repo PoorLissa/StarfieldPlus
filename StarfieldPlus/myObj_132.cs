@@ -10,7 +10,7 @@ namespace my
     public class myObj_132 : myObject
     {
         static int max_dSize = 0;
-        static int t = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
+        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
         static bool isDimmable = true, needNewScreen = false;
         static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, a = 0, b = 0, c = 0, fLifeCnt = 0, fdLifeCnt = 0;
         static List<myObject> list = null;
@@ -32,6 +32,8 @@ namespace my
                 max_dSize = rand.Next(15) + 3;
 
                 isDimmable = rand.Next(2) == 0;
+
+                tDefault = 33;
 
                 Log($"myObj_132: colorPicker({colorPicker.getMode()}), max_dSize({max_dSize})");
             }
@@ -59,8 +61,11 @@ float_B = 1.0f;
             shape = rand.Next(79);
             isDimmable = rand.Next(2) == 0;
 
-//shape = 1300;
-//shape = 78;
+            t = tDefault;
+            t -= isDimmable ? 13 : 0;
+
+shape = 1300;
+shape = 79;
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -142,14 +147,22 @@ dA = 1;
                 case 75:
                 case 76:
                     constSetUp1();
+                    t = 11;
                     break;
 
                 case 77:
                     constSetUp2();
+                    t = 11;
                     break;
 
                 case 78:
                     constSetUp3();
+                    t = 11;
+                    break;
+
+                case 79:
+                    constSetUp3();
+                    t = 3;
                     break;
 
                 case 1300:
@@ -961,6 +974,15 @@ dA = 1;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
+                case 79:
+                    // 2. water drop
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1.75f * time * sf3) * sf1 / 1));
+                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1.0f * time * sf3) * sf1 * 1));
+
+                    x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
+                    y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
+                    break;
+
                 case 1300:
 
                     //sf1 = 300;
@@ -970,13 +992,10 @@ dA = 1;
 
                     sf3 = 0.5f;
 
-                    // 1. play with sf1/2 -- divide it or multiply it. the shape changes good
-                    x1 = x0 + ((float)(Math.Sin(time * sf3 + c) * sf1) + (float)(Math.Sin(time + sf3) * (sf1/2)));
-                    y1 = y0 + ((float)(Math.Cos(time * sf3 - c) * sf1) + (float)(Math.Cos(time + sf3) * (sf1/2)));
-
                     // 2. water drop
                     x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1/2));
                     y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1*2));
+                    break;
 
                     // 3. water drop 2
                     x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1 / 2));
@@ -1159,6 +1178,7 @@ dA = 1;
                 case 76:
                 case 77:
                 case 78:
+                case 79:
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
@@ -1180,8 +1200,6 @@ dA = 1;
         protected override void Process()
         {
             int cnt = 0;
-            t = 33;
-            t -= isDimmable ? 13 : 0;
 
             int num = rand.Next(333) + 33;
             num = 1;
