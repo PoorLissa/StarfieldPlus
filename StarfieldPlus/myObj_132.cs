@@ -10,9 +10,11 @@ namespace my
     public class myObj_132 : myObject
     {
         static int max_dSize = 0;
-        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
+        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0;
         static bool isDimmable = true, needNewScreen = false;
-        static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, a = 0, b = 0, c = 0, fLifeCnt = 0, fdLifeCnt = 0;
+        static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, sf5 = 0, sf6 = 0, sf7 = 0, sf8 = 0;
+        static float a = 0, b = 0, c = 0;
+        static float fLifeCnt = 0, fdLifeCnt = 0;
         static List<myObject> list = null;
 
         protected int maxSize = 0, A = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
@@ -161,7 +163,7 @@ dA = 1;
                     break;
 
                 case 79:
-                    constSetUp3();
+                    constSetUp4();
                     t = 3;
                     break;
 
@@ -976,8 +978,23 @@ dA = 1;
 
                 case 79:
                     // 2. water drop
-                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1.75f * time * sf3) * sf1 / 1));
-                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1.0f * time * sf3) * sf1 * 1));
+
+                    sf1 = 150;
+
+                    // sf5 = 2.0f                           -- beaker                                       // done
+                    // sf6 = 2.0f                           -- beaker                                       // done ?..
+                    // sf5 = 2.0f && sf6 = 2.0f             -- eight
+                    // sf7 = 2.0f                           -- smile                                        // done
+                    // sf8 = 2.0f                           -- smile                                        // done
+                    // sf7 = 2.0f && sf8 = 2.0f             -- parabola 1 - try with diff params
+                    // sf5 = 2.0f && sf7 = 2.0f             -- parabola 2 - try with diff params
+                    // sf6 = 2.0f && sf7 = 2.0f             -- apple / clover
+                    // sf6 = 2.0f && sf8 = 2.0f             -- apple / clover
+                    // sf5 = 2.0f && sf8 = 2.0f             -- apple / clover
+                    // sf5 = 2.0f && sf7 = 2.0f             -- apple / clover
+
+                    x1 = x0 + ((float)(Math.Sin(sf5 * time * sf3) * sf1) + (float)(Math.Sin(sf6 * time * sf3) * sf1 * a));
+                    y1 = y0 + ((float)(Math.Cos(sf7 * time * sf3) * sf1) + (float)(Math.Cos(sf8 * time * sf3) * sf1 * b));
 
                     x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
@@ -992,32 +1009,9 @@ dA = 1;
 
                     sf3 = 0.5f;
 
-                    // 2. water drop
-                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1/2));
-                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1*2));
-                    break;
-
-                    // 3. water drop 2
-                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1 / 2));
-                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1 / 2));
-
-                    // 4. colb
-                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1 / 1));
-                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1 / 1));
-
-                    // 5. the circles are the same, ok
-                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1 * time * sf3) * sf1 / 1));
-                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1 / 1));
-
-                    // 6. and so on
-                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1 * time * sf3) * sf1 / 1));
-                    y1 = y0 + ((float)(Math.Cos(2 * time * sf3) * sf1) + (float)(Math.Cos(2 * time * sf3) * sf1 / 1));
-
                     x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
-
-
 
                 case 1251:
 
@@ -1033,8 +1027,6 @@ dA = 1;
                     x2 = Width / 2 + (float)(Math.Sin(time * sf4)) * sf2;
                     y2 = Height / 2 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
-
-
 
                 default:
                     x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
@@ -1179,6 +1171,7 @@ dA = 1;
                 case 77:
                 case 78:
                 case 79:
+                    p.Color = Color.FromArgb(20, p.Color.R, p.Color.G, p.Color.B);
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
@@ -1309,7 +1302,6 @@ dA = 1;
 #endif
 
             si1 = rand.Next(100) + 1;
-            si2 = rand.Next(100) + 1;
 
             x0 = Width  / 2;
             y0 = Height / 2;
@@ -1504,7 +1496,7 @@ dA = 1;
                     }
                     break;
 
-                // todo: finish a's setup:
+                // todo: finish [a]'s setup:
 
                 // Star
                 case 9:
@@ -1530,6 +1522,505 @@ dA = 1;
                     a = 2.0f;
                     break;
             }
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void constSetUp4()
+        {
+            void randInts(ref float val)
+            {
+                switch (rand.Next(9))
+                {
+                    case 0:
+                        val = rand.Next(3001) + 1;
+                        break;
+
+                    case 1: case 2:
+                        val = rand.Next(301) + 1;
+                        break;
+
+                    case 3: case 4: case 5:
+                        val = rand.Next(31) + 1;
+                        break;
+
+                    case 6: case 7: case 8:
+                        val = rand.Next(11) + 1;
+                        break;
+                }
+            }
+
+            void randFloats(ref float val)
+            {
+                switch (rand.Next(3))
+                {
+                    case 0:
+                        val = 0.001f * rand.Next(3001);
+                        break;
+
+                    case 1: case 2:
+                        val = 0.25f * rand.Next(41);
+                        break;
+                }
+            }
+
+            void set2params(ref float a, ref float b, float val)
+            {
+                a = b = val;
+            }
+
+            // ---------------------------
+
+            constSetUp1();
+
+            a = 1;
+            b = 1;
+
+            fdLifeCnt = 0.01f;
+
+            int rnd = 1111;
+
+            switch (rnd)
+            {
+                // Circle / Ellipse
+                case 0:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    a = 0.01f * rand.Next(300);
+                    b = 0.01f * rand.Next(300);
+                    break;
+
+                // Beaker - Pure Form
+                case 1:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+                    break;
+
+                // Beaker - Pure Form + Randomized a, b
+                case 2:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2;
+
+                    a = 0.01f * rand.Next(300);
+                    b = 0.01f * rand.Next(300);
+                    break;
+
+                // Beaker - Randomized Ints
+                case 3:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    randInts(ref sf6);
+                    break;
+
+                // Beaker - Randomized Ints + Randomized a, b
+                case 4:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    randInts(ref sf6);
+
+                    a = 0.01f * rand.Next(300);
+                    b = 0.01f * rand.Next(300);
+                    break;
+
+                // Beaker - Randomized Floats
+                case 5:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    randFloats(ref sf6);
+                    break;
+
+                // Beaker - Randomized Floats + Randomized a, b
+                case 6:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    randFloats(ref sf6);
+
+                    a = 0.01f * rand.Next(300);
+                    b = 0.01f * rand.Next(300);
+                    break;
+
+                // Rain Drop - Pure Form
+                case 7:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.45f + 0.01f * rand.Next(11);
+                    b = 1.9f + 0.01f * rand.Next(21);
+                    break;
+
+                // Rain Drop - Pure Form - Width randomized
+                case 8:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.1f + 0.01f * rand.Next(41);
+                    b = 1.0f + 0.01f * rand.Next(101);
+                    break;
+
+                // Rain Drop - Eggish
+                case 9:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.10f + 0.01f * rand.Next(25);
+                    b = 0.25f + 0.01f * rand.Next(75);
+                    break;
+
+                // Rain Drop - Truffle
+                case 10:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.400f + 0.001f * rand.Next(101);
+                    b = 0.005f * rand.Next(151);
+                    break;
+
+                // Rain Drop - Trianglic
+                case 11:
+                    sf5 = sf7 = sf8 = 1.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.250f + 0.001f * rand.Next(101);
+                    b = 0.005f * rand.Next(51);
+                    break;
+
+                // Smile - Pure Form
+                case 12:
+                    sf5 = sf6 = sf8 = 1.0f;
+                    sf7 = 2.0f;
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+                    return;
+
+                // Smile -- Stable Constants
+                case 13:
+                    sf5 = sf6 = sf8 = 1.0f;
+
+                    switch (rand.Next(20))
+                    {
+                        case 00: sf7 = 0.01f; break;
+                        case 01: sf7 = 0.20f; break;
+                        case 02: sf7 = 0.25f; break;
+                        case 03: sf7 = 0.50f; break;
+                        case 04: sf7 = 0.75f; break;
+                        case 05: sf7 = 1.10f; break;
+                        case 06: sf7 = 1.15f; break;
+                        case 07: sf7 = 1.20f; break;
+                        case 08: sf7 = 1.25f; break;
+                        case 09: sf7 = 1.50f; break;
+                        case 10: sf7 = 1.75f; break;
+                        case 11: sf7 = 2.00f; break;
+                        case 12: sf7 = 2.25f; break;
+                        case 13: sf7 = 2.50f; break;
+                        case 14: sf7 = 2.75f; break;
+                        case 15: sf7 = 3.00f; break;
+                        case 16: sf7 = 3.25f; break;
+                        case 17: sf7 = 3.50f; break;
+                        case 18: sf7 = 4.00f; break;
+                        case 19: sf7 = 5.00f; break;
+                    }
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+                    return;
+
+                // Smile - Pure Form + Size Randomized
+                case 14:
+                    sf5 = sf6 = sf8 = 1.0f;
+                    sf7 = 2.0f;
+
+                    a = 0.01f * rand.Next(1001);
+                    b = 0.01f * rand.Next(501);
+                    break;
+
+                // Smile -- Stable Constants + Size Randomized
+                case 15:
+                    sf5 = sf6 = sf8 = 1.0f;
+
+                    switch (rand.Next(20))
+                    {
+                        case 00: sf7 = 0.01f; break;
+                        case 01: sf7 = 0.20f; break;
+                        case 02: sf7 = 0.25f; break;
+                        case 03: sf7 = 0.50f; break;
+                        case 04: sf7 = 0.75f; break;
+                        case 05: sf7 = 1.10f; break;
+                        case 06: sf7 = 1.15f; break;
+                        case 07: sf7 = 1.20f; break;
+                        case 08: sf7 = 1.25f; break;
+                        case 09: sf7 = 1.50f; break;
+                        case 10: sf7 = 1.75f; break;
+                        case 11: sf7 = 2.00f; break;
+                        case 12: sf7 = 2.25f; break;
+                        case 13: sf7 = 2.50f; break;
+                        case 14: sf7 = 2.75f; break;
+                        case 15: sf7 = 3.00f; break;
+                        case 16: sf7 = 3.25f; break;
+                        case 17: sf7 = 3.50f; break;
+                        case 18: sf7 = 4.00f; break;
+                        case 19: sf7 = 5.00f; break;
+                    }
+
+                    a = 0.01f * rand.Next(1001);
+                    b = 0.01f * rand.Next(501);
+                    break;
+
+                // Smile -- Random constant + Size Randomized
+                case 16:
+                    sf5 = sf6 = sf8 = 1.0f;
+                    sf7 = 1.0f + 0.01f * rand.Next(1001);
+
+                    a = 0.01f * rand.Next(1001);
+                    b = 0.01f * rand.Next(501);
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - Pure Form
+                case 17:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+                    set2params(ref sf5, ref sf7, 2.0f);
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - Pure Form + Size Randomized
+                case 18:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+                    set2params(ref sf5, ref sf7, 2.0f);
+
+                    a = 0.01f * rand.Next(1001);
+                    b = 0.01f * rand.Next(501);
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - Param Randomized
+                case 19:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            c = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            c = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            c = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
+
+                    set2params(ref sf5, ref sf7, c);
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - Param Randomized + Size Randomized
+                case 20:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            c = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            c = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            c = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
+
+                    set2params(ref sf5, ref sf7, c);
+
+                    a = 0.01f * rand.Next(1001);
+                    b = 0.01f * rand.Next(501);
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - Both Params Randomized
+                case 21:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            sf5 = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            sf5 = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            sf5 = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
+
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            sf7 = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            sf7 = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            sf7 = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
+
+                    if (rand.Next(2) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - One param from predefined list, the second is its multiplicative
+                case 22:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    // Get value from [0.025, 0.05, 0.1, 0.15, 0.20 ... 1.0]
+                    switch (rand.Next(21))
+                    {
+                        case 0: sf5 = 0.025f; break;
+                        case 1: sf5 = 0.050f; break;
+
+                        case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+                        case 10: case 11: case 12: case 13: case 14: case 15: case 16:
+                        case 17: case 18: case 19: case 20:
+                            sf5 = 0.10f + 0.05f * rand.Next(19);
+                            break;
+                    }
+
+                    // Increase by int sometimes
+                    if (rand.Next(50) < 10)
+                    {
+                        sf5 += rand.Next(5);
+                    }
+
+                    sf7 = sf5 * (rand.Next(5) + 1);
+
+                    // Swap
+                    if (rand.Next(2) == 0)
+                    {
+                        c = sf5;
+                        sf5 = sf7;
+                        sf7 = c;
+                    }
+
+                    if (rand.Next(2) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-1 - Multiplicatives of 0.5f
+                case 23:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    sf5 = 0.5f * (rand.Next(21) + 1);
+                    sf7 = 0.5f * (rand.Next(21) + 1);
+
+                    if (rand.Next(2) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+                case 24:
+joppa:
+                    // mouse is lost :(
+                    // try mults of other than 0.5f
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    sf5 = 3.0f;
+                    sf7 = 1.5f;
+
+                    a = 1;
+                    b = 1;
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+
+                    break;
+
+                case 1111:
+                    goto joppa;
+                    break;
+
+                // ---- later ----
+
+                // Eight - Pure Form
+                case 90:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    sf5 = 2.0f;
+                    sf6 = 2.0f;
+
+                    a = 0.9f + 0.01f * rand.Next(21);
+                    b = 0.9f + 0.01f * rand.Next(21);
+                    return; // <-- need that
+
+                // Parabola 1 -- Pure Form
+                case 98:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+                    sf5 = sf7 = 2.0f;
+
+                    //a = 0.9f + 0.01f * rand.Next(21);
+                    //b = 0.9f + 0.01f * rand.Next(21);
+                    break;
+
+                // Parabola 2 -- Pure Form
+                case 99:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+                    sf7 = sf8 = 2.0f;
+
+                    //a = 0.9f + 0.01f * rand.Next(21);
+                    //b = 0.9f + 0.01f * rand.Next(21);
+                    break;
+
+                // Randoms
+                case 100:
+                    sf5 = 0.01f * rand.Next(100);
+                    sf6 = 0.01f * rand.Next(100);
+                    sf7 = 0.01f * rand.Next(100);
+                    sf8 = 0.01f * rand.Next(100);
+                    break;
+
+            }
+
+            // Random sign for each of the params
+            sf5 *= my.myUtils.getRandomSign(rand);
+            sf6 *= my.myUtils.getRandomSign(rand);
+            sf7 *= my.myUtils.getRandomSign(rand);
+            sf8 *= my.myUtils.getRandomSign(rand);
 
             return;
         }

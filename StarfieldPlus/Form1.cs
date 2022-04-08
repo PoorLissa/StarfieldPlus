@@ -96,6 +96,7 @@ this.TopMost = false;
         // - try bezier curves: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
         // - try rotating rectangles: https://stackoverflow.com/questions/10210134/using-a-matrix-to-rotate-rectangles-individually
         // - something like myObj_101, but the pieces are moved via sine/cosine function (up-down or elliptically)
+        // - drop dots or pieces of an image on the screen randomly and constantly dim the screen, so they would fade away
 
         private void getScreenSaverObject()
         {
