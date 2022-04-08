@@ -10,7 +10,7 @@ namespace my
     public class myObj_132 : myObject
     {
         static int max_dSize = 0;
-        static int t = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
+        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
         static bool isDimmable = true, needNewScreen = false;
         static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, a = 0, b = 0, c = 0, fLifeCnt = 0, fdLifeCnt = 0;
         static List<myObject> list = null;
@@ -32,6 +32,8 @@ namespace my
                 max_dSize = rand.Next(15) + 3;
 
                 isDimmable = rand.Next(2) == 0;
+
+                tDefault = 33;
 
                 Log($"myObj_132: colorPicker({colorPicker.getMode()}), max_dSize({max_dSize})");
             }
@@ -56,11 +58,14 @@ float_B = 1.0f;
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             p.Color = Color.FromArgb(100, R, G, B);
             maxSize = rand.Next(333) + 33;
-            shape = rand.Next(77);
+            shape = rand.Next(79);
             isDimmable = rand.Next(2) == 0;
 
+            t = tDefault;
+            t -= isDimmable ? 13 : 0;
+
 shape = 1300;
-shape = 78;
+shape = 79;
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
@@ -142,23 +147,27 @@ dA = 1;
                 case 75:
                 case 76:
                     constSetUp1();
-                    t = 3;      // tmp, remove later
+                    t = 11;
                     break;
 
                 case 77:
                     constSetUp2();
-                    t = 3;      // tmp, remove later
+                    t = 11;
                     break;
 
                 case 78:
                     constSetUp3();
-                    t = 3;      // tmp, remove later
+                    t = 11;
+                    break;
+
+                case 79:
+                    constSetUp3();
+                    t = 3;
                     break;
 
                 case 1300:
                     constSetUp1();
                     t = 3;      // tmp, remove later
-                    t = 3;
                     break;
             }
         }
@@ -965,6 +974,15 @@ dA = 1;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
                     break;
 
+                case 79:
+                    // 2. water drop
+                    x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(1.75f * time * sf3) * sf1 / 1));
+                    y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1.0f * time * sf3) * sf1 * 1));
+
+                    x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
+                    y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
+                    break;
+
                 case 1300:
 
                     //sf1 = 300;
@@ -974,13 +992,10 @@ dA = 1;
 
                     sf3 = 0.5f;
 
-                    // 1. play with sf1/2 -- divide it or multiply it. the shape changes good
-                    x1 = x0 + ((float)(Math.Sin(time * sf3 + c) * sf1) + (float)(Math.Sin(time + sf3) * (sf1/2)));
-                    y1 = y0 + ((float)(Math.Cos(time * sf3 - c) * sf1) + (float)(Math.Cos(time + sf3) * (sf1/2)));
-
                     // 2. water drop
                     x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1/2));
                     y1 = y0 + ((float)(Math.Cos(1 * time * sf3) * sf1) + (float)(Math.Cos(1 * time * sf3) * sf1*2));
+                    break;
 
                     // 3. water drop 2
                     x1 = x0 + ((float)(Math.Sin(1 * time * sf3) * sf1) + (float)(Math.Sin(2 * time * sf3) * sf1 / 2));
@@ -1163,6 +1178,7 @@ dA = 1;
                 case 76:
                 case 77:
                 case 78:
+                case 79:
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
@@ -1184,8 +1200,6 @@ dA = 1;
         protected override void Process()
         {
             int cnt = 0;
-            t = 33;
-            t -= isDimmable ? 13 : 0;
 
             int num = rand.Next(333) + 33;
             num = 1;
@@ -1337,14 +1351,14 @@ dA = 1;
 
             switch (rand.Next(14))
             {
-                case  0: sf3 = 2.000f; break;
-                case  1: sf3 = 1.500f; break;
-                case  2: sf3 = 1.000f; break;
-                case  3: sf3 = 0.750f; break;
-                case  4: sf3 = 0.500f; break;
-                case  5: sf3 = 0.300f; break;
-                case  6: sf3 = 0.250f; break;
-                case  7: sf3 = 0.200f; break;
+                case  0: sf3 = 2.000f; break;       //
+                case  1: sf3 = 1.500f; break;       //
+                case  2: sf3 = 1.000f; break;       // Star
+                case  3: sf3 = 0.750f; break;       // Star
+                case  4: sf3 = 0.500f; break;       // Triangle-Apple-Fish
+                case  5: sf3 = 0.300f; break;       // Many-leaves spiral
+                case  6: sf3 = 0.250f; break;       // 3-leaf spiral
+                case  7: sf3 = 0.200f; break;       // 4-leaf spiral
                 case  8: sf3 = 0.075f; break;       // elliptic spiral
                 case  9: sf3 = 0.050f; break;       // elliptic spiral
                 case 10: sf3 = 0.025f; break;       // spiraling circle
@@ -1363,26 +1377,159 @@ dA = 1;
 
         private void constSetUp3()
         {
-            constSetUp2();
+            // Set up all the constants
+            constSetUp1();
 
-            // Let's change [a]:
+            // Adjust both radiuses a bit
+            sf2 *= (sf2 > 333) ? 1 : 2;
+            sf1 = sf2 / 2;
 
-            sf3 = 0.0f;     // no real impact from a. a < 1 makes the circle larger than the other circle
+            // Let's change [a] and [sf3]
+            // sf3 here will affect the form of the shape.
+            // These values were found manually and result in closed-loop shapes:
 
-            sf3 = 0.01f;
-            a = 300;        // increasing a makes the spiral denser
-            a = 0.01f;      // decreasing enlarges the shape to the point of endless circle
+            int aRnd = rand.Next(5);
 
-            sf3 = 0.025f;
-            a = 200;        // increasing a makes the spiral denser
-            a = 0.001f;     // decreasing enlarges the shape to the point of endless circle
+            switch (rand.Next(13))
+            {
+                // circle
+                // no real impact from a. a < 1 makes the circle larger than the other circle
+                case 0:
+                    sf3 = 0.0f;
+                    break;
 
-            sf3 = 0.050f;
-            a = 300;        // increasing a makes the spiral denser. need more life span
-            a = 1.0f;       // decreasing enlarges the shape. no need to go less than 1
+                // spiraling circle
+                case 1:
+                    sf3 = 0.01f;
+                    a = (aRnd < 3)
+                        ? 0.01f * (rand.Next(100) + 1)      // [0.01 .. 1]
+                        : 0.10f * (rand.Next(3000) + 10);   // [1 .. 300]
+                    break;
 
-            sf3 = 0.075f;
-            a = 2.0f;       //
+                // spiraling circle
+                case 2:
+                    sf3 = 0.025f;
+                    a = (aRnd < 3)
+                        ? 0.001f * (rand.Next(1000) + 1)        // [0.001 .. 1]
+                        : 0.100f * (rand.Next(2000) + 10);      // [1 .. 200]
+                    break;
+
+                // elliptic spiral -- need more life span
+                case 3:
+                    sf3 = 0.05f;
+                    a = 0.100f * (rand.Next(3000) + 10);      // [1 .. 300] -- no need to go less than 1.0
+                    break;
+
+                // elliptic spiral -- need more life span
+                case 4:
+                    sf3 = 0.075f;
+                    a = 0.100f * (rand.Next(1000) + 10);      // [1 .. 100] -- no need to go less than 1.0
+                    break;
+
+                // 4-leaf spiral
+                case 5:
+                    sf3 = 0.2f;
+                    a = (aRnd < 4)
+                        ? 0.1f * (rand.Next(991) + 10)          // [1 .. 100]       -- var shapes
+                        : 0.1f * (rand.Next(50000) + 1000);     // [100 .. 5000]    -- elliptical shape
+                    break;
+
+                // 3-leaf spiral
+                case 6:
+                    sf3 = 0.25f;
+
+                    // [0.01 .. 1], the second circle must not be larger than the screen
+                    if (aRnd == 0)
+                    {
+                        a = 0.01f * (rand.Next(99) + 1);
+
+                        sf2 = rand.Next(Height/2) + Height/2;
+                        sf1 = sf2 / 2;
+                        break;
+                    }
+
+                    // [30 .. 1000]
+                    if (aRnd == 1)
+                    {
+                        a = 0.1f * (rand.Next(10000) + 300);
+                        break;
+                    }
+
+                    // [1..30] is the most interesting part
+                    {
+                        a = 0.01f * (rand.Next(2901) + 100);
+                    }
+                    break;
+
+                // Many-leaves spiral
+                case 7:
+                    sf3 = 0.3f;
+                    a = (aRnd < 3)
+                        ? 0.10f * (rand.Next(5000) + 200)       // [20 .. 500]
+                        : 0.01f * (rand.Next(1900) + 100);      // [1 .. 20]
+                    break;
+
+                // Triangle-Apple-Fish
+                case 8:
+                    sf3 = 0.5f;
+
+                    switch (aRnd)
+                    {
+                        // [20 .. 100]
+                        case 0:
+                            a = 0.1f * (rand.Next(800) + 200);
+                            break;
+
+                        // [5 .. 20]
+                        case 1:
+                            a = 0.01f * (rand.Next(1500) + 500);
+                            break;
+
+                        // [1 .. 5]
+                        case 2:
+                            a = 0.01f * (rand.Next(401) + 100);
+                            break;
+
+                        // [0.5 .. 1]
+                        case 3:
+                            a = 0.5f + 0.01f * (rand.Next(51));
+                            sf1 = 100;
+                            break;
+
+                        // [0.01 .. 0.5]
+                        case 4:
+                            a = 0.01f * (rand.Next(50) + 1);
+                            sf1 = 10;
+                            break;
+                    }
+                    break;
+
+                // todo: finish a's setup:
+
+                // Star
+                case 9:
+                    sf3 = 0.75f;
+                    a = 2.0f;
+                    break;
+
+                // Star
+                case 10:
+                    sf3 = 1.0f;
+                    a = 2.0f;
+                    break;
+
+                // 
+                case 11:
+                    sf3 = 1.5f;
+                    a = 2.0f;
+                    break;
+
+                // 
+                case 12:
+                    sf3 = 2.0f;
+                    a = 2.0f;
+                    break;
+            }
 
             return;
         }
