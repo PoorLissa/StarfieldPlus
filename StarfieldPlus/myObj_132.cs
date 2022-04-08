@@ -1365,7 +1365,7 @@ dA = 1;
         {
             constSetUp2();
 
-            // Let's change a:
+            // Let's change [a]:
 
             sf3 = 0.0f;     // no real impact from a. a < 1 makes the circle larger than the other circle
 
