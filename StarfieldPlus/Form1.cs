@@ -40,6 +40,8 @@ this.TopMost = false;
             this.MouseMove += Form1_MouseMove;
             this.KeyDown += Form1_KeyDown;
 
+            this.KeyPreview = true;
+
             getScreenSaverObject();
             RunScreensaver();
         }
@@ -52,6 +54,10 @@ this.TopMost = false;
             {
                 case Keys.Tab:
                     my.myObject.ShowInfo = !my.myObject.ShowInfo;
+                    break;
+
+                case Keys.Space:
+                    my.myObject.GetNext = !my.myObject.GetNext;
                     break;
 
                 default:
