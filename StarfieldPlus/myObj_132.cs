@@ -30,6 +30,7 @@ namespace my
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height, 3);
+                f = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
                 max_dSize = rand.Next(15) + 3;
 
@@ -990,8 +991,8 @@ dA = 1;
                     // sf5 = 2.0f && sf7 = 2.0f             -- parabola 2 - try with diff params
                     // sf6 = 2.0f && sf7 = 2.0f             -- apple / clover
                     // sf6 = 2.0f && sf8 = 2.0f             -- apple / clover
-                    // sf5 = 2.0f && sf8 = 2.0f             -- apple / clover
-                    // sf5 = 2.0f && sf7 = 2.0f             -- apple / clover
+                    // sf5 = 2.0f && sf8 = 2.0f             -- apple / clover                               // done
+                    // sf5 = 2.0f && sf7 = 2.0f             -- apple / clover                               // done
 
                     x1 = x0 + ((float)(Math.Sin(sf5 * time * sf3) * sf1) + (float)(Math.Sin(sf6 * time * sf3) * sf1 * a));
                     y1 = y0 + ((float)(Math.Cos(sf7 * time * sf3) * sf1) + (float)(Math.Cos(sf8 * time * sf3) * sf1 * b));
@@ -1171,7 +1172,7 @@ dA = 1;
                 case 77:
                 case 78:
                 case 79:
-                    p.Color = Color.FromArgb(20, p.Color.R, p.Color.G, p.Color.B);
+                    p.Color = Color.FromArgb(33, p.Color.R, p.Color.G, p.Color.B);
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
@@ -1193,6 +1194,7 @@ dA = 1;
         protected override void Process()
         {
             int cnt = 0;
+            string strInfo = "";
 
             int num = rand.Next(333) + 33;
             num = 1;
@@ -1212,6 +1214,15 @@ dA = 1;
                 {
                     s.Move();
                     s.Show();
+                }
+
+                {
+                    if (cnt % 100 == 0)
+                    {
+                        strInfo = $" obj = myObj_132\n shape = {shape}\n sf5 = {sf5}\n sf6 = {sf6}\n sf7 = {sf7}\n sf8 = {sf8}\n";
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 200);
+                        g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                    }
                 }
 
                 // Jump to next -- generate new
@@ -1571,6 +1582,22 @@ dA = 1;
                 a = b = val;
             }
 
+            // Get value from [0.025, 0.05, 0.1, 0.15, 0.20 ... 1.0]
+            void getParam1(ref float val)
+            {
+                switch (rand.Next(21))
+                {
+                    case 0: val = 0.025f; break;
+                    case 1: val = 0.050f; break;
+
+                    case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+                    case 10: case 11: case 12: case 13: case 14: case 15: case 16:
+                    case 17: case 18: case 19: case 20:
+                        val = 0.10f + 0.05f * rand.Next(19);
+                        break;
+                }
+            }
+
             // ---------------------------
 
             constSetUp1();
@@ -1781,21 +1808,20 @@ dA = 1;
                     sf5 = sf6 = sf7 = sf8 = 1.0f;
                     set2params(ref sf5, ref sf7, 2.0f);
 
-                    a = 0.9f + 0.01f * rand.Next(21);
-                    b = 0.9f + 0.01f * rand.Next(21);
-                    break;
-
-                // Apple-Clover-Mushroom-Mouse-1 - Pure Form + Size Randomized
-                case 18:
-                    sf5 = sf6 = sf7 = sf8 = 1.0f;
-                    set2params(ref sf5, ref sf7, 2.0f);
-
-                    a = 0.01f * rand.Next(1001);
-                    b = 0.01f * rand.Next(501);
+                    if (rand.Next(2) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
                     break;
 
                 // Apple-Clover-Mushroom-Mouse-1 - Param Randomized
-                case 19:
+                case 18:
                     sf5 = sf6 = sf7 = sf8 = 1.0f;
 
                     switch (rand.Next(5))
@@ -1815,37 +1841,20 @@ dA = 1;
 
                     set2params(ref sf5, ref sf7, c);
 
-                    a = 0.9f + 0.01f * rand.Next(21);
-                    b = 0.9f + 0.01f * rand.Next(21);
-                    break;
-
-                // Apple-Clover-Mushroom-Mouse-1 - Param Randomized + Size Randomized
-                case 20:
-                    sf5 = sf6 = sf7 = sf8 = 1.0f;
-
-                    switch (rand.Next(5))
+                    if (rand.Next(2) == 0)
                     {
-                        case 0: case 1:
-                            c = 0.01f * rand.Next(201);
-                            break;
-
-                        case 2: case 3:
-                            c = 2.0f + 0.01f * rand.Next(501);
-                            break;
-
-                        case 4:
-                            c = 2.0f + 0.01f * rand.Next(5001);
-                            break;
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
                     }
-
-                    set2params(ref sf5, ref sf7, c);
-
-                    a = 0.01f * rand.Next(1001);
-                    b = 0.01f * rand.Next(501);
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
                     break;
 
                 // Apple-Clover-Mushroom-Mouse-1 - Both Params Randomized
-                case 21:
+                case 19:
                     sf5 = sf6 = sf7 = sf8 = 1.0f;
 
                     switch (rand.Next(5))
@@ -1891,7 +1900,7 @@ dA = 1;
                     break;
 
                 // Apple-Clover-Mushroom-Mouse-1 - One param from predefined list, the second is its multiplicative
-                case 22:
+                case 20:
                     sf5 = sf6 = sf7 = sf8 = 1.0f;
 
                     // Get value from [0.025, 0.05, 0.1, 0.15, 0.20 ... 1.0]
@@ -1935,12 +1944,135 @@ dA = 1;
                     }
                     break;
 
-                // Apple-Clover-Mushroom-Mouse-1 - Multiplicatives of 0.5f
+                // Apple-Clover-Mushroom-Mouse-1 - Multiplicatives of our magic numbers
+                case 21:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    // Get multiplier
+                    switch (rand.Next(17))
+                    {
+                        case 0:
+                            si1 = 31;
+                            break;
+
+                        case 1: case 2:
+                            si1 = 21;
+                            break;
+
+                        case 3: case 4: case 5:
+                            si1 = 11;
+                            break;
+
+                        case 6: case 7: case 8: case 9: case 10:
+                            si1 = 5;
+                            break;
+
+                        case 11: case 12: case 13: case 14: case 15: case 16:
+                            si1 = 3;
+                            break;
+                    }
+
+                    // Get magic number
+                    getParam1(ref c);
+
+                    sf5 = c * (rand.Next(si1));
+                    sf7 = c * (rand.Next(si1));
+
+                    if (rand.Next(3) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-2 - Pure Form
+                case 22:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+                    set2params(ref sf5, ref sf8, 2.0f);
+
+                    if (rand.Next(3) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-2 - Param Randomized
                 case 23:
                     sf5 = sf6 = sf7 = sf8 = 1.0f;
 
-                    sf5 = 0.5f * (rand.Next(21) + 1);
-                    sf7 = 0.5f * (rand.Next(21) + 1);
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            c = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            c = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            c = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
+
+                    set2params(ref sf5, ref sf8, c);
+
+                    if (rand.Next(3) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+                // Apple-Clover-Mushroom-Mouse-2 - Both Params Randomized
+                case 24:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            sf5 = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            sf5 = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            sf5 = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
+
+                    switch (rand.Next(5))
+                    {
+                        case 0: case 1:
+                            sf8 = 0.01f * rand.Next(201);
+                            break;
+
+                        case 2: case 3:
+                            sf8 = 2.0f + 0.01f * rand.Next(501);
+                            break;
+
+                        case 4:
+                            sf8 = 2.0f + 0.01f * rand.Next(5001);
+                            break;
+                    }
 
                     if (rand.Next(2) == 0)
                     {
@@ -1954,22 +2086,98 @@ dA = 1;
                     }
                     break;
 
-                case 24:
-joppa:
-                    // mouse is lost :(
-                    // try mults of other than 0.5f
+                // Apple-Clover-Mushroom-Mouse-2 - One param from predefined list, the second is its multiplicative
+                case 25:
                     sf5 = sf6 = sf7 = sf8 = 1.0f;
 
-                    sf5 = 3.0f;
-                    sf7 = 1.5f;
+                    // Get value from [0.025, 0.05, 0.1, 0.15, 0.20 ... 1.0]
+                    switch (rand.Next(21))
+                    {
+                        case 0: sf5 = 0.025f; break;
+                        case 1: sf5 = 0.050f; break;
 
-                    a = 1;
-                    b = 1;
+                        case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+                        case 10: case 11: case 12: case 13: case 14: case 15: case 16:
+                        case 17: case 18: case 19: case 20:
+                            sf5 = 0.10f + 0.05f * rand.Next(19);
+                            break;
+                    }
 
-                    a = 0.9f + 0.01f * rand.Next(21);
-                    b = 0.9f + 0.01f * rand.Next(21);
+                    // Increase by int sometimes
+                    if (rand.Next(50) < 10)
+                    {
+                        sf5 += rand.Next(5);
+                    }
 
+                    sf8 = sf5 * (rand.Next(5) + 1);
+
+                    // Swap
+                    if (rand.Next(2) == 0)
+                    {
+                        c = sf5;
+                        sf5 = sf8;
+                        sf8 = c;
+                    }
+
+                    if (rand.Next(2) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
                     break;
+
+                // Apple-Clover-Mushroom-Mouse-2 - Multiplicatives of our magic numbers
+                case 26:
+                    sf5 = sf6 = sf7 = sf8 = 1.0f;
+
+                    // Get multiplier
+                    switch (rand.Next(17))
+                    {
+                        case 0:
+                            si1 = 31;
+                            break;
+
+                        case 1: case 2:
+                            si1 = 21;
+                            break;
+
+                        case 3: case 4: case 5:
+                            si1 = 11;
+                            break;
+
+                        case 6: case 7: case 8: case 9: case 10:
+                            si1 = 5;
+                            break;
+
+                        case 11: case 12: case 13: case 14: case 15: case 16:
+                            si1 = 3;
+                            break;
+                    }
+
+                    // Get magic number
+                    getParam1(ref c);
+
+                    sf5 = c * (rand.Next(si1));
+                    sf8 = c * (rand.Next(si1));
+
+                    if (rand.Next(3) == 0)
+                    {
+                        a = 0.01f * rand.Next(1001);
+                        b = 0.01f * rand.Next(501);
+                    }
+                    else
+                    {
+                        a = 0.9f + 0.01f * rand.Next(21);
+                        b = 0.9f + 0.01f * rand.Next(21);
+                    }
+                    break;
+
+
 
                 case 1111:
                     goto joppa;
