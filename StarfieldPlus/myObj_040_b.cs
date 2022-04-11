@@ -7,14 +7,10 @@ namespace my
     public class myObj_004_b : myObject
     {
         private int dx, dy, A, oldX, oldY;
-        private int R = -1, G = -1, B = -1;
-        private float dx2 = 0, dy2 = 0, x = 0, y = 0, time;
+        private float dx2 = 0, dy2 = 0, x = 0, y = 0, time = 0;
 
         static int x0 = 0, y0 = 0, moveMode = -1, drawMode = -1, speedMode = -1, maxA = 255, t = -1;
-
-        // todo: x0 and y0 as random
-        // todo: color changes only once
-        // also add dimming
+        static string strInfo = "";
 
         // -------------------------------------------------------------------------
 
@@ -25,6 +21,7 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
                 colorPicker = new myColorPicker(Width, Height);
+                f = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
 
                 drawMode = rand.Next(3);
                 moveMode = rand.Next(12);
@@ -89,6 +86,8 @@ namespace my
                 Size = rand.Next(6) + 1;
             }
             while (dx == 0 && dy == 0);
+
+            time = 0.001f * rand.Next(1111);
 
             return;
         }
@@ -266,6 +265,7 @@ namespace my
         {
             int cnt = 0;
             var list = new System.Collections.Generic.List<myObj_004_b>();
+            var brDim = new SolidBrush(Color.FromArgb(3, 0, 0, 0));
 
             for (int i = 0; i < Count; i++)
             {
@@ -282,22 +282,37 @@ namespace my
                     obj.Move();
                 }
 
+                // Display some info
+                if (my.myObject.ShowInfo)
+                {
+                    if (cnt % 100 == 0 || strInfo.Length == 0)
+                    {
+                        strInfo = $" obj = myObj_140_b\n drawMode = {drawMode}\n moveMode = {moveMode}\n speedMode = {speedMode}";
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 200);
+                        g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                    }
+                }
+                else
+                {
+                    if (strInfo.Length > 0)
+                    {
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 200);
+                        strInfo = string.Empty;
+                    }
+                }
+
+                // Dim the screen
+                if (cnt % 5 == 0)
+                {
+                    g.FillRectangle(brDim, 0, 0, Width, Height);
+                }
+
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
 
                 if (++cnt > 1000)
                 {
-                    //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-#if false
-                    using (SolidBrush br = new SolidBrush(Color.FromArgb(11, 0, 0, 0)))
-                    {
-                        g.FillRectangle(br, 0, 0, Width, Height);
-                    }
-#endif
-                    //getNewBrush(br);
-                    //cnt = 0;
-
-                    bool gotNewBrush = getNewBrush(br, cnt == 1001);
+                    bool gotNewBrush = colorPicker.getNewBrush(br, cnt == 1001);
 
                     if (gotNewBrush)
                     {
@@ -308,50 +323,6 @@ namespace my
             }
 
             return;
-        }
-
-        // -------------------------------------------------------------------------
-
-        private void getNewBrush(SolidBrush br)
-        {
-            int alpha = 0, R = 0, G = 0, B = 0, max = 256;
-
-            while (alpha + R + G + B < 100)
-            {
-                alpha = rand.Next(max - 75) + 75;
-                R = rand.Next(max);
-                G = rand.Next(max);
-                B = rand.Next(max);
-            }
-
-            br.Color = Color.FromArgb(alpha, R, G, B);
-        }
-
-        // -------------------------------------------------------------------------
-
-        private bool getNewBrush(SolidBrush br, bool doGenerate)
-        {
-            if (doGenerate)
-            {
-                while (R + G + B < 100)
-                {
-                    R = rand.Next(256);
-                    G = rand.Next(256);
-                    B = rand.Next(256);
-                }
-            }
-
-            int r = br.Color.R;
-            int g = br.Color.G;
-            int b = br.Color.B;
-
-            r += r == R ? 0 : r > R ? -1 : 1;
-            g += g == G ? 0 : g > G ? -1 : 1;
-            b += b == B ? 0 : b > B ? -1 : 1;
-
-            br.Color = Color.FromArgb(255, r, g, b);
-
-            return r == R && g == G && b == B;
         }
 
         // -------------------------------------------------------------------------
