@@ -12,7 +12,7 @@ namespace my
         private Random   _rand = null;
         private Graphics _g = null;
 
-        private static int gl_R = 0, gl_G = 0, gl_B = 0;
+        private static int gl_R = -1, gl_G = -1, gl_B = -1, gl_r = -1, gl_g = -1, gl_b = -1;
 
         private enum scaleParams { scaleToWidth, scaleToHeight };
 
@@ -104,8 +104,8 @@ namespace my
         // Get color at a point, as a brush
         public void getColor(SolidBrush br, int x, int y, int A = 255)
         {
-            getColor(x, y, ref gl_R, ref gl_G, ref gl_B);
-            br.Color = Color.FromArgb(A, gl_R, gl_B, gl_B);
+            getColor(x, y, ref gl_r, ref gl_g, ref gl_b);
+            br.Color = Color.FromArgb(A, gl_r, gl_g, gl_b);
         }
 
         // -------------------------------------------------------------------------
@@ -113,8 +113,8 @@ namespace my
         // Get color at a point, as a pen
         public void getColor(Pen p, int x, int y, int A = 255)
         {
-            getColor(x, y, ref gl_R, ref gl_G, ref gl_B);
-            p.Color = Color.FromArgb(A, gl_R, gl_B, gl_B);
+            getColor(x, y, ref gl_r, ref gl_g, ref gl_b);
+            p.Color = Color.FromArgb(A, gl_r, gl_g, gl_b);
         }
 
         // -------------------------------------------------------------------------
@@ -142,12 +142,15 @@ namespace my
                 // Shades of a Single Random Color
                 case 2:
 
-                    while (gl_R + gl_G + gl_B < 500)
+                    // Run once per session
+                    if (gl_R < 0 && gl_G < 0 && gl_B < 0)
                     {
-                        // Run once per session
-                        gl_R = _rand.Next(256);
-                        gl_G = _rand.Next(256);
-                        gl_B = _rand.Next(256);
+                        while (gl_R + gl_G + gl_B < 500)
+                        {
+                            gl_R = _rand.Next(256);
+                            gl_G = _rand.Next(256);
+                            gl_B = _rand.Next(256);
+                        }
                     }
 
                     R = gl_R;

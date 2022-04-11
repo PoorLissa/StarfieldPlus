@@ -102,28 +102,24 @@ this.TopMost = false;
         // - try bezier curves: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
         // - try rotating rectangles: https://stackoverflow.com/questions/10210134/using-a-matrix-to-rotate-rectangles-individually
         // - something like myObj_101, but the pieces are moved via sine/cosine function (up-down or elliptically)
-        // - drop dots or pieces of an image on the screen randomly and constantly dim the screen, so they would fade away
 
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random((int)DateTime.Now.Ticks).Next(22);
+            int id = new Random((int)DateTime.Now.Ticks).Next(23);
 
             id = 19;
+            id = 22;
 
-            id = 6;
+#if false
+            _obj = new my.distributionTester();
+            return;
+#endif
 
-            if (false)
-            {
-                _obj = new my.distributionTester();
-                return;
-            }
-
-            if (false)
-            {
-                //_obj = new my.myObj_080();
-                return;
-            }
+#if false
+            _obj = new my.myObj_160();
+            return;
+#endif
 
             this.Text = id.ToString();
 
@@ -237,6 +233,11 @@ this.TopMost = false;
                 // Cellular Automaton: Conway's Life
                 case 21:
                     _obj = new my.myObj_150();
+                    break;
+
+                // Desktop - ever fading away pieces
+                case 22:
+                    _obj = new my.myObj_160();
                     break;
 
                 default:
