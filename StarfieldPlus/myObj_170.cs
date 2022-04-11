@@ -25,7 +25,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height);
+                colorPicker = new myColorPicker(Width, Height, 0);
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
@@ -41,11 +41,8 @@ namespace my
 
                 moveMode = rand.Next(2);
 
-drawMode = 0;
-
-                rect.Width  = 50;
-                rect.Height = 50;
-                size = rand.Next(66) + 5;
+drawMode = 1;
+moveMode = 1;
 
                 Log($"myObj_170: colorPicker({colorPicker.getMode()})");
             }
@@ -59,36 +56,37 @@ drawMode = 0;
 
         protected override void generateNew()
         {
-            size = rand.Next(66) + 5;
-
-            lifeCnt = rand.Next(100) + 100;
+            lifeCnt = rand.Next(10) + 10;
             doDraw = true;
 
-            lifeCnt *= 2;
+            size = rand.Next(66) + 5;
 
-            X = rand.Next(Width);
-            Y = rand.Next(Height);
+            X = 2 * size + rand.Next(Width - 4 * size);
+            Y = 2 * size + rand.Next(Height - 4 * size);
         }
 
         // -------------------------------------------------------------------------
 
         protected override void Move()
         {
-            size--;
-
-            rect.X = X;
-            rect.Y = Y;
-
             if (moveMode == 1)
             {
+                rect.X = X - size;
+                rect.Y = Y - size;
+
                 rect.Width = size * 2;
                 rect.Height = size * 2;
             }
 
-            if (--lifeCnt == 0)
+            if (size <= 0)
             {
-                generateNew();
+                //if (--lifeCnt == 0)
+                {
+                    generateNew();
+                }
             }
+
+            size--;
         }
 
         // -------------------------------------------------------------------------
@@ -114,14 +112,12 @@ drawMode = 0;
                         g.DrawImage(colorPicker.getImg(), rect, rect, GraphicsUnit.Pixel);
                         break;
                 }
-
-                size++;
             }
             else
             {
                 if (size >= 0)
                 {
-                    g.DrawRectangle(Pens.Black, X - size, Y - size, size * 2, size * 2);
+                    g.DrawRectangle(Pens.Black, rect);
                 }
             }
 
@@ -133,7 +129,7 @@ drawMode = 0;
         protected override void Process()
         {
             string strInfo = "";
-            int Cnt = 666, cnt = 0;
+            int Cnt = 2, cnt = 0;
             var dimBrush = new SolidBrush(Color.FromArgb(10, 0, 0, 0));
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
@@ -143,8 +139,8 @@ drawMode = 0;
             {
                 foreach (myObj_170 s in list)
                 {
-                    s.Show();
                     s.Move();
+                    s.Show();
                 }
 
                 // View some info (need to press Tab)
