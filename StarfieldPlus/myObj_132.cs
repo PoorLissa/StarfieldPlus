@@ -10,7 +10,7 @@ namespace my
     public class myObj_132 : myObject
     {
         static int max_dSize = 0;
-        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0;
+        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
         static bool isDimmable = true, needNewScreen = false;
         static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, sf5 = 0, sf6 = 0, sf7 = 0, sf8 = 0;
         static float a = 0, b = 0, c = 0;
@@ -70,7 +70,7 @@ float_B = 1.0f;
 #if DEBUG
             fdLifeCnt = 0.01f;
             shape = 1300;
-            shape = 82;
+            shape = 86;
 #endif
 
             Size = 1;
@@ -192,9 +192,41 @@ dA = 1;
                         case 3: x1 = rand.Next(Width); break;
                     }
 
+                    si1 = rand.Next(150) + 5;
+                    si2 = rand.Next(500);
                     sf1 = 0.1f * (rand.Next(40) + 3);
+                    sf2 = rand.Next(Height/2);
 
                     t = 3; // tmp, remove later
+                    break;
+
+                case 83:
+                    constSetup5();
+                    t = 3;
+                    break;
+
+                case 84:
+                    constSetup5();
+                    t = 3;
+                    break;
+
+                case 85:
+                case 86:
+                    constSetup5();
+
+                    x1 = rand.Next(Width);
+                    y1 = rand.Next(Height);
+
+                    x2 = rand.Next(Width);
+                    y2 = rand.Next(Height);
+
+                    sf1 = 0.001f * rand.Next(1111) * rand.Next(333) * my.myUtils.getRandomSign(rand);
+                    sf2 = 0.001f * rand.Next(1111) * rand.Next(333) * my.myUtils.getRandomSign(rand);
+                    sf3 = 0.001f * rand.Next(1111) * rand.Next(333) * my.myUtils.getRandomSign(rand);
+                    sf4 = 0.001f * rand.Next(1111) * rand.Next(333) * my.myUtils.getRandomSign(rand);
+
+                    t = 3;
+                    needNewScreen = false;
                     break;
 
                 case 1300:
@@ -1033,35 +1065,43 @@ dA = 1;
                     break;
 
                 case 82:
-                    // turn 90 degrees
-                    y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * sf1;
+                    x1 = x0 + (int)(dy2 * si2 / float_B) * sf1;
+                    y1 = Height;
 
-                    x2 = x0 + dx2 * 150 / float_B;
-                    y2 = Height / 2;
+                    x2 = x0 + dx2 * si1 / float_B;
+                    y2 = sf2;
                     break;
 
+                case 83:
+                    y1 = si1 + (float)(Math.Sin(time * sf1)) * sf3;
+                    y2 = si2 + (float)(Math.Sin(time * sf2)) * sf4;
+                    break;
 
-                case 1300:
+                case 84:
+                    x3 = Width / 2;
+                    y3 = Height / 2 + (float)(Math.Sin(time * sf2)) * sf4;
+                    y2 = y1 = Height / 2 + (float)(Math.Sin(time * sf1)) * sf3;
+                    break;
+
+                case 85:
+                    x1 = rand.Next(Width);
+                    x2 = rand.Next(Width);
+
+                    y1 = rand.Next(Height);
+                    y2 = rand.Next(Height);
+                    break;
+
+                case 86:
+                    x1 += (float)(Math.Sin(time * sf1 * sf2) * sf1);
+                    y1 += (float)(Math.Sin(time * sf1 * sf2) * sf2);
+
+                    x2 += (float)(Math.Sin(time * sf3 * sf4) * sf3);
+                    y2 += (float)(Math.Sin(time * sf3 * sf4) * sf4);
                     break;
 
                 default:
                     break;
             }
-#if false
-// turn this 90 degrees
-                case 1021:
-                    x1 = (int)(Math.Sin(float_B) * 5.0f) - 100;
-                    y1 = 1 * Height / 2 + (int)(dy2 * 33 / float_B) * 10;
-
-                    float_B += 0.0f;
-
-                    x2 = 8 * Width / 12 - 1300 * (float)(Math.Sin(Math.Cos(float_B)) * 1.25f);
-                    y2 = 1 * Height / 2 - dy2 * 33 / float_B;
-
-                    g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
-#endif
-
         }
 
         // -------------------------------------------------------------------------
@@ -1183,8 +1223,18 @@ dA = 1;
                 case 80:
                 case 81:
                 case 82:
+                case 83:
+                case 85:
+                case 86:
                     //p.Color = Color.FromArgb(33, p.Color.R, p.Color.G, p.Color.B);
                     g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 84:
+                    g.DrawLine(p, x1, y1, x3, y3);
+                    g.DrawLine(p, x2, y2, x3, y3);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
@@ -1212,6 +1262,8 @@ dA = 1;
             br.Color = Color.FromArgb(3, 0, 0, 0);
 
             list.Add(new myObj_132());
+
+            g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
             while (isAlive)
             {
@@ -2864,6 +2916,53 @@ dA = 1;
             sf6 *= my.myUtils.getRandomSign(rand);
             sf7 *= my.myUtils.getRandomSign(rand);
             sf8 *= my.myUtils.getRandomSign(rand);
+
+            return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void constSetup5()
+        {
+            constSetUp1();
+            x1 = rand.Next(100);
+            x2 = Width - x1;
+
+            si1 = Height / 2;
+            si2 = Height / 2;
+
+            sf1 = 0.001f * rand.Next(1111);
+
+            switch (rand.Next(2))
+            {
+                case 0:
+                    sf2 = 0.001f * rand.Next(1111);
+                    break;
+
+                case 1:
+                    sf2 = sf1 * (rand.Next(111) + 1);
+                    break;
+            }
+
+            switch (rand.Next(3))
+            {
+                case 0:
+                    sf3 = Height / 2;
+                    sf4 = Height / 2;
+                    break;
+
+                case 1:
+                    sf3 = rand.Next(Height / 2);
+                    sf4 = rand.Next(Height / 2);
+                    break;
+
+                case 2:
+                    si1 = rand.Next(Height);
+                    si2 = rand.Next(Height);
+                    sf3 = rand.Next(Height / 2);
+                    sf4 = rand.Next(Height / 2);
+                    break;
+            }
 
             return;
         }
