@@ -13,6 +13,8 @@ namespace my
         static int x0 = 0, y0 = 0, moveMode = -1, drawMode = -1, speedMode = -1, maxA = 255, t = -1;
 
         // todo: x0 and y0 as random
+        // todo: color changes only once
+        // also add dimming
 
         // -------------------------------------------------------------------------
 

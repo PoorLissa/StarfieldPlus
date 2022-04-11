@@ -111,6 +111,8 @@ this.TopMost = false;
 
             id = 19;
 
+            id = 6;
+
             if (false)
             {
                 _obj = new my.distributionTester();
