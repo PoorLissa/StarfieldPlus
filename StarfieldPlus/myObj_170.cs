@@ -12,7 +12,7 @@ namespace my
     {
         int lifeCnt = 0;
         float size = 0, dSize = 0;
-        bool doDraw = false;
+        bool doDraw = false, isSizeChanged = false;
 
         static int drawMode = 0, t = 0;
         static List<myObject> list = null;
@@ -94,6 +94,9 @@ namespace my
             }
 
             size -= dSize;
+
+            // To draw the black rectangle only once
+            isSizeChanged = (int)(size) != iSize;
         }
 
         // -------------------------------------------------------------------------
@@ -127,7 +130,20 @@ namespace my
             {
                 if (size >= 0)
                 {
-                    g.DrawRectangle(Pens.Black, rect);
+                    if (isSizeChanged)
+                    {
+                        g.DrawRectangle(Pens.Black, rect);
+
+/*
+                        if (size > 3)
+                        {
+                            g.FillRectangle(Brushes.Black, X - size + 1, Y - size + 1, 1, 1);
+                            g.FillRectangle(Brushes.Black, X - size + 1, Y + size - 1, 1, 1);
+                            g.FillRectangle(Brushes.Black, X + size - 1, Y - size + 1, 1, 1);
+                            g.FillRectangle(Brushes.Black, X + size - 1, Y + size - 1, 1, 1);
+                        }
+*/
+                    }
 
                     if (size < 1)
                     {
@@ -144,7 +160,7 @@ namespace my
         protected override void Process()
         {
             string strInfo = "";
-            int Cnt = 666, cnt = 0;
+            int Cnt = 1, cnt = 0;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 

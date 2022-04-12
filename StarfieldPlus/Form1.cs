@@ -105,7 +105,6 @@ this.TopMost = false;
 
         private void getScreenSaverObject()
         {
-            // Starfield has a slight priority over the others
             int id = new Random((int)DateTime.Now.Ticks).Next(24);
 
             id = 19;
