@@ -111,7 +111,7 @@ t = 1;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-            while (isAlive)
+            while (myObject.isAlive)
             {
                 foreach (var s in list)
                 {

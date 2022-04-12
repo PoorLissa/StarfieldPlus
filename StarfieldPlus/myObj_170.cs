@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Collections.Generic;
 
 /*
@@ -14,10 +13,11 @@ namespace my
         float size = 0, dSize = 0;
         bool doDraw = false, isSizeChanged = false;
 
-        static int drawMode = 0, t = 0;
+        static int drawMode = 0, t = 0, maxSize = 66;
         static List<myObject> list = null;
         static Rectangle rect;
         static bool doLeaveTrace = false;
+        static string info = string.Empty;
 
         // -------------------------------------------------------------------------
 
@@ -43,6 +43,13 @@ namespace my
 
                 doLeaveTrace = rand.Next(2) == 0;
 
+                switch (rand.Next(3))
+                {
+                    case 0: maxSize = 066; break;
+                    case 1: maxSize = 111; break;
+                    case 2: maxSize = 166; break;
+                }
+
                 Log($"myObj_170: colorPicker({colorPicker.getMode()})");
             }
             else
@@ -58,7 +65,7 @@ namespace my
             lifeCnt = rand.Next(23) + 10;
             doDraw = true;
 
-            int iSize = rand.Next(66) + 5;
+            int iSize = rand.Next(maxSize) + 5;
             dSize = 0.1f + 0.1f * rand.Next(10);
 
             X = iSize + rand.Next(Width  - 2 * iSize);
@@ -159,13 +166,12 @@ namespace my
 
         protected override void Process()
         {
-            string strInfo = "";
-            int Cnt = 1, cnt = 0;
+            int Cnt = 666, cnt = 0;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
             // Main loop
-            while (isAlive)
+            while (myObject.isAlive)
             {
                 foreach (myObj_170 s in list)
                 {
@@ -176,23 +182,23 @@ namespace my
                 // View some info (need to press Tab)
                 if (my.myObject.ShowInfo)
                 {
-                    if (strInfo.Length == 0)
+                    if (info.Length == 0)
                     {
-                        strInfo = $" obj = myObj_170\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n doLeaveTrace = {doLeaveTrace}";
+                        info = $" obj = myObj_170\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n Trace = {doLeaveTrace}\n t = {t}";
                     }
 
                     if (cnt % 3 == 0)
                     {
-                        g.FillRectangle(Brushes.Black, 30, 33, 155, 100);
-                        g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                        g.FillRectangle(Brushes.Black, 30, 33, 160, 111);
+                        g.DrawString(info, f, Brushes.Red, 35, 33);
                     }
                 }
                 else
                 {
-                    if (strInfo.Length > 0)
+                    if (info.Length > 0)
                     {
-                        strInfo = "";
-                        g.FillRectangle(Brushes.Black, 30, 33, 155, 100);
+                        info = string.Empty;
+                        g.FillRectangle(Brushes.Black, 30, 33, 160, 111);
                     }
                 }
 

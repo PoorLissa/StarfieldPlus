@@ -13,7 +13,7 @@ namespace my
         int lifeCnt = 0;
         bool doDraw = false;
 
-        static int drawMode = 0, moveMode = 0, t = 0, size = 0;
+        static int drawMode = 0, moveMode = 0, t = 0, size = 0, dimRate = 0;
         static List<myObject> list = null;
         static Rectangle rect;
 
@@ -44,6 +44,8 @@ namespace my
                 rect.Width  = 50;
                 rect.Height = 50;
                 size = rand.Next(66) + 5;
+
+                dimRate = rand.Next(11) + 2;
 
                 Log($"myObj_160: colorPicker({colorPicker.getMode()})");
             }
@@ -168,13 +170,11 @@ namespace my
                     list.Add(new myObj_160());
                 }
 
-                // Dim the screen
-#if true
-                if (cnt % 10 == 0)
+                // Constantly dim the screen
+                if (cnt % dimRate == 0)
                 {
                     g.FillRectangle(dimBrush, 0, 0, Width, Height);
                 }
-#endif
 
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);

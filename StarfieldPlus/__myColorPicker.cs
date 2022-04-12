@@ -7,12 +7,13 @@ namespace my
 {
     public class myColorPicker
     {
-        private int      _mode = -1;
+        private int      _mode = -1, _rndMode = -1, _rndVariator = -1;
         private Bitmap   _img = null;
         private Random   _rand = null;
         private Graphics _g = null;
 
         private static int gl_R = -1, gl_G = -1, gl_B = -1, gl_r = -1, gl_g = -1, gl_b = -1;
+        private static bool isRlocked = false, isGlocked = false, isBlocked = false;
 
         private enum scaleParams { scaleToWidth, scaleToHeight };
 
@@ -21,7 +22,9 @@ namespace my
         public myColorPicker(int Width, int Height, int mode = -1)
         {
             _rand = new Random((int)DateTime.Now.Ticks);
-            _mode = mode;
+            _mode = mode;                                   // color mode
+            _rndMode = _rand.Next(6);                       // random color mode
+            _rndVariator = 25 + _rand.Next(75);             // random color variator
 
             if (_mode < 0)
             {
@@ -35,7 +38,7 @@ namespace my
                     getSnapshot(Width, Height);
                     break;
 
-                // Use Custom Picture
+                // Use External Picture
                 case 1:
                     getCustomPicture(Width, Height);
                     break;
@@ -139,7 +142,7 @@ namespace my
                     }
                     break;
 
-                // Shades of a Single Random Color
+                // Single Random Color -- to get different shades of this color, use Alpha channel
                 case 2:
 
                     // Run once per session
@@ -158,11 +161,9 @@ namespace my
                     B = gl_B;
                     break;
 
-                // Random Color
+                // Random Color (of 6 different types)
                 case 3:
-                    R = _rand.Next(256);
-                    G = _rand.Next(256);
-                    B = _rand.Next(256);
+                    getRandomColor(ref R, ref G, ref B);
                     break;
 
                 // Shades of Gray
@@ -413,5 +414,151 @@ namespace my
         }
 
         // -------------------------------------------------------------------------
+
+        // Randomly set 1 bool to true, 2 to false
+        private void lock1of3(ref bool val1, ref bool val2, ref bool val3)
+        {
+            val1 = val2 = val3 = true;
+
+            switch (_rand.Next(3))
+            {
+                case 0: val2 = val3 = false; break;
+                case 1: val1 = val3 = false; break;
+                case 2: val1 = val2 = false; break;
+            }
+        }
+
+        // -------------------------------------------------------------------------
+
+        // Randomly set 2 bools to true, 1 to false
+        private void lock2of3(ref bool val1, ref bool val2, ref bool val3)
+        {
+            val1 = val2 = val3 = false;
+
+            switch (_rand.Next(3))
+            {
+                case 0: val2 = val3 = true; break;
+                case 1: val1 = val3 = true; break;
+                case 2: val1 = val2 = true; break;
+            }
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void getRandomColor(ref int R, ref int G, ref int B)
+        {
+            switch (_rndMode)
+            {
+                // Family of colors: one R-G-B component is locked, two are fully random
+                case 0:
+
+                    // Run once per session
+                    if (gl_R < 0 && gl_G < 0 && gl_B < 0)
+                    {
+                        while (gl_R + gl_G + gl_B < 150)
+                        {
+                            gl_R = _rand.Next(256);
+                            gl_G = _rand.Next(256);
+                            gl_B = _rand.Next(256);
+                        }
+
+                        lock1of3(ref isRlocked, ref isGlocked, ref isBlocked);
+                    }
+
+                    R = isRlocked ? gl_R : _rand.Next(256);
+                    G = isGlocked ? gl_G : _rand.Next(256);
+                    B = isBlocked ? gl_B : _rand.Next(256);
+                    break;
+
+                // Family of colors: two R-G-B components are locked, one is fully random
+                case 1:
+
+                    // Run once per session
+                    if (gl_R < 0 && gl_G < 0 && gl_B < 0)
+                    {
+                        while (gl_R + gl_G + gl_B < 150)
+                        {
+                            gl_R = _rand.Next(256);
+                            gl_G = _rand.Next(256);
+                            gl_B = _rand.Next(256);
+                        }
+
+                        lock2of3(ref isRlocked, ref isGlocked, ref isBlocked);
+                    }
+
+                    R = isRlocked ? gl_R : _rand.Next(256);
+                    G = isGlocked ? gl_G : _rand.Next(256);
+                    B = isBlocked ? gl_B : _rand.Next(256);
+                    break;
+
+                // Family of colors: one R-G-B component is locked, two are narrowly random
+                case 2:
+
+                    // Run once per session
+                    if (gl_R < 0 && gl_G < 0 && gl_B < 0)
+                    {
+                        while (gl_R + gl_G + gl_B < 150)
+                        {
+                            gl_R = _rand.Next(256 - _rndVariator);
+                            gl_G = _rand.Next(256 - _rndVariator);
+                            gl_B = _rand.Next(256 - _rndVariator);
+                        }
+
+                        lock1of3(ref isRlocked, ref isGlocked, ref isBlocked);
+                    }
+
+                    R = isRlocked ? gl_R + _rndVariator/2 : gl_R + _rand.Next(_rndVariator);
+                    G = isGlocked ? gl_G + _rndVariator/2 : gl_G + _rand.Next(_rndVariator);
+                    B = isBlocked ? gl_B + _rndVariator/2 : gl_B + _rand.Next(_rndVariator);
+                    break;
+
+                // Family of colors: two R-G-B components are locked, one is narrowly random
+                case 3:
+
+                    // Run once per session
+                    if (gl_R < 0 && gl_G < 0 && gl_B < 0)
+                    {
+                        while (gl_R + gl_G + gl_B < 150)
+                        {
+                            gl_R = _rand.Next(256 - _rndVariator);
+                            gl_G = _rand.Next(256 - _rndVariator);
+                            gl_B = _rand.Next(256 - _rndVariator);
+                        }
+
+                        lock2of3(ref isRlocked, ref isGlocked, ref isBlocked);
+                    }
+
+                    R = isRlocked ? gl_R + _rndVariator/2 : gl_R + _rand.Next(_rndVariator);
+                    G = isGlocked ? gl_G + _rndVariator/2 : gl_G + _rand.Next(_rndVariator);
+                    B = isBlocked ? gl_B + _rndVariator/2 : gl_B + _rand.Next(_rndVariator);
+                    break;
+
+                // Narrowed Random Color:
+                case 4:
+
+                    // Run once per session
+                    if (gl_R < 0 && gl_G < 0 && gl_B < 0)
+                    {
+                        while (gl_R + gl_G + gl_B < 150)
+                        {
+                            gl_R = _rand.Next(256 - _rndVariator);
+                            gl_G = _rand.Next(256 - _rndVariator);
+                            gl_B = _rand.Next(256 - _rndVariator);
+                        }
+                    }
+
+                    R = gl_R + _rand.Next(_rndVariator);
+                    G = gl_G + _rand.Next(_rndVariator);
+                    B = gl_B + _rand.Next(_rndVariator);
+                    break;
+
+                // Fully Random Color
+                case 5:
+                    R = _rand.Next(256);
+                    G = _rand.Next(256);
+                    B = _rand.Next(256);
+                    break;
+            }
+        }
     }
 };
