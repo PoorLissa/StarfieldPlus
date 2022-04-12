@@ -162,6 +162,7 @@ namespace my
                     break;
 
                 // Random Color (of 6 different types)
+                // todo: See if someting like that could be implemented: https://color.adobe.com/create/color-wheel
                 case 3:
                     getRandomColor(ref R, ref G, ref B);
                     break;
