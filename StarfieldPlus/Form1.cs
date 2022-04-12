@@ -107,8 +107,10 @@ this.TopMost = false;
         {
             int id = new Random((int)DateTime.Now.Ticks).Next(24);
 
+#if DEBUG
             id = 19;
             id = 23;
+#endif
 
 #if false
             _obj = new my.distributionTester();
