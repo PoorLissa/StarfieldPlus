@@ -3,19 +3,21 @@ using System.Drawing;
 using System.Collections.Generic;
 
 /*
-    - Desktop: Ever fading away pieces
+    - Desktop: Diminishing pieces
 */
 
 namespace my
 {
     public class myObj_170 : myObject
     {
-        int lifeCnt = 0, size = 0;
+        int lifeCnt = 0;
+        float size = 0, dSize = 0;
         bool doDraw = false;
 
-        static int drawMode = 0, moveMode = 0, t = 0;
+        static int drawMode = 0, t = 0;
         static List<myObject> list = null;
         static Rectangle rect;
+        static bool doLeaveTrace = false;
 
         // -------------------------------------------------------------------------
 
@@ -25,7 +27,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height, 0);
+                colorPicker = new myColorPicker(Width, Height);
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
@@ -39,10 +41,7 @@ namespace my
                     if (rand.Next(3) > 0)
                         drawMode = 1;
 
-                moveMode = rand.Next(2);
-
-drawMode = 1;
-moveMode = 1;
+                doLeaveTrace = rand.Next(2) == 0;
 
                 Log($"myObj_170: colorPicker({colorPicker.getMode()})");
             }
@@ -56,37 +55,45 @@ moveMode = 1;
 
         protected override void generateNew()
         {
-            lifeCnt = rand.Next(10) + 10;
+            lifeCnt = rand.Next(23) + 10;
             doDraw = true;
 
-            size = rand.Next(66) + 5;
+            int iSize = rand.Next(66) + 5;
+            dSize = 0.1f + 0.1f * rand.Next(10);
 
-            X = 2 * size + rand.Next(Width - 4 * size);
-            Y = 2 * size + rand.Next(Height - 4 * size);
+            X = iSize + rand.Next(Width  - 2 * iSize);
+            Y = iSize + rand.Next(Height - 2 * iSize);
+
+            rect.X = X - iSize;
+            rect.Y = Y - iSize;
+
+            rect.Width  = iSize * 2;
+            rect.Height = iSize * 2;
+
+            size = iSize;
         }
 
         // -------------------------------------------------------------------------
 
         protected override void Move()
         {
-            if (moveMode == 1)
-            {
-                rect.X = X - size;
-                rect.Y = Y - size;
+            int iSize = (int)size;
 
-                rect.Width = size * 2;
-                rect.Height = size * 2;
-            }
+            rect.X = X - iSize;
+            rect.Y = Y - iSize;
+
+            rect.Width = iSize * 2;
+            rect.Height = iSize * 2;
 
             if (size <= 0)
             {
-                //if (--lifeCnt == 0)
+                if (--lifeCnt == 0)
                 {
                     generateNew();
                 }
             }
 
-            size--;
+            size -= dSize;
         }
 
         // -------------------------------------------------------------------------
@@ -101,10 +108,10 @@ moveMode = 1;
                     // Solid color from color picker
                     case 0:
                         colorPicker.getColor(p, X, Y);
-                        colorPicker.getColor(br, X, Y, 150 + rand.Next(50));
+                        br.Color = Color.FromArgb(150 + rand.Next(50), p.Color.R, p.Color.G, p.Color.B);
 
-                        g.FillRectangle(br, X - size, Y - size, size*2, size*2);
-                        g.DrawRectangle( p, X - size, Y - size, size*2, size*2);
+                        g.FillRectangle(br, rect);
+                        g.DrawRectangle( p, rect);
                         break;
 
                     // Piece of an image
@@ -112,12 +119,20 @@ moveMode = 1;
                         g.DrawImage(colorPicker.getImg(), rect, rect, GraphicsUnit.Pixel);
                         break;
                 }
+
+                if (!doLeaveTrace)
+                    size++;
             }
             else
             {
                 if (size >= 0)
                 {
                     g.DrawRectangle(Pens.Black, rect);
+
+                    if (size < 1)
+                    {
+                        g.FillRectangle(Brushes.Black, X, Y, 1, 1);
+                    }
                 }
             }
 
@@ -129,8 +144,7 @@ moveMode = 1;
         protected override void Process()
         {
             string strInfo = "";
-            int Cnt = 2, cnt = 0;
-            var dimBrush = new SolidBrush(Color.FromArgb(10, 0, 0, 0));
+            int Cnt = 666, cnt = 0;
 
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
@@ -148,7 +162,7 @@ moveMode = 1;
                 {
                     if (strInfo.Length == 0)
                     {
-                        strInfo = $" obj = myObj_170\n drawMode = {drawMode}\n moveMode = {moveMode}\n colorMode = {colorPicker.getMode()}\n";
+                        strInfo = $" obj = myObj_170\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n doLeaveTrace = {doLeaveTrace}";
                     }
 
                     if (cnt % 3 == 0)

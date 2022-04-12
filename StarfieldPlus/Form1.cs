@@ -106,17 +106,17 @@ this.TopMost = false;
         private void getScreenSaverObject()
         {
             // Starfield has a slight priority over the others
-            int id = new Random((int)DateTime.Now.Ticks).Next(23);
+            int id = new Random((int)DateTime.Now.Ticks).Next(24);
 
             id = 19;
-            id = 22;
+            id = 23;
 
 #if false
             _obj = new my.distributionTester();
             return;
 #endif
 
-#if true
+#if false
             _obj = new my.myObj_170();
             return;
 #endif
@@ -238,6 +238,11 @@ this.TopMost = false;
                 // Desktop - ever fading away pieces
                 case 22:
                     _obj = new my.myObj_160();
+                    break;
+
+                // Desktop - Diminishing pieces
+                case 23:
+                    _obj = new my.myObj_170();
                     break;
 
                 default:
