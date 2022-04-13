@@ -16,8 +16,9 @@ namespace my
         static int drawMode = 0, t = 0, maxSize = 66;
         static List<myObject> list = null;
         static Rectangle rect;
-        static bool doLeaveTrace = false;
+        static bool doLeaveTrace = false, doUseCells = false;
         static string info = string.Empty;
+        static float largeDSize = 0.0f;
 
         // -------------------------------------------------------------------------
 
@@ -41,7 +42,25 @@ namespace my
                     if (rand.Next(3) > 0)
                         drawMode = 1;
 
+                doUseCells = rand.Next(3) == 0;
                 doLeaveTrace = rand.Next(2) == 0;
+
+doUseCells = true;
+
+                // With the probability of 1/5 we'll have static dSize > 1.0 (which will cause it to leave concentric traces)
+                {
+                    largeDSize = rand.Next(5);
+
+                    if (largeDSize == 0.0f)
+                    {
+                        largeDSize = 1.1f + 0.1f * rand.Next(11);
+                        t += 13;
+                    }
+                    else
+                    {
+                        largeDSize = 0.0f;
+                    }
+                }
 
                 switch (rand.Next(3))
                 {
@@ -66,7 +85,15 @@ namespace my
             doDraw = true;
 
             int iSize = rand.Next(maxSize) + 5;
-            dSize = 0.1f + 0.1f * rand.Next(10);
+
+            if (largeDSize == 0.0f)
+            {
+                dSize = 0.1f + 0.1f * rand.Next(10);
+            }
+            else
+            {
+                dSize = largeDSize;
+            }
 
             X = iSize + rand.Next(Width  - 2 * iSize);
             Y = iSize + rand.Next(Height - 2 * iSize);
