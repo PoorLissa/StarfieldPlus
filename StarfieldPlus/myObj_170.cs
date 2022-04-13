@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 /*
     - Desktop: Diminishing pieces
+
+    Variations:
+        - grid-based
+        - leaving traces
 */
 
 namespace my
@@ -14,6 +18,7 @@ namespace my
         bool doDraw = false, isSizeChanged = false;
 
         static int drawMode = 0, t = 0, maxSize = 66;
+        static int step = 0, startX = 0, startY = 0;
         static List<myObject> list = null;
         static Rectangle rect;
         static bool doLeaveTrace = false, doUseCells = false;
@@ -32,6 +37,14 @@ namespace my
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
+                // Grid-based set-up
+                {
+                    doUseCells = rand.Next(3) == 0;
+                    step = 50 + rand.Next(151);
+                    startX = (Width % step) / 2;
+                    startY = (Height % step) / 2;
+                }
+
                 t = rand.Next(50) + 1;
 
                 // Solid color is ('0') the default mode
@@ -42,10 +55,7 @@ namespace my
                     if (rand.Next(3) > 0)
                         drawMode = 1;
 
-                doUseCells = rand.Next(3) == 0;
                 doLeaveTrace = rand.Next(2) == 0;
-
-doUseCells = true;
 
                 // With the probability of 1/5 we'll have static dSize > 1.0 (which will cause it to leave concentric traces)
                 {
@@ -95,8 +105,40 @@ doUseCells = true;
                 dSize = largeDSize;
             }
 
-            X = iSize + rand.Next(Width  - 2 * iSize);
-            Y = iSize + rand.Next(Height - 2 * iSize);
+            if (doUseCells)
+            {
+                iSize = step / 2;
+
+                X = rand.Next(Width);
+                Y = rand.Next(Height);
+
+                if (X >= startX)
+                {
+                    X -= startX;
+                    X -= X % step;
+                    X += startX;
+                }
+                else
+                {
+                    X = startX - step;
+                }
+
+                if (Y >= startY)
+                {
+                    Y -= startY;
+                    Y -= Y % step;
+                    Y += startY;
+                }
+                else
+                {
+                    Y = startY - step;
+                }
+            }
+            else
+            {
+                X = iSize + rand.Next(Width  - 2 * iSize);
+                Y = iSize + rand.Next(Height - 2 * iSize);
+            }
 
             rect.X = X - iSize;
             rect.Y = Y - iSize;
