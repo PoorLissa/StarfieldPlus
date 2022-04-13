@@ -41,7 +41,7 @@ namespace my
                 {
                     doUseCells = rand.Next(3) == 0;
                     step = 50 + rand.Next(151);
-                    startX = (Width % step) / 2;
+                    startX = (Width % step)  / 2;
                     startY = (Height % step) / 2;
                 }
 

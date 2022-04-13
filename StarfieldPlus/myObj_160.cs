@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Collections.Generic;
 
 /*
@@ -14,6 +13,8 @@ namespace my
         bool doDraw = false;
 
         static int drawMode = 0, moveMode = 0, t = 0, size = 0, dimRate = 0;
+        static int step = 0, startX = 0, startY = 0;
+        static bool doUseCells = false;
         static List<myObject> list = null;
         static Rectangle rect;
 
@@ -25,7 +26,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height);
+                colorPicker = new myColorPicker(Width, Height, 0);
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
@@ -46,6 +47,16 @@ namespace my
                 size = rand.Next(66) + 5;
 
                 dimRate = rand.Next(11) + 2;
+
+                // Grid-based set-up
+                {
+                    doUseCells = rand.Next(3) == 0;
+doUseCells = true;
+drawMode = 1;
+                    step = 50 + rand.Next(151);
+                    startX = (Width  % step) / 2;
+                    startY = (Height % step) / 2;
+                }
 
                 Log($"myObj_160: colorPicker({colorPicker.getMode()})");
             }
@@ -69,6 +80,33 @@ namespace my
 
             X = rand.Next(Width);
             Y = rand.Next(Height);
+
+            if (doUseCells)
+            {
+                size = step;
+
+                if (X >= startX)
+                {
+                    X -= startX;
+                    X -= X % step;
+                    X += startX;
+                }
+                else
+                {
+                    X = startX - step;
+                }
+
+                if (Y >= startY)
+                {
+                    Y -= startY;
+                    Y -= Y % step;
+                    Y += startY;
+                }
+                else
+                {
+                    Y = startY - step;
+                }
+            }
         }
 
         // -------------------------------------------------------------------------
@@ -78,9 +116,9 @@ namespace my
             rect.X = X;
             rect.Y = Y;
 
-            if (moveMode == 1)
+            if (moveMode == 1 || doUseCells)
             {
-                rect.Width = size;
+                rect.Width  = size;
                 rect.Height = size;
             }
 
