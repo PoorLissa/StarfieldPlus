@@ -105,23 +105,23 @@ this.TopMost = false;
 
         private void getScreenSaverObject()
         {
-            int id = new Random((int)DateTime.Now.Ticks).Next(24);
+            int id = -1;
 
 #if DEBUG
             id = 19;
             id = 23;
-#endif
 
-#if false
+        #if false
             _obj = new my.distributionTester();
             return;
-#endif
+        #endif
 
-#if false
+        #if false
             _obj = new my.myObj_170();
             return;
+        #endif
 #endif
-
+            start:
             this.Text = id.ToString();
 
             switch (id)
@@ -247,8 +247,8 @@ this.TopMost = false;
                     break;
 
                 default:
-                    _obj = new my.myObj_000();
-                    break;
+                    id = new Random((int)DateTime.Now.Ticks).Next(1 + 23);
+                    goto start;
             }
 
             return;

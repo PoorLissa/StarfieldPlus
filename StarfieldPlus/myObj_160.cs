@@ -26,7 +26,7 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
-                colorPicker = new myColorPicker(Width, Height, 0);
+                colorPicker = new myColorPicker(Width, Height);
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
@@ -51,8 +51,6 @@ namespace my
                 // Grid-based set-up
                 {
                     doUseCells = rand.Next(3) == 0;
-doUseCells = true;
-drawMode = 1;
                     step = 50 + rand.Next(151);
                     startX = (Width  % step) / 2;
                     startY = (Height % step) / 2;
