@@ -54,14 +54,13 @@ namespace my
             X = rand.Next(Width);
             Y = rand.Next(Height);
 
-            A = rand.Next(250) + 6;
-A = 255;
-float_B = 1.0f;
+            A = 255;
+            float_B = 1.0f;
 
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             p.Color = Color.FromArgb(100, R, G, B);
             maxSize = rand.Next(333) + 33;
-            shape = rand.Next(79);
+            shape = rand.Next(90);
             isDimmable = rand.Next(2) == 0;
 
             t = tDefault;
@@ -70,15 +69,16 @@ float_B = 1.0f;
 #if DEBUG
             fdLifeCnt = 0.01f;
             shape = 1300;
-            shape = 87;
+            shape = 89;
             t = 3;
 #endif
 
             Size = 1;
             dSize = rand.Next(max_dSize) + 1;
             dA = rand.Next(5) + 1;
-dA = 1;
+            dA = 1;
             dA_Filling = rand.Next(5) + 2;
+
             time = 0.0f;
             time2 = 0.0f;
             dt2 = 0.01f;
@@ -232,6 +232,28 @@ dA = 1;
 
                 case 87:
                     constSetup6();
+                    break;
+
+                case 88:
+                    constSetup1();
+
+                    a = rand.Next(2);
+
+                    sf5 = 0.5f + 0.5f * rand.Next(50);
+                    sf6 = 0.5f + 0.5f * rand.Next(50);
+
+                    si1 = rand.Next(20) + 10;
+                    si2 = rand.Next(20) + 10;
+                    break;
+
+                case 89:
+                    constSetup1();
+
+                    a = 2 + rand.Next(10);
+                    b = rand.Next(2);
+
+                    sf1 = 0.01f + 0.01f * rand.Next(100);
+                    sf2 = 0.5f + 0.5f * rand.Next(50);
                     break;
 
                 case 1300:
@@ -1104,6 +1126,7 @@ dA = 1;
                     y2 += (float)(Math.Sin(time * sf3 * sf4) * sf4);
                     break;
 
+                // Spiral
                 case 87:
                     x1 = (float)(Math.Sin(time));
                     y1 = (float)(Math.Cos(time));
@@ -1127,6 +1150,48 @@ dA = 1;
 
                     x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
                     y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
+                    break;
+
+                // Irregularly shaped circles
+                case 88:
+                    x1 = x0 + (float)(Math.Sin(time)) * 500 + (float)(Math.Sin(time * sf5)) * si1;
+                    y1 = y0 + (float)(Math.Cos(time)) * 500 + (float)(Math.Sin(time * sf6)) * si1;
+
+                    if (a == 0.0f)
+                    {
+                        x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2 + (float)(Math.Cos(time)) * si2;
+                        y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2 + (float)(Math.Sin(time)) * si2;
+                    }
+                    else
+                    {
+                        x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2 + (float)(Math.Sin(time)) * si2;
+                        y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2 + (float)(Math.Sin(time)) * si2;
+                    }
+                    break;
+
+                // Sine/Cosine functions
+                case 89:
+                    x1 = x2 = x3 = x4 = time * 30;
+
+                    if (b == 0.0f)
+                    {
+                        y1 = (float)(Math.Sin(time * sf1)) * 100;
+                        y2 = (float)(Math.Cos(time * sf2)) * 50;
+                    }
+                    else
+                    {
+                        y1 = (int)(Math.Sin(time * sf1) * a) * 100 / a;
+                        y2 = (int)(Math.Cos(time * sf2) * a) * 050 / a;
+                    }
+
+                    y3 = y1 + y2;
+                    y4 = y1 * y2 / 100;
+
+                    y1 += 333;
+                    y2 += Height - 333;
+
+                    y3 += Height / 2 - 300;
+                    y4 += Height / 2 + 300;
                     break;
 
                 default:
@@ -1257,6 +1322,7 @@ dA = 1;
                 case 85:
                 case 86:
                 case 87:
+                case 88:
                     //p.Color = Color.FromArgb(33, p.Color.R, p.Color.G, p.Color.B);
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
@@ -1268,6 +1334,14 @@ dA = 1;
                     g.DrawLine(p, x2, y2, x3, y3);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    break;
+
+                case 89:
+                    g.DrawLine(p, x1, y1, x2, y2 + 500);
+                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+                    g.DrawRectangle(Pens.DarkMagenta, x3, y3, 3, 3);
+                    g.DrawRectangle(Pens.DarkViolet, x4, y4, 3, 3);
                     break;
 
                 case 1300:
