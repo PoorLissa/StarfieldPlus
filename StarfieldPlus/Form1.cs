@@ -108,8 +108,8 @@ this.TopMost = false;
             int id = -1;
 
 #if DEBUG
-            id = 19;
             id = 23;
+            id = 19;
 
         #if false
             _obj = new my.distributionTester();
@@ -236,12 +236,12 @@ this.TopMost = false;
                     _obj = new my.myObj_150();
                     break;
 
-                // Desktop - ever fading away pieces
+                // Desktop: Ever fading away pieces
                 case 22:
                     _obj = new my.myObj_160();
                     break;
 
-                // Desktop - Diminishing pieces
+                // Desktop: Diminishing pieces
                 case 23:
                     _obj = new my.myObj_170();
                     break;

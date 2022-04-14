@@ -70,7 +70,8 @@ float_B = 1.0f;
 #if DEBUG
             fdLifeCnt = 0.01f;
             shape = 1300;
-            shape = 86;
+            shape = 87;
+            t = 3;
 #endif
 
             Size = 1;
@@ -152,27 +153,27 @@ dA = 1;
                 case 74:
                 case 75:
                 case 76:
-                    constSetUp1();
+                    constSetup1();
                     t = 11;
                     break;
 
                 case 77:
-                    constSetUp2();
+                    constSetup2();
                     t = 11;
                     break;
 
                 case 78:
-                    constSetUp3();
+                    constSetup3();
                     t = 11;
                     break;
 
                 case 79:
-                    constSetUp4();
+                    constSetup4();
                     t = 11;
                     break;
 
                 case 80:
-                    constSetUp1();
+                    constSetup1();
                     sf1 = 333;
                     sf2 = 666;
                     sf3 = 0.05f * (rand.Next(50) + 1);
@@ -182,7 +183,7 @@ dA = 1;
 
                 case 81:
                 case 82:
-                    constSetUp1();
+                    constSetup1();
 
                     switch (rand.Next(4))
                     {
@@ -229,8 +230,12 @@ dA = 1;
                     needNewScreen = false;
                     break;
 
+                case 87:
+                    constSetup6();
+                    break;
+
                 case 1300:
-                    constSetUp1();
+                    constSetup1();
                     t = 3;      // tmp, remove later
                     break;
             }
@@ -1099,6 +1104,31 @@ dA = 1;
                     y2 += (float)(Math.Sin(time * sf3 * sf4) * sf4);
                     break;
 
+                case 87:
+                    x1 = (float)(Math.Sin(time));
+                    y1 = (float)(Math.Cos(time));
+
+                    x1 += x1 * time / si1;
+                    y1 += y1 * time / si1;
+
+                    if (si2 == 0)
+                    {
+                        x1 = (int)(x1 * time) * sf1;
+                        y1 = (int)(y1 * time) * sf1;
+                    }
+                    else
+                    {
+                        x1 = x1 * sf1 * time;
+                        y1 = y1 * sf1 * time;
+                    }
+
+                    x1 = x0 + x1;
+                    y1 = y0 + y1;
+
+                    x2 = x0 + (float)(Math.Sin(time * sf4)) * sf2;
+                    y2 = y0 + (float)(Math.Cos(time * sf4)) * sf2;
+                    break;
+
                 default:
                     break;
             }
@@ -1226,6 +1256,7 @@ dA = 1;
                 case 83:
                 case 85:
                 case 86:
+                case 87:
                     //p.Color = Color.FromArgb(33, p.Color.R, p.Color.G, p.Color.B);
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
@@ -1319,7 +1350,7 @@ dA = 1;
 
         // -------------------------------------------------------------------------
 
-        private void constSetUp1()
+        private void constSetup1()
         {
             switch (rand.Next(2))
             {
@@ -1413,10 +1444,10 @@ dA = 1;
 
         // -------------------------------------------------------------------------
 
-        private void constSetUp2()
+        private void constSetup2()
         {
             // Set up all the constants
-            constSetUp1();
+            constSetup1();
 
             // Adjust both radiuses a bit
             sf2 *= (sf2 > 333) ? 1 : 2;
@@ -1451,10 +1482,10 @@ dA = 1;
 
         // -------------------------------------------------------------------------
 
-        private void constSetUp3()
+        private void constSetup3()
         {
             // Set up all the constants
-            constSetUp1();
+            constSetup1();
 
             // Adjust both radiuses a bit
             sf2 *= (sf2 > 333) ? 1 : 2;
@@ -1612,7 +1643,7 @@ dA = 1;
 
         // -------------------------------------------------------------------------
 
-        private void constSetUp4()
+        private void constSetup4()
         {
             void randInts(ref float val)
             {
@@ -1673,7 +1704,7 @@ dA = 1;
 
             // ---------------------------
 
-            constSetUp1();
+            constSetup1();
 
             a = 1;
             b = 1;
@@ -2924,7 +2955,7 @@ dA = 1;
 
         private void constSetup5()
         {
-            constSetUp1();
+            constSetup1();
             x1 = rand.Next(100);
             x2 = Width - x1;
 
@@ -2965,6 +2996,19 @@ dA = 1;
             }
 
             return;
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void constSetup6()
+        {
+            constSetup1();
+
+            sf1 = 1.0f + 0.1f * rand.Next(101);
+            si1 = 100 + rand.Next(3000);
+            si2 = rand.Next(2);
+            return;
+
         }
 
         // -------------------------------------------------------------------------
