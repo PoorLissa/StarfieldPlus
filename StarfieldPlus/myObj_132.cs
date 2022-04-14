@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+
 /*
     - Splines
 */
@@ -17,7 +18,7 @@ namespace my
         static float fLifeCnt = 0, fdLifeCnt = 0;
         static List<myObject> list = null;
 
-        protected int maxSize = 0, A = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
+        protected int maxSize = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
 
         float time, time2, dt2, dx, dy, float_B, x1, y1, x2, y2, x3, y3, x4, y4;
 
@@ -54,7 +55,6 @@ namespace my
             X = rand.Next(Width);
             Y = rand.Next(Height);
 
-            A = 255;
             float_B = 1.0f;
 
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
@@ -270,7 +270,6 @@ namespace my
             int tNow = System.DateTime.Now.Millisecond;
 
             Size += dSize;
-            A -= dA;
             time += 0.1f;
             time2 += dt2;
 
@@ -292,7 +291,6 @@ namespace my
 
         private void move_0()
         {
-            //p.Color = Color.FromArgb(A, R, G, B);
             p.Color = Color.FromArgb(100, R, G, B);
 
             float dx2 = (float)(Math.Cos(time)) * 10;
@@ -318,7 +316,7 @@ namespace my
 
                 case 1:
                     x1 = Size + dx2;
-                    y1 = Size + dy2;
+                    y1 = Size / 2 + dy2;
                     x2 = X / 2;
                     y2 = Y / 2;
                     break;
