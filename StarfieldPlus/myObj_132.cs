@@ -250,7 +250,7 @@ namespace my
                     constSetup1();
 
                     a = 2 + rand.Next(10);
-                    b = rand.Next(2);
+                    si1 = rand.Next(4);
 
                     sf1 = 0.01f + 0.01f * rand.Next(100);
                     sf2 = 0.5f + 0.5f * rand.Next(50);
@@ -1173,15 +1173,27 @@ namespace my
                 case 89:
                     x1 = x2 = x3 = x4 = time * 30;
 
-                    if (b == 0.0f)
+                    switch (si1)
                     {
-                        y1 = (float)(Math.Sin(time * sf1)) * 100;
-                        y2 = (float)(Math.Cos(time * sf2)) * 50;
-                    }
-                    else
-                    {
-                        y1 = (int)(Math.Sin(time * sf1) * a) * 100 / a;
-                        y2 = (int)(Math.Cos(time * sf2) * a) * 050 / a;
+                        case 0:
+                            y1 = (float)(Math.Sin(time * sf1)) * 100;
+                            y2 = (float)(Math.Cos(time * sf2)) * 50;
+                            break;
+
+                        case 1:
+                            y1 = (int)(Math.Sin(time * sf1) * a) * 100 / a;
+                            y2 = (int)(Math.Cos(time * sf2) * a) * 050 / a;
+                            break;
+
+                        case 2:
+                            y1 = (float)(Math.Sin(time * sf1)) * 100;
+                            y2 = (int)(Math.Cos(time * sf2) * a) * 50 / a;
+                            break;
+
+                        case 3:
+                            y1 = (int)(Math.Sin(time * sf1) * a) * 100 / a;
+                            y2 = (float)(Math.Cos(time * sf2)) * 50;
+                            break;
                     }
 
                     y3 = y1 + y2;
