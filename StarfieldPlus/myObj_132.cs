@@ -10,8 +10,7 @@ namespace my
 {
     public class myObj_132 : myObject
     {
-        static int max_dSize = 0;
-        static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
+        static int max_dSize = 0, t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0, invalidateRate = 1;
         static bool isDimmableGlobal = true, isDimmableLocal = false, needNewScreen = false;
         static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, sf5 = 0, sf6 = 0, sf7 = 0, sf8 = 0;
         static float a = 0, b = 0, c = 0;
@@ -84,6 +83,7 @@ namespace my
             time2 = 0.0f;
             dt2 = 0.01f;
 
+            invalidateRate = 1;
             needNewScreen = true;
 
             setUpConstants();
@@ -277,7 +277,9 @@ namespace my
                 case 90:
                     constSetup1();
                     fdLifeCnt = 0.05f;
-                    sf4 = 0.1f;
+                    sf4 = 0.01f + rand.Next(21) * 0.01f;
+
+                    invalidateRate = 2;
                     isDimmableLocal = true;
 
                     a = rand.Next(1111);
@@ -1385,13 +1387,15 @@ namespace my
 
                 case 90:
                     g.DrawLine(p, x1, y1, x2, y2);
-                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkRed, x1-1, y1-1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
 
                     if (x4 > 0)
                     {
-                        g.FillRectangle(Brushes.Orange, (int)x4 + 2, (int)y4 + 2, 5, 5);
-                        g.DrawRectangle(Pens.DarkOrange, (int)x4, (int)y4, 8, 8);
+                        x4 = (int)(x4);
+                        y4 = (int)(y4);
+                        g.FillRectangle(Brushes.Orange, x4 + 2, y4 + 2, 7, 7);
+                        g.DrawRectangle(Pens.DarkOrange, x4, y4, 10, 10);
                     }
                     break;
 
@@ -1471,7 +1475,9 @@ namespace my
                     g.FillRectangle(br, 0, 0, Width, Height);
                 }
 
-                form.Invalidate();
+                if (cnt % invalidateRate == 0)
+                    form.Invalidate();
+
                 System.Threading.Thread.Sleep(t);
             }
 
