@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 
 /*
@@ -12,6 +13,7 @@ namespace my
     public class myObj_020 : myObject
     {
         static int shape = 0;
+        static List<myObject> list = null;
 
         float x, y, dx, dy;
         int cnt = 0, A = 0, R = 0, G = 0, B = 0, lifeCounter = 0, growSpeed = 1, drawMode = 0, A_Filling = 0;
@@ -25,6 +27,7 @@ namespace my
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
+                list = new List<myObject>();
                 shape = rand.Next(2);
 
                 Log($"myObj_020: colorPicker({colorPicker.getMode()}), shape({shape})");
@@ -146,13 +149,13 @@ namespace my
         // Using form's background image as our drawing surface
         protected override void Process()
         {
-            var list = new System.Collections.Generic.List<myObj_020>();
+            g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
             while (isAlive)
             {
                 g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-                foreach (var s in list)
+                foreach (myObj_020 s in list)
                 {
                     s.Show();
                     s.Move();
