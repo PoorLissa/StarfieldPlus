@@ -16,9 +16,9 @@ namespace my
         static float a = 0, b = 0, c = 0;
         static float fLifeCnt = 0, fdLifeCnt = 0;
         static List<myObject> list = null;
+        static Pen P = null;
 
-        protected int maxSize = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
-
+        int maxSize = 0, R = 0, G = 0, B = 0, dSize = 0, dA = 0, dA_Filling = 0;
         float time, time2, dt2, dx, dy, float_B, x1, y1, x2, y2, x3, y3, x4, y4;
 
         // -------------------------------------------------------------------------
@@ -28,6 +28,7 @@ namespace my
             if (p == null)
             {
                 p = new Pen(Color.Red);
+                P = new Pen(Color.FromArgb(1, Color.DarkOrange.R, Color.DarkOrange.G, Color.DarkOrange.B));
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height, 3);
                 f = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
@@ -1230,8 +1231,8 @@ namespace my
                     }
                     else
                     {
-                        x4 = -10;
-                        y4 = -10;
+                        x4 = -33;
+                        y4 = -33;
                     }
                     break;
 
@@ -1386,6 +1387,10 @@ namespace my
                     break;
 
                 case 90:
+                    g.DrawEllipse(P, x0 - 100, y0 - 100, 200, 200);
+                    g.DrawEllipse(P, x0 - 300, y0 - 300, 600, 600);
+                    g.DrawEllipse(P, x0 - 500, y0 - 500, 1000, 1000);
+
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1-1, y1-1, 3, 3);
                     g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);

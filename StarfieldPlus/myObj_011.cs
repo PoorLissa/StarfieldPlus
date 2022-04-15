@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 
 /*
@@ -12,6 +13,7 @@ namespace my
     public class myObj_011 : myObject
     {
         static int removeTraces = 0;
+        static List<myObject> list = null;
 
         private int dx1, dy1, dx2, dy2, x, y;
         int A = 0, R = 0, G = 0, B = 0;
@@ -24,6 +26,7 @@ namespace my
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
                 colorPicker = new myColorPicker(Width, Height);
+                list = new List<myObject>();
 
                 removeTraces = rand.Next(2);
 
@@ -103,8 +106,6 @@ namespace my
         {
             int t = 50, cnt = 0, Cnt = 10;
 
-            var list = new System.Collections.Generic.List<myObj_011>();
-
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
             while (isAlive)
@@ -133,7 +134,7 @@ namespace my
                     list.Add(new myObj_011());
                 }
 
-                foreach (var s in list)
+                foreach (myObj_011 s in list)
                 {
                     s.Show();
                     s.Move();
