@@ -12,7 +12,7 @@ namespace my
     {
         static int max_dSize = 0;
         static int t = 0, tDefault = 0, shape = 0, x0 = 0, y0 = 0, si1 = 0, si2 = 0;
-        static bool isDimmable = true, needNewScreen = false;
+        static bool isDimmableGlobal = true, isDimmableLocal = false, needNewScreen = false;
         static float sf1 = 0, sf2 = 0, sf3 = 0, sf4 = 0, sf5 = 0, sf6 = 0, sf7 = 0, sf8 = 0;
         static float a = 0, b = 0, c = 0;
         static float fLifeCnt = 0, fdLifeCnt = 0;
@@ -35,7 +35,7 @@ namespace my
                 list = new List<myObject>();
                 max_dSize = rand.Next(15) + 3;
 
-                isDimmable = rand.Next(2) == 0;
+                isDimmableGlobal = rand.Next(2) == 0;
 
                 tDefault = 33;
 
@@ -61,15 +61,16 @@ namespace my
             p.Color = Color.FromArgb(100, R, G, B);
             maxSize = rand.Next(333) + 33;
             shape = rand.Next(90);
-            isDimmable = rand.Next(2) == 0;
+            isDimmableGlobal = rand.Next(2) == 0;
+            isDimmableLocal = false;
 
             t = tDefault;
-            t -= isDimmable ? 13 : 0;
+            t -= isDimmableGlobal ? 13 : 0;
 
 #if DEBUG
             fdLifeCnt = 0.01f;
             shape = 1300;
-            shape = 89;
+            shape = 90;
             t = 3;
 #endif
 
@@ -99,6 +100,21 @@ namespace my
                 case 0:
                 case 1:
                     fdLifeCnt = 0.5f;
+                    break;
+
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                    si1 = 50;
                     break;
 
                 case 44:
@@ -256,6 +272,23 @@ namespace my
                     sf2 = 0.5f + 0.5f * rand.Next(50);
                     break;
 
+                case 90:
+                    constSetup1();
+                    fdLifeCnt = 0.05f;
+                    sf4 = 0.1f;
+                    isDimmableLocal = true;
+
+                    a = rand.Next(1111);
+
+                    x1 = x0;
+                    y1 = y0;
+                    x3 = x0 - Height/3 + rand.Next(2 * Height / 3);
+                    y3 = y0 - Height/3 + rand.Next(2 * Height / 3);
+                    x4 = -10;
+                    y4 = -10;
+                    t = 3;
+                    break;
+
                 case 1300:
                     constSetup1();
                     t = 3;      // tmp, remove later
@@ -291,12 +324,8 @@ namespace my
 
         private void move_0()
         {
-            p.Color = Color.FromArgb(100, R, G, B);
-
             float dx2 = (float)(Math.Cos(time)) * 10;
             float dy2 = (float)(Math.Sin(time)) * 10;
-
-            int const1 = 0;
 
             //g.DrawLine(p, X, Y, Width/2, 10);
             //g.DrawLine(p, Width / 2, 10, Y, X);
@@ -404,111 +433,87 @@ namespace my
                     break;
 
                 case 9:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx2 * Size / const1;
-                    y1 = 1 * Height / 2 + dy2 * Size / const1;
-                    x2 = 4 * Width  / 5 - dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 + dx2 * Size / si1;
+                    y1 = 1 * Height / 2 + dy2 * Size / si1;
+                    x2 = 4 * Width  / 5 - dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 10:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx2 * Size / const1;
-                    y1 = 1 * Height / 2 - dy2 * Size / const1;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 + dx2 * Size / si1;
+                    y1 = 1 * Height / 2 - dy2 * Size / si1;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 11:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 - dy2 * Size / const1;
-                    y1 = 1 * Height / 2 + dx2 * Size / const1;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 - dy2 * Size / si1;
+                    y1 = 1 * Height / 2 + dx2 * Size / si1;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 12:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1;
-                    y1 = 1 * Height / 2 + dy  * Size / const1;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1;
+                    y1 = 1 * Height / 2 + dy  * Size / si1;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 13:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / const1;
-                    y1 = 1 * Height / 2 + dy  * Size / const1 / const1;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / si1;
+                    y1 = 1 * Height / 2 + dy  * Size / si1 / si1;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 14:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 - dx  * Size / const1 / const1;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / const1;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 - dx  * Size / si1 / si1;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / si1;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 15:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / const1;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / const1;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / si1;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / si1;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1;
                     break;
 
                 case 16:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / 2;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / 2;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1 / 1;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1 / 1;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / 2;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / 2;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1 / 1;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1 / 1;
                     break;
 
                 case 17:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / 2;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / 2;
-                    x2 = 4 * Width  / 5 + dx2 * Size / const1 * float_B;
-                    y2 = 1 * Height / 2 - dy2 * Size / const1 * float_B;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / 2;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / 2;
+                    x2 = 4 * Width  / 5 + dx2 * Size / si1 * float_B;
+                    y2 = 1 * Height / 2 - dy2 * Size / si1 * float_B;
 
                     float_B += 0.0001f;
                     break;
 
                 case 18:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / 2;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / 2;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / 2;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / 2;
                     x2 = 4 * Width  / 5 + dx2 * 33;
                     y2 = 1 * Height / 2 - dy2 * 33;
                     break;
 
                 case 19:
-                    const1 = 50;
-                    
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / 33;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / 33;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / 33;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / 33;
                     x2 = 4 * Width  / 5 + dx2 * 33;
                     y2 = 1 * Height / 2 - dy2 * 33;
                     break;
 
                 case 20:
-                    const1 = 50;
-
-                    x1 = 1 * Width  / 5 + dx  * Size / const1 / 33;
-                    y1 = 1 * Height / 2 - dy  * Size / const1 / 33;
+                    x1 = 1 * Width  / 5 + dx  * Size / si1 / 33;
+                    y1 = 1 * Height / 2 - dy  * Size / si1 / 33;
                     x2 = 4 * Width  / 5 + dx2 * 33 / float_B;
                     y2 = 1 * Height / 2 - dy2 * 33 / float_B;
 
@@ -1204,6 +1209,28 @@ namespace my
                     y4 += Height / 2 + 300;
                     break;
 
+                // Locator
+                case 90:
+                    x2 = x0 + (float)(Math.Sin(time * sf4 + a)) * Height/3;
+                    y2 = y0 + (float)(Math.Cos(time * sf4 + a)) * Height/3;
+
+                    {
+                        x3 += rand.Next(11) * 0.1f - 0.5f;
+                        y3 += rand.Next(11) * 0.1f - 0.5f;
+                    }
+
+                    if ((x2 > x0) == (x3 > x0) && (y2 > y0) == (y3 > y0) && Math.Abs((x2-x0)/(y2-y0) - (x3-x0)/(y3-y0)) < 0.05f)
+                    {
+                        x4 = x3;
+                        y4 = y3;
+                    }
+                    else
+                    {
+                        x4 = -10;
+                        y4 = -10;
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -1354,6 +1381,18 @@ namespace my
                     g.DrawRectangle(Pens.DarkViolet, x4, y4, 3, 3);
                     break;
 
+                case 90:
+                    g.DrawLine(p, x1, y1, x2, y2);
+                    g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
+
+                    if (x4 > 0)
+                    {
+                        g.FillRectangle(Brushes.Orange, (int)x4 + 2, (int)y4 + 2, 5, 5);
+                        g.DrawRectangle(Pens.DarkOrange, (int)x4, (int)y4, 8, 8);
+                    }
+                    break;
+
                 case 1300:
                     g.DrawLine(p, x1, y1, x2, y2);
                     g.DrawRectangle(Pens.DarkRed, x1, y1, 3, 3);
@@ -1420,7 +1459,12 @@ namespace my
                     my.myObject.GetNext = false;
                 }
 
-                if (++cnt % 5 == 0 && isDimmable)
+                if (++cnt % 5 == 0 && isDimmableGlobal)
+                {
+                    g.FillRectangle(br, 0, 0, Width, Height);
+                }
+
+                if (isDimmableLocal)
                 {
                     g.FillRectangle(br, 0, 0, Width, Height);
                 }
