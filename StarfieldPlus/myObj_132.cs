@@ -60,7 +60,7 @@ namespace my
             colorPicker.getColor(X, Y, ref R, ref G, ref B);
             p.Color = Color.FromArgb(100, R, G, B);
             maxSize = rand.Next(333) + 33;
-            shape = rand.Next(90);
+            shape = rand.Next(91);
             isDimmableGlobal = rand.Next(2) == 0;
             isDimmableLocal = false;
 
