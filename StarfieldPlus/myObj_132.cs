@@ -254,6 +254,8 @@ namespace my
 
                     sf1 = 0.01f + 0.01f * rand.Next(100);
                     sf2 = 0.5f + 0.5f * rand.Next(50);
+
+                    needNewScreen = false;
                     break;
 
                 case 1300:
