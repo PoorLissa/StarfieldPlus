@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
+
+/*
+    - Rain Drops
+*/
 
 
 namespace my
 {
     public class myObj_030 : myObject
     {
+        static List<myObject> list = null;
+        static SolidBrush dimBrush = null;
+        static int dimAlpha = 0, t = 33;
+
         protected float x, y, dx, dy;
         protected int lifeCounter = -1;
         protected int A = 0, R = 0, G = 0, B = 0;
@@ -17,8 +26,13 @@ namespace my
         {
             if (colorPicker == null)
             {
+                dimAlpha = (rand.Next(2) == 0) ? 255 : rand.Next(200) + 10;
+
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
+                f = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
+                dimBrush = new SolidBrush(Color.FromArgb(dimAlpha, 0, 0, 0));
+                list = new List<myObject>();
                 colorPicker = new myColorPicker(Width, Height);
 
                 Log($"myObj_030: colorPicker({colorPicker.getMode()})");
@@ -159,18 +173,38 @@ namespace my
 
         protected override void Process()
         {
-            int t = 33;
+            int cnt = 0;
+            string strInfo = "";
 
-            var list = new System.Collections.Generic.List<myObj_030>();
+            g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
             while (isAlive)
             {
-                g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+                g.FillRectangle(dimBrush, 0, 0, Width, Height);
 
-                foreach (var s in list)
+                foreach (myObj_030 s in list)
                 {
                     s.Show();
                     s.Move();
+                }
+
+                // Display some info
+                if (my.myObject.ShowInfo)
+                {
+                    //if (cnt % 100 == 0 || strInfo.Length == 0)
+                    {
+                        strInfo = $" obj = myObj_030\n colorMode = {colorPicker.getMode()}\n dimAlpha = {dimAlpha}\n t = {t}\n cnt = {cnt}";
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 150);
+                        g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                    }
+                }
+                else
+                {
+                    if (strInfo.Length > 0)
+                    {
+                        g.FillRectangle(Brushes.Black, 30, 33, 155, 150);
+                        strInfo = string.Empty;
+                    }
                 }
 
                 form.Invalidate();
@@ -180,9 +214,9 @@ namespace my
                 {
                     list.Add(new myObj_030());
                 }
-            }
 
-            br.Dispose();
+                cnt++;
+            }
 
             return;
         }

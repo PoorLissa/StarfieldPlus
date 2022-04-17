@@ -86,8 +86,8 @@ namespace my
                 t = 15 + rand.Next(11);
 
 #if DEBUG
-                //moveType = 2;
-                //shape = 3;
+                moveType = 0;
+                shape = 3;
                 //t = 3;
 #endif
                 switch (shape)
