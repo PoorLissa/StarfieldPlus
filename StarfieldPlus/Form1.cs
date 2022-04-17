@@ -102,6 +102,9 @@ namespace StarfieldPlus
         // - try bezier curves: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
         // - try rotating rectangles: https://stackoverflow.com/questions/10210134/using-a-matrix-to-rotate-rectangles-individually
         // - something like myObj_101, but the pieces are moved via sine/cosine function (up-down or elliptically)
+        // - randomly generate points. Every point grows its own square (with increasing or decreasing opacity). Grown squares stay a while then fade away. Example: myobj040 + moveType = 1 + shape = 0 + Show == g.FillRectangle(br, X, Y, Size, Size);
+        // - bouncing ball, but its trajctory is not straight line, but curved like in obj_040
+
 
         private void getScreenSaverObject()
         {
@@ -110,6 +113,7 @@ namespace StarfieldPlus
 #if DEBUG
             id = 23;
             id = 19;
+            id = 5;
 
         #if false
             _obj = new my.distributionTester();
