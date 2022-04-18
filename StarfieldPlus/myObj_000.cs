@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 /*
     - Star Field
+
+    todo:
+        see what's with the flickering in [drawMode = 1] when static stars have background light
 */
 
 namespace my
@@ -29,7 +32,7 @@ namespace my
                 list = new List<myObject>();
 
                 drawMode = rand.Next(2);
-drawMode = 1;
+
                 x0 = Width  / 2;
                 y0 = Height / 2;
 
