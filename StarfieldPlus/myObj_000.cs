@@ -131,15 +131,13 @@ namespace my
     {
 		protected override void generateNew()
         {
-            X = rand.Next(Width);
-            Y = rand.Next(Height);
             max = rand.Next(75) + 20;
             cnt = 0;
             color = rand.Next(50);
             acceleration = 1.005f + (rand.Next(100) * 0.0005f);
 
-            x = X;
-            y = Y;
+            x = X = rand.Next(Width);
+            y = Y = rand.Next(Height);
 
             int speed = rand.Next(10) + 1;
 
