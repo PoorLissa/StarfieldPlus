@@ -31,7 +31,11 @@ namespace StarfieldPlus
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Bounds = bounds;
+#if RELEASE
             this.TopMost = true;
+#else
+            this.TopMost = false;
+#endif
             this.DoubleBuffered = true;
 
             my.myObject.Height = this.Height;
@@ -116,15 +120,15 @@ namespace StarfieldPlus
             id = 19;
             id = 0;
 
-        #if false
+#if false
             _obj = new my.distributionTester();
             return;
-        #endif
+#endif
 
-        #if false
+#if false
             _obj = new my.myObj_170();
             return;
-        #endif
+#endif
 #endif
             start:
             this.Text = id.ToString();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 /*
     - Star Field
@@ -13,10 +14,12 @@ namespace my
 {
     public class myObj_000 : myObject
     {
+        protected static List<myObject> list = null;
+        protected static SolidBrush dimBrush = null;
         protected float x, y, dx, dy, acceleration = 1.0f;
         protected int cnt = 0, max = 0, color = 0;
 
-        protected static int x0 = 0, y0 = 0;
+        protected static int x0 = 0, y0 = 0, drawMode = 0;
 
         // -------------------------------------------------------------------------
 
@@ -24,7 +27,12 @@ namespace my
         {
             if (br == null)
             {
+                p = new Pen(Color.White);
                 br = new SolidBrush(Color.Black);
+                dimBrush = new SolidBrush(Color.Black);
+                list = new List<myObject>();
+
+                drawMode = rand.Next(2);
 
                 x0 = Width  / 2;
                 y0 = Height / 2;
@@ -45,36 +53,31 @@ namespace my
 
         protected override void Show()
         {
-            var brush = Brushes.White;
-
             switch (color)
             {
-                case 0:
-                    brush = Brushes.Red;
-                    break;
+                case 0: br.Color = Color.Red;    break;
+                case 1: br.Color = Color.Yellow; break;
+                case 2: br.Color = Color.Blue;   break;
+                case 3: br.Color = Color.Orange; break;
+                case 4: br.Color = Color.Aqua;   break;
+                case 5: br.Color = Color.Violet; break;
 
-                case 1:
-                    brush = Brushes.Yellow;
-                    break;
-
-                case 2:
-                    brush = Brushes.Blue;
-                    break;
-
-                case 3:
-                    brush = Brushes.Orange;
-                    break;
-
-                case 4:
-                    brush = Brushes.Aqua;
-                    break;
-
-                case 5:
-                    brush = Brushes.Violet;
+                default:
+                    br.Color = Color.White;
                     break;
             }
 
-            g.FillRectangle(brush, X, Y, Size, Size);
+            switch (drawMode)
+            {
+                case 0:
+                    g.FillRectangle(br, X, Y, Size, Size);
+                    break;
+
+                case 1:
+                    p.Color = br.Color;
+                    g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    break;
+            }
 
             return;
         }
@@ -83,8 +86,6 @@ namespace my
 
         protected override void Process()
         {
-            var list = new System.Collections.Generic.List<myObj_000>();
-
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             form.Invalidate();
             System.Threading.Thread.Sleep(666);
@@ -99,14 +100,18 @@ namespace my
                 list.Add(new myObj_000_b());
             }
 
+            list.Add(new myObj_000_c());
+            list.Add(new myObj_000_c());
+            list.Add(new myObj_000_c());
+
             while (isAlive)
             {
                 g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-                foreach (var s in list)
+                foreach (myObj_000 obj in list)
                 {
-                    s.Show();
-                    s.Move();
+                    obj.Show();
+                    obj.Move();
                 }
 
                 System.Threading.Thread.Sleep(33);
@@ -123,14 +128,38 @@ namespace my
         }
     }
 
+
     // ===========================================================================================================
     // ===========================================================================================================
+
 
     // Moving stars
     class myObj_000_a : myObj_000
     {
 		protected override void generateNew()
         {
+#if true
+
+            max = rand.Next(75) + 20;
+            cnt = 0;
+            color = rand.Next(50);
+            acceleration = 1.005f + (rand.Next(100) * 0.0005f);
+
+            x = X = rand.Next(Width);
+            y = Y = rand.Next(Width);
+
+            int speed = rand.Next(10) + 1;
+
+            double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - x0) * (Y - x0));
+            double sp_dist = speed / dist;
+
+            dx = (float)((X - x0) * sp_dist);
+            dy = (float)((Y - x0) * sp_dist);
+
+            y = Y = Y - (Width - Height) / 2;
+
+#else
+
             max = rand.Next(75) + 20;
             cnt = 0;
             color = rand.Next(50);
@@ -146,6 +175,8 @@ namespace my
 
             dx = (float)((X - x0) * sp_dist);
             dy = (float)((Y - y0) * sp_dist);
+
+#endif
 
             Size = 0;
         }
@@ -182,8 +213,10 @@ namespace my
         }
     };
 
+
     // ===========================================================================================================
     // ===========================================================================================================
+
 
     // Static stars
     public class myObj_000_b : myObj_000
@@ -265,77 +298,75 @@ namespace my
                 }
             }
 
-            br.Color = Color.FromArgb(alpha, 0, 0, 0);
-            g.FillRectangle(br, X, Y, Size, Size);
+            dimBrush.Color = Color.FromArgb(alpha, 0, 0, 0);
+            g.FillRectangle(dimBrush, X, Y, Size, Size);
         }
     };
 
+
     // ===========================================================================================================
     // ===========================================================================================================
+
 
     // Comets
     public class myObj_000_c : myObj_000
     {
-        private int lifeCounter = 0;
+        private int lifeCounter = 0, xOld = 0, yOld = 0;
 
         protected override void generateNew()
         {
-            //lifeCounter = (rand.Next(500) + 500) * factor;
-            //lifeCounter = rand.Next(500) + 500;
-
-            lifeCounter = 100;
-            cnt = 5;
+            lifeCounter = rand.Next(1000) + 666;
 
             int x0 = rand.Next(Width);
             int y0 = rand.Next(Height);
-            int speed = rand.Next(30) + 50;
+            int x1 = rand.Next(Width);
+            int y1 = rand.Next(Height);
 
-            speed = 20;
+            float a = (float)(y1 - y0) / (float)(x1 - x0);
+            float b = y1 - a * x1;
 
-            do
-            {
-                X = rand.Next(Width);
-                Y = rand.Next(Height);
-            }
-            while (X == x0 && Y == y0);
+            int speed = rand.Next(100) + 50;
 
-            double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
+            double dist = Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
             double sp_dist = speed / dist;
 
-            dx = (float)((X - x0) * sp_dist);
-            dy = (float)((Y - y0) * sp_dist);
+            dx = (float)((x1 - x0) * sp_dist);
+            dy = (float)((y1 - y0) * sp_dist);
 
-            x = X;
-            y = Y;
+            if (dx > 0)
+            {
+                x = X = xOld = 0;
+                y = Y = yOld = (int)b;
+            }
+            else
+            {
+                x = xOld = X = Width;
+                y = a * x + b;
+                Y = yOld = (int)y;
+            }
 
-            Size = 1;
+            Size = rand.Next(3) + 1;
         }
 
         protected override void Move()
         {
-            if (X != -11)
-            {
-                if (cnt-- == 0)
-                {
-                    Size += 1;
-                    cnt = 5;
-                }
+            xOld = X;
+            yOld = Y;
 
+            if (lifeCounter-- < 0)
+            {
                 x += dx;
                 y += dy;
 
                 X = (int)x;
                 Y = (int)y;
 
-                if (X < 0 || X > Width || Y < 0 || Y > Height)
+                if (dx > 0 && X > Width)
                 {
-                    X = -11;
-                    Y = -11;
+                    generateNew();
                 }
-            }
-            else
-            {
-                if (lifeCounter-- == 0)
+
+                if (dx < 0 && X < 0)
                 {
                     generateNew();
                 }
@@ -346,8 +377,14 @@ namespace my
 
         protected override void Show()
         {
-            g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
-            //g.FillRectangle(Brushes.OrangeRed, X, Y, Size, Size);
+            if (lifeCounter < 0)
+            {
+                //g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
+                g.DrawLine(Pens.Red, X-1, Y, xOld, yOld);
+                g.DrawLine(Pens.Red, X+0, Y, xOld, yOld);
+                g.DrawLine(Pens.Red, X+1, Y, xOld, yOld);
+                g.FillRectangle(Brushes.OrangeRed, X - Size, Y - Size, 2*Size, 2*Size);
+            }
         }
 
     };
