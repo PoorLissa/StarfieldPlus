@@ -104,6 +104,7 @@ namespace StarfieldPlus
         // - something like myObj_101, but the pieces are moved via sine/cosine function (up-down or elliptically)
         // - randomly generate points. Every point grows its own square (with increasing or decreasing opacity). Grown squares stay a while then fade away. Example: myobj040 + moveType = 1 + shape = 0 + Show == g.FillRectangle(br, X, Y, Size, Size);
         // - bouncing ball, but its trajctory is not straight line, but curved like in obj_040
+        // - restore Big Bang the way it was originally
 
 
         private void getScreenSaverObject()

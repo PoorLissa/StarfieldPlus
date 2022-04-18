@@ -1711,13 +1711,9 @@ namespace my
                 // View some info (need to press Tab)
                 if (my.myObject.ShowInfo)
                 {
-                    if (strInfo.Length == 0)
+                    if (cnt % 100 == 0 || strInfo.Length == 0)
                     {
                         strInfo = $" obj = myObj_004_d\n moveMode = {moveMode}\n drawMode = {drawMode}\n colorMode = {colorPicker.getMode()}\n speedMode = {speedMode}\n a = {a}\n b = {b}\n c = {c}\n si1 = {si1}\n sf2 = {sf2}\n sf3 = {sf3}";
-                    }
-
-                    if (cnt % 100 == 0)
-                    {
                         g.FillRectangle(Brushes.Black, 30, 33, 155, 220);
                         g.DrawString(strInfo, f, Brushes.Red, 35, 33);
                     }
