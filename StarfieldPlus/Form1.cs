@@ -114,7 +114,7 @@ namespace StarfieldPlus
 #if DEBUG
             id = 23;
             id = 19;
-            id = 4;
+            id = 12;
 
         #if false
             _obj = new my.distributionTester();
