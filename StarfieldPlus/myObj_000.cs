@@ -90,19 +90,20 @@ namespace my
             form.Invalidate();
             System.Threading.Thread.Sleep(666);
 
-            int staticStarsCnt = rand.Next(333) + 333;
-
-            // Add static stars
-            Count += staticStarsCnt;
-
-            for (int i = 0; i < staticStarsCnt; i++)
+            // Add static stars and comets
             {
-                list.Add(new myObj_000_b());
-            }
+                int staticStarsCnt = rand.Next(333) + 333;
+                int cometsCnt = 3;
 
-            list.Add(new myObj_000_c());
-            list.Add(new myObj_000_c());
-            list.Add(new myObj_000_c());
+                // Update main counter
+                Count += staticStarsCnt + cometsCnt;
+
+                for (int i = 0; i < staticStarsCnt; i++)
+                    list.Add(new myObj_000_b());
+
+                for (int i = 0; i < cometsCnt; i++)
+                    list.Add(new myObj_000_c());
+            }
 
             while (isAlive)
             {
