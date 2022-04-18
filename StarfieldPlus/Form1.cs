@@ -20,6 +20,13 @@ namespace StarfieldPlus
         private Point       _oldMouseLocation;
         private my.myObject _obj = null;
 
+        private bool isRelease =
+#if RELEASE
+            true;
+#else
+            false;
+#endif
+
         // -------------------------------------------------------------------
 
         public Form1(Rectangle bounds)
@@ -31,11 +38,7 @@ namespace StarfieldPlus
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Bounds = bounds;
-#if RELEASE
-            this.TopMost = true;
-#else
-            this.TopMost = false;
-#endif
+            this.TopMost = isRelease;
             this.DoubleBuffered = true;
 
             my.myObject.Height = this.Height;
@@ -108,8 +111,7 @@ namespace StarfieldPlus
         // - something like myObj_101, but the pieces are moved via sine/cosine function (up-down or elliptically)
         // - randomly generate points. Every point grows its own square (with increasing or decreasing opacity). Grown squares stay a while then fade away. Example: myobj040 + moveType = 1 + shape = 0 + Show == g.FillRectangle(br, X, Y, Size, Size);
         // - bouncing ball, but its trajctory is not straight line, but curved like in obj_040
-        // - restore Big Bang the way it was originally
-
+        // - moving ponts generator, where the moment of generation depends on sin(time)
 
         private void getScreenSaverObject()
         {
