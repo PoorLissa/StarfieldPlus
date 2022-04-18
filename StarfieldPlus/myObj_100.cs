@@ -14,7 +14,8 @@ namespace my
         protected static int x0 = 0, y0 = 0;
         protected static bool isExplosionMode = false;
 
-        static List<myObject> list = null;
+        protected static List<myObject> list = null;
+        protected static SolidBrush dimBrush = null;
 
         protected float x, y, dx, dy;
         protected int cnt = 0;
@@ -28,6 +29,7 @@ namespace my
             if (br == null)
             {
                 br = new SolidBrush(Color.Black);
+                dimBrush = new SolidBrush(Color.Black);
                 f = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
@@ -37,7 +39,7 @@ namespace my
                 maxSpeed = rand.Next(11);
                 explosionSpeed = rand.Next(100) + 33;
 
-                switch (rand.Next(5))
+                switch (rand.Next(7))
                 {
                     // Original mode with very slow expansion -- no explosion
                     case 0:
@@ -49,6 +51,12 @@ namespace my
                     case 1:
                         maxSpeed = 0;
                         break;
+
+                    // No Explosion
+                    case 2:
+                        maxSpeed = 0;
+                        break;
+
                 }
             }
 
@@ -72,21 +80,21 @@ namespace my
 
         protected override void Show()
         {
-            var brush = Brushes.White;
-
             switch (color)
             {
-                case 0: brush = Brushes.Red;    break;
-                case 1: brush = Brushes.Yellow; break;
-                case 2: brush = Brushes.Blue;   break;
-                case 3: brush = Brushes.Orange; break;
-                case 4: brush = Brushes.Aqua;   break;
-                case 5: brush = Brushes.Violet; break;
+                case 0: br.Color = Color.Red;    break;
+                case 1: br.Color = Color.Yellow; break;
+                case 2: br.Color = Color.Blue;   break;
+                case 3: br.Color = Color.Orange; break;
+                case 4: br.Color = Color.Aqua;   break;
+                case 5: br.Color = Color.Violet; break;
+
+                default:
+                    br.Color = Color.White;
+                    break;
             }
 
-            g.FillRectangle(brush, X, Y, Size, Size);
-
-            return;
+            g.FillRectangle(br, X, Y, Size, Size);
         }
 
         // -------------------------------------------------------------------------
@@ -177,12 +185,10 @@ namespace my
         {
             lifeCounter = rand.Next(maxLife) + maxLife;
 
-            X = rand.Next(Width);
-            Y = rand.Next(Width);
             color = rand.Next(50);
             alpha = rand.Next(50) + 175;
-
             max = rand.Next(200) + 100;
+
             cnt = 0;
             Size = 0;
 
@@ -190,6 +196,9 @@ namespace my
 
             // As X and Y are generated within a square [Width x Width],
             // both dx and dy will be calculated using point [x0, x0]
+            X = rand.Next(Width);
+            Y = rand.Next(Width);
+
             double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - x0) * (Y - x0));
             double sp_dist = speed / dist;
 
@@ -197,8 +206,8 @@ namespace my
             dy = (float)((Y - x0) * sp_dist);
 
             // Move each start to the center point:
-            x = x0;
-            y = y0;
+            x = X = x0;
+            y = Y = y0;
 
             if (isExplosionMode)
             {
@@ -251,8 +260,8 @@ namespace my
                 }
             }
 
-            br.Color = Color.FromArgb(alpha, 0, 0, 0);
-            g.FillRectangle(br, X, Y, Size, Size);
+            dimBrush.Color = Color.FromArgb(alpha, 0, 0, 0);
+            g.FillRectangle(dimBrush, X, Y, Size, Size);
         }
 
         // -------------------------------------------------------------------------

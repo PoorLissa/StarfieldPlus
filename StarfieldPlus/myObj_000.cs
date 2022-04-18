@@ -3,6 +3,10 @@ using System.Drawing;
 
 /*
     - Star Field
+
+    todo:
+        - random XY generation using only width (as in obj_100)
+        - add comets (not used now)
 */
 
 namespace my
@@ -10,9 +14,9 @@ namespace my
     public class myObj_000 : myObject
     {
         protected float x, y, dx, dy, acceleration = 1.0f;
-        protected int cnt = 0;
-        protected int max = 0;
-        protected int color = 0;
+        protected int cnt = 0, max = 0, color = 0;
+
+        protected static int x0 = 0, y0 = 0;
 
         // -------------------------------------------------------------------------
 
@@ -21,6 +25,10 @@ namespace my
             if (br == null)
             {
                 br = new SolidBrush(Color.Black);
+
+                x0 = Width  / 2;
+                y0 = Height / 2;
+
                 Log($"myObj_000");
             }
 
@@ -135,11 +143,7 @@ namespace my
 
             int speed = rand.Next(10) + 1;
 
-            int x0 = Width / 2;
-            int y0 = Height / 2;
-
             double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
-
             double sp_dist = speed / dist;
 
             dx = (float)((X - x0) * sp_dist);
@@ -208,9 +212,6 @@ namespace my
             if (doMove)
             {
                 // linear speed outwards:
-                int x0 = Width  / 2;
-                int y0 = Height / 2;
-
                 double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
                 double sp_dist = 0.1f / dist;
 
