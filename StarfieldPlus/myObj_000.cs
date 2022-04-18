@@ -4,10 +4,6 @@ using System.Collections.Generic;
 
 /*
     - Star Field
-
-    todo:
-        - random XY generation using only width (as in obj_100)
-        - add comets (not used now)
 */
 
 namespace my
@@ -33,7 +29,7 @@ namespace my
                 list = new List<myObject>();
 
                 drawMode = rand.Next(2);
-
+drawMode = 1;
                 x0 = Width  / 2;
                 y0 = Height / 2;
 
@@ -64,18 +60,6 @@ namespace my
 
                 default:
                     br.Color = Color.White;
-                    break;
-            }
-
-            switch (drawMode)
-            {
-                case 0:
-                    g.FillRectangle(br, X, Y, Size, Size);
-                    break;
-
-                case 1:
-                    p.Color = br.Color;
-                    g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
                     break;
             }
 
@@ -139,7 +123,7 @@ namespace my
     {
 		protected override void generateNew()
         {
-#if true
+            int speed = rand.Next(10) + 1;
 
             max = rand.Next(75) + 20;
             cnt = 0;
@@ -147,9 +131,9 @@ namespace my
             acceleration = 1.005f + (rand.Next(100) * 0.0005f);
 
             x = X = rand.Next(Width);
-            y = Y = rand.Next(Width);
 
-            int speed = rand.Next(10) + 1;
+#if true
+            y = Y = rand.Next(Width);
 
             double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - x0) * (Y - x0));
             double sp_dist = speed / dist;
@@ -157,29 +141,39 @@ namespace my
             dx = (float)((X - x0) * sp_dist);
             dy = (float)((Y - x0) * sp_dist);
 
-            y = Y = Y - (Width - Height) / 2;
-
+            y = Y = (Y - (Width - Height)/2);
 #else
-
-            max = rand.Next(75) + 20;
-            cnt = 0;
-            color = rand.Next(50);
-            acceleration = 1.005f + (rand.Next(100) * 0.0005f);
-
-            x = X = rand.Next(Width);
             y = Y = rand.Next(Height);
-
-            int speed = rand.Next(10) + 1;
 
             double dist = Math.Sqrt((X - x0) * (X - x0) + (Y - y0) * (Y - y0));
             double sp_dist = speed / dist;
 
             dx = (float)((X - x0) * sp_dist);
             dy = (float)((Y - y0) * sp_dist);
-
 #endif
 
             Size = 0;
+        }
+
+        // -------------------------------------------------------------------------
+
+        protected override void Show()
+        {
+            base.Show();
+
+            switch (drawMode)
+            {
+                case 0:
+                    g.FillRectangle(br, X, Y, Size, Size);
+                    break;
+
+                case 1:
+                    p.Color = br.Color;
+                    g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    break;
+            }
+
+            return;
         }
 
         // -------------------------------------------------------------------------
@@ -223,7 +217,7 @@ namespace my
     public class myObj_000_b : myObj_000
     {
         private int lifeCounter = 0;
-        private int alpha = 0;
+        private int alpha = 0, bgrAlpha = 0;
         private static int factor = 1;
         private static bool doMove = true;
 
@@ -235,6 +229,7 @@ namespace my
             Y = rand.Next(Height);
             color = rand.Next(50);
             alpha = rand.Next(50) + 175;
+            bgrAlpha = rand.Next(5) + 1;
 
             max = (rand.Next(200) + 100) * factor;
             cnt = 0;
@@ -285,8 +280,30 @@ namespace my
 
         protected override void Show()
         {
-            // Draw static stars ...
+            if (Size < 1)
+                return;
+
             base.Show();
+
+            switch (drawMode)
+            {
+                case 0:
+                    g.FillRectangle(br, X, Y, Size, Size);
+                    break;
+
+                case 1:
+                    p.Color = Color.FromArgb(255, br.Color.R, br.Color.G, br.Color.B);
+
+                    //dimBrush.Color = Color.FromArgb(bgrAlpha, br.Color.R, br.Color.G, br.Color.B);
+                    //dimBrush.Color = Color.Gray;
+                    //g.FillRectangle(dimBrush, X - 2 * Size, Y - 2 * Size, 5 * Size, 5 * Size);
+                    //g.FillEllipse(dimBrush, X - 5 * Size, Y - 5 * Size, 11 * Size, 11 * Size);
+
+                    //g.FillEllipse(dimBrush, X - 11, Y - 11, 23, 23);
+
+                    g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    break;
+            }
 
             if (cnt % 100 == 0)
             {
@@ -317,6 +334,7 @@ namespace my
         protected override void generateNew()
         {
             lifeCounter = rand.Next(1000) + 666;
+            //lifeCounter = rand.Next(100) + 66;
 
             int x0 = rand.Next(Width);
             int y0 = rand.Next(Height);
@@ -326,7 +344,7 @@ namespace my
             float a = (float)(y1 - y0) / (float)(x1 - x0);
             float b = y1 - a * x1;
 
-            int speed = rand.Next(100) + 50;
+            int speed = rand.Next(200) + 50;
 
             double dist = Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
             double sp_dist = speed / dist;
@@ -346,28 +364,24 @@ namespace my
                 Y = yOld = (int)y;
             }
 
-            Size = rand.Next(3) + 1;
+            Size = rand.Next(5) + 1;
         }
 
         protected override void Move()
         {
-            xOld = X;
-            yOld = Y;
-
+            // Wait for the counter to reach zero. Then start moving the comet
             if (lifeCounter-- < 0)
             {
+                xOld = X;
+                yOld = Y;
+
                 x += dx;
                 y += dy;
 
                 X = (int)x;
                 Y = (int)y;
 
-                if (dx > 0 && X > Width)
-                {
-                    generateNew();
-                }
-
-                if (dx < 0 && X < 0)
+                if ((dx > 0 && X > Width) || (dx < 0 && X < 0))
                 {
                     generateNew();
                 }
@@ -380,10 +394,17 @@ namespace my
         {
             if (lifeCounter < 0)
             {
-                //g.DrawEllipse(Pens.DarkOrange, X, Y, Size, Size);
-                g.DrawLine(Pens.Red, X-1, Y, xOld, yOld);
-                g.DrawLine(Pens.Red, X+0, Y, xOld, yOld);
-                g.DrawLine(Pens.Red, X+1, Y, xOld, yOld);
+                br.Color = Color.FromArgb(rand.Next(66) + 11, 245, 195, 60);
+                g.FillRectangle(br, X - 3*Size, Y - 3*Size, 6*Size, 6*Size);
+
+                p.Color = Color.FromArgb(rand.Next(66) + 100, 225 + rand.Next(25), rand.Next(50), rand.Next(50));
+                g.DrawLine(p, X-Size, Y, xOld, yOld);
+                g.DrawLine(p, X+0, Y, xOld, yOld);
+                g.DrawLine(p, X+Size, Y, xOld, yOld);
+
+                p.Color = Color.FromArgb(rand.Next(50) + 100, Color.DarkOrange.R, Color.DarkOrange.G, Color.DarkOrange.B);
+                g.DrawEllipse(p, X - 2*Size, Y - 2*Size, 4*Size, 4*Size);
+
                 g.FillRectangle(Brushes.OrangeRed, X - Size, Y - Size, 2*Size, 2*Size);
             }
         }
