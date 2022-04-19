@@ -86,9 +86,48 @@ namespace my
                     list.Add(new myObj_000_c());
             }
 
+            var bmp = new Bitmap(Width, Height);
+
+            using (var gr = Graphics.FromImage(bmp))
+            {
+                var cp = new myColorPicker(Width, Height, 3);
+
+                gr.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+                for (int k = 0; k < 333; k++)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        int x = rand.Next(Width);
+                        int y = rand.Next(Height);
+
+                        cp.getColor(br, x, y, 200);
+
+                        gr.FillRectangle(br, x, y, 1, 1);
+
+                        int rad = rand.Next(250) + 100;
+
+                        for (int j = 0; j < 100; j++)
+                        {
+                            int x2 = x + rand.Next(rad) - rad / 2;
+                            int y2 = y + rand.Next(rad) - rad / 2;
+
+                            int alpha = rand.Next(100);
+                            br.Color = Color.FromArgb(alpha, br.Color.R, br.Color.G, br.Color.B);
+                            gr.FillRectangle(br, x2, y2, 1, 1);
+
+                            br.Color = Color.FromArgb(3, br.Color.R, br.Color.G, br.Color.B);
+                            gr.FillRectangle(br, x2 - 3, y2 - 3, 6, 6);
+                        }
+                    }
+                }
+            }
+
             while (isAlive)
             {
-                g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+                //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+                g.DrawImage(bmp, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
 
                 foreach (myObj_000 obj in list)
                 {
