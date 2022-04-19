@@ -28,7 +28,7 @@ namespace my
             {
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.Black);
-                dimBrush = new SolidBrush(Color.Black);
+                dimBrush = new SolidBrush(Color.Green);
                 list = new List<myObject>();
 
                 drawMode = rand.Next(2);
@@ -40,12 +40,6 @@ namespace my
             }
 
             generateNew();
-        }
-
-        // -------------------------------------------------------------------------
-
-		protected override void generateNew()
-        {
         }
 
         // -------------------------------------------------------------------------
@@ -102,8 +96,8 @@ namespace my
                     obj.Move();
                 }
 
-                System.Threading.Thread.Sleep(33);
                 form.Invalidate();
+                System.Threading.Thread.Sleep(33);
 
                 // Gradually increase number of moving stars, until the limit is reached
                 if (list.Count < Count)
@@ -171,8 +165,15 @@ namespace my
                     break;
 
                 case 1:
-                    p.Color = br.Color;
-                    g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    if (Size == 1)
+                    {
+                        g.FillRectangle(br, X, Y, 1, 1);
+                    }
+                    else
+                    {
+                        p.Color = br.Color;
+                        g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    }
                     break;
             }
 
@@ -220,7 +221,7 @@ namespace my
     public class myObj_000_b : myObj_000
     {
         private int lifeCounter = 0;
-        private int alpha = 0, bgrAlpha = 0;
+        protected int alpha = 0, bgrAlpha = 0;
         private static int factor = 1;
         private static bool doMove = true;
 
@@ -232,7 +233,11 @@ namespace my
             Y = rand.Next(Height);
             color = rand.Next(50);
             alpha = rand.Next(50) + 175;
-            bgrAlpha = rand.Next(5) + 1;
+
+            bgrAlpha = 1;
+
+            if (rand.Next(11) == 0)
+                bgrAlpha = 2;
 
             max = (rand.Next(200) + 100) * factor;
             cnt = 0;
@@ -283,10 +288,21 @@ namespace my
 
         protected override void Show()
         {
-            if (Size < 1)
-                return;
-
             base.Show();
+
+            dimBrush.Color = Color.FromArgb(bgrAlpha, br.Color.R, br.Color.G, br.Color.B);
+
+            int b = 3 * Size;
+            g.FillRectangle(dimBrush, X - Size, Y - Size, b, b);
+
+            int a = 5 * Size;
+            b = 11 * Size;
+            g.FillEllipse(dimBrush, X - a, Y - a, b, b);
+
+            a = rand.Next(5) + 3;
+            b = (2 * a + 1) * Size;
+            a = a * Size;
+            g.FillEllipse(dimBrush, X - a, Y - a, b, b);
 
             switch (drawMode)
             {
@@ -295,16 +311,15 @@ namespace my
                     break;
 
                 case 1:
-                    p.Color = Color.FromArgb(255, br.Color.R, br.Color.G, br.Color.B);
-
-                    //dimBrush.Color = Color.FromArgb(bgrAlpha, br.Color.R, br.Color.G, br.Color.B);
-                    //dimBrush.Color = Color.Gray;
-                    //g.FillRectangle(dimBrush, X - 2 * Size, Y - 2 * Size, 5 * Size, 5 * Size);
-                    //g.FillEllipse(dimBrush, X - 5 * Size, Y - 5 * Size, 11 * Size, 11 * Size);
-
-                    //g.FillEllipse(dimBrush, X - 11, Y - 11, 23, 23);
-
-                    g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    if (Size == 1)
+                    {
+                        g.FillRectangle(br, X, Y, 1, 1);
+                    }
+                    else
+                    {
+                        p.Color = Color.FromArgb(255, br.Color.R, br.Color.G, br.Color.B);
+                        g.DrawRectangle(p, X, Y, Size - 1, Size - 1);
+                    }
                     break;
             }
 
