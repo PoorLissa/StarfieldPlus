@@ -112,6 +112,7 @@ namespace StarfieldPlus
         // - randomly generate points. Every point grows its own square (with increasing or decreasing opacity). Grown squares stay a while then fade away. Example: myobj040 + moveType = 1 + shape = 0 + Show == g.FillRectangle(br, X, Y, Size, Size);
         // - bouncing ball, but its trajctory is not straight line, but curved like in obj_040
         // - moving ponts generator, where the moment of generation depends on sin(time)
+        // - battle ships
 
         private void getScreenSaverObject()
         {
