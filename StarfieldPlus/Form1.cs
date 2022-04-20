@@ -133,7 +133,7 @@ namespace StarfieldPlus
             return;
 #endif
 #endif
-            start:
+start:
             this.Text = id.ToString();
 
             switch (id)

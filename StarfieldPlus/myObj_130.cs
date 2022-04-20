@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 /*
     - ...
@@ -9,6 +10,8 @@ namespace my
 {
     public class myObj_130 : myObject
     {
+        static List<myObject> list = null;
+
         static int shape = 0;
         static int moveMode = 0;
         static int A_Filling = 0;
@@ -31,10 +34,12 @@ namespace my
             {
                 p = new Pen(Color.Red);
                 br = new SolidBrush(Color.Red);
+                f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 colorPicker = new myColorPicker(Width, Height);
+                list = new List<myObject>();
 
                 moveMode = rand.Next(7);
-                shape = rand.Next(6);
+                shape = rand.Next(7);
                 A_Filling = rand.Next(11) + 1;
 
                 Log($"myObj_130: colorPicker({colorPicker.getMode()}), moveMode({moveMode}), shape({shape}), A_Filling({A_Filling})");
@@ -298,6 +303,11 @@ namespace my
                     g.FillRectangle(br, X - Size, Y - Size, 2 * Size, 2 * Size);
                     g.DrawRectangle(p, X - Size, Y - Size, 2 * Size, 2 * Size);
                     break;
+
+                case 6:
+                    g.DrawLine(p, X + rand.Next(Size) - Size/2, Y + rand.Next(Size) - Size/2, X, Y);
+                    g.DrawLine(p, X + rand.Next(Size) - Size/2, Y + rand.Next(Size) - Size/2, X, Y);
+                    break;
             }
         }
 
@@ -305,30 +315,42 @@ namespace my
 
         protected override void Process()
         {
-            int t = 50;
-            int num = 10;
+            string strInfo = "";
 
-            var list = new System.Collections.Generic.List<myObj_130>();
+            int t = 50, num = 10, bgrId = rand.Next(2);
 
             list.Add(new myObj_130());
 
-            if (rand.Next(2) == 0)
-            {
-                g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-            }
+            g.FillRectangle(bgrId == 0 ? Brushes.Black : Brushes.White, 0, 0, Width, Height);
 
             while (isAlive)
             {
-                foreach (var s in list)
+                foreach (myObj_130 s in list)
                 {
                     s.Show();
                     s.Move();
                 }
 
+                // View some info (need to press Tab)
+                if (my.myObject.ShowInfo)
+                {
+                    strInfo = $" obj = myObj_130\n colorMode = {colorPicker.getMode()}\n moveMode = {moveMode}\n shape = {shape}\n A_Filling = {A_Filling}";
+                    g.FillRectangle(bgrId == 0 ? Brushes.Black : Brushes.White, 30, 33, 155, 133);
+                    g.DrawString(strInfo, f, Brushes.Red, 35, 33);
+                }
+                else
+                {
+                    if (strInfo.Length > 0)
+                    {
+                        strInfo = "";
+                        g.FillRectangle(bgrId == 0 ? Brushes.Black : Brushes.White, 30, 33, 155, 133);
+                    }
+                }
+
                 form.Invalidate();
                 System.Threading.Thread.Sleep(t);
 
-                if(list.Count < num)
+                if (list.Count < num)
                 {
                     list.Add(new myObj_130());
                 }

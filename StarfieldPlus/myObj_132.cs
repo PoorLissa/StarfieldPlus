@@ -70,7 +70,7 @@ namespace my
 #if DEBUG
             fdLifeCnt = 0.01f;
             shape = 1300;
-            shape = 90;
+            shape = 91;
             t = 3;
 #endif
 
@@ -292,6 +292,12 @@ namespace my
                     x4 = -10;
                     y4 = -10;
                     t = 3;
+                    break;
+
+                case 91:
+
+
+
                     break;
 
                 case 1300:
@@ -1236,6 +1242,15 @@ namespace my
                     }
                     break;
 
+                case 91:
+
+                    x0 = Width / 2;
+                    y0 = Height / 2;
+
+                    x2 = x0 + (float)(Math.Sin(time * sf4 + a)) * Height / 3;
+                    y2 = y0 + (float)(Math.Cos(time * sf4 + a)) * Height / 3;
+                    break;
+
                 default:
                     break;
             }
@@ -1402,6 +1417,10 @@ namespace my
                         g.FillRectangle(Brushes.Orange, x4 + 2, y4 + 2, 7, 7);
                         g.DrawRectangle(Pens.DarkOrange, x4, y4, 10, 10);
                     }
+                    break;
+
+                case 91:
+                    g.DrawRectangle(Pens.DarkOrange, x2, y2, 3, 3);
                     break;
 
                 case 1300:

@@ -71,45 +71,57 @@ namespace my
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             form.Invalidate();
 
+            // Build and gradually display the background Galaxy
             var background = buildGalaxy();
+            br.Color = Color.FromArgb(255, 0, 0, 0);
 
-            g.DrawImage(background, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
-            form.Invalidate();
-            System.Threading.Thread.Sleep(3333);
-
-            // Add static stars and comets
+            while (isAlive && br.Color.A > 0)
             {
-                int staticStarsCnt = rand.Next(333) + 333;
-                int cometsCnt = 3;
-
-                // Update main counter
-                Count += staticStarsCnt + cometsCnt;
-
-                for (int i = 0; i < staticStarsCnt; i++)
-                    list.Add(new myObj_000_b());
-
-                for (int i = 0; i < cometsCnt; i++)
-                    list.Add(new myObj_000_c());
-            }
-
-            while (isAlive)
-            {
-                //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
                 g.DrawImage(background, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
+                g.FillRectangle(br, 0, 0, Width, Height);
 
-                foreach (myObj_000 obj in list)
-                {
-                    obj.Show();
-                    obj.Move();
-                }
+                int opacity = br.Color.A - 7;
+                br.Color = Color.FromArgb(opacity > 0 ? opacity : 0, 0, 0, 0);
 
                 form.Invalidate();
-                System.Threading.Thread.Sleep(33);
+                System.Threading.Thread.Sleep(100);
+            }
 
-                // Gradually increase number of moving stars, until the limit is reached
-                if (list.Count < Count)
+            if (isAlive)
+            {
+                // Add static stars and comets
                 {
-                    list.Add(new myObj_000_a());
+                    int staticStarsCnt = rand.Next(333) + 333;
+                    int cometsCnt = 3;
+
+                    // Update main counter
+                    Count += staticStarsCnt + cometsCnt;
+
+                    for (int i = 0; i < staticStarsCnt; i++)
+                        list.Add(new myObj_000_b());
+
+                    for (int i = 0; i < cometsCnt; i++)
+                        list.Add(new myObj_000_c());
+                }
+
+                while (isAlive)
+                {
+                    g.DrawImage(background, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
+
+                    foreach (myObj_000 obj in list)
+                    {
+                        obj.Show();
+                        obj.Move();
+                    }
+
+                    form.Invalidate();
+                    System.Threading.Thread.Sleep(33);
+
+                    // Gradually increase number of moving stars, until the limit is reached
+                    if (list.Count < Count)
+                    {
+                        list.Add(new myObj_000_a());
+                    }
                 }
             }
 
@@ -126,9 +138,10 @@ namespace my
 
             using (var gr = Graphics.FromImage(bmp))
             {
+                // Black background
                 gr.FillRectangle(Brushes.Black, 0, 0, Width, Height);
 
-                // Low opacity colored spots
+                // Add low opacity colored spots
                 for (int i = 0; i < 10; i++)
                 {
                     int opacity = rand.Next(7) + 1;
@@ -155,6 +168,7 @@ namespace my
 
                 //return bmp;
 
+                // Add nebulae
                 for (int k = 0; k < 111; k++)
                 {
                     for (int i = 0; i < 3; i++)
@@ -447,7 +461,7 @@ namespace my
             float a = (float)(y1 - y0) / (float)(x1 - x0);
             float b = y1 - a * x1;
 
-            int speed = rand.Next(200) + 50;
+            int speed = rand.Next(200) + 200;
 
             double dist = Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
             double sp_dist = speed / dist;
@@ -497,13 +511,19 @@ namespace my
         {
             if (lifeCounter < 0)
             {
+                // Spot of light
+                br.Color = Color.FromArgb(5, 245, 195, 60);
+                g.FillEllipse(br, X - 100, Y - 100, 200, 200);
+                g.FillEllipse(br, X - 200, Y - 200, 400, 400);
+
                 br.Color = Color.FromArgb(rand.Next(66) + 11, 245, 195, 60);
                 g.FillRectangle(br, X - 3*Size, Y - 3*Size, 6*Size, 6*Size);
 
-                p.Color = Color.FromArgb(rand.Next(66) + 100, 225 + rand.Next(25), rand.Next(50), rand.Next(50));
-                g.DrawLine(p, X-Size, Y, xOld, yOld);
+                // Tail
+                p.Color = Color.FromArgb(rand.Next(66) + 33, 225 + rand.Next(25), rand.Next(50), rand.Next(50));
+                g.DrawLine(p, X-2*Size, Y, xOld, yOld);
                 g.DrawLine(p, X+0, Y, xOld, yOld);
-                g.DrawLine(p, X+Size, Y, xOld, yOld);
+                g.DrawLine(p, X+2*Size, Y, xOld, yOld);
 
                 p.Color = Color.FromArgb(rand.Next(50) + 100, Color.DarkOrange.R, Color.DarkOrange.G, Color.DarkOrange.B);
                 g.DrawEllipse(p, X - 2*Size, Y - 2*Size, 4*Size, 4*Size);

@@ -28,7 +28,7 @@ namespace my
 
             if (_mode < 0)
             {
-                _mode = _rand.Next(5);
+                _mode = _rand.Next(6);
             }
 
             switch (_mode)
@@ -41,6 +41,11 @@ namespace my
                 // Use External Picture
                 case 1:
                     getCustomPicture(Width, Height);
+                    break;
+
+                // Use External Picture
+                case 4:
+                    buildTexture(Width, Height);
                     break;
 
                 // Use Custom Color
@@ -165,6 +170,18 @@ namespace my
                 // todo: See if someting like that could be implemented: https://color.adobe.com/create/color-wheel
                 case 3:
                     getRandomColor(ref R, ref G, ref B);
+                    break;
+
+                // Custom texture
+                case 4:
+                    if (_img != null)
+                    {
+                        var pixel = _img.GetPixel(x, y);
+
+                        R = pixel.R;
+                        G = pixel.G;
+                        B = pixel.B;
+                    }
                     break;
 
                 // Shades of Gray
@@ -561,5 +578,45 @@ namespace my
                     break;
             }
         }
+
+        // -------------------------------------------------------------------------
+
+        private void buildTexture(int Width, int Height)
+        {
+            SolidBrush br = new SolidBrush(Color.Black);
+
+            int a, x, y, w, h, r = 0, g = 0, b = 0;
+
+            _img = new Bitmap(Width, Height);
+
+            if (_g != null)
+            {
+                _g.Dispose();
+                _g = null;
+            }
+
+            _g = Graphics.FromImage(_img);
+
+            // Black background
+            _g.FillRectangle(br, 0, 0, Width, Height);
+
+            // Add random colored rectangles
+            for (int i = 0; i < Height; i += 10)
+            {
+                x = _rand.Next( Width) - Height / 3;
+                y = _rand.Next(Height) - Height / 3;
+
+                w = i;
+                h = i;
+
+                getRandomColor(ref r, ref g, ref b);
+
+                a = _rand.Next(13) + 5;
+                br.Color = Color.FromArgb(a, r, g, b);
+                _g.FillRectangle(br, x, y, w, h);
+            }
+        }
+
+        // -------------------------------------------------------------------------
     }
 };
