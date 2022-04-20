@@ -29,6 +29,7 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.Black);
                 dimBrush = new SolidBrush(Color.Green);
+                colorPicker = new myColorPicker(Width, Height);
                 list = new List<myObject>();
 
                 drawMode = rand.Next(2);
@@ -69,7 +70,12 @@ namespace my
         {
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
             form.Invalidate();
-            System.Threading.Thread.Sleep(666);
+
+            var background = buildGalaxy();
+
+            g.DrawImage(background, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
+            form.Invalidate();
+            System.Threading.Thread.Sleep(3333);
 
             // Add static stars and comets
             {
@@ -86,48 +92,10 @@ namespace my
                     list.Add(new myObj_000_c());
             }
 
-            var bmp = new Bitmap(Width, Height);
-
-            using (var gr = Graphics.FromImage(bmp))
-            {
-                var cp = new myColorPicker(Width, Height, 3);
-
-                gr.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-
-                for (int k = 0; k < 333; k++)
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        int x = rand.Next(Width);
-                        int y = rand.Next(Height);
-
-                        cp.getColor(br, x, y, 200);
-
-                        gr.FillRectangle(br, x, y, 1, 1);
-
-                        int rad = rand.Next(250) + 100;
-
-                        for (int j = 0; j < 100; j++)
-                        {
-                            int x2 = x + rand.Next(rad) - rad / 2;
-                            int y2 = y + rand.Next(rad) - rad / 2;
-
-                            int alpha = rand.Next(100);
-                            br.Color = Color.FromArgb(alpha, br.Color.R, br.Color.G, br.Color.B);
-                            gr.FillRectangle(br, x2, y2, 1, 1);
-
-                            br.Color = Color.FromArgb(3, br.Color.R, br.Color.G, br.Color.B);
-                            gr.FillRectangle(br, x2 - 3, y2 - 3, 6, 6);
-                        }
-                    }
-                }
-            }
-
             while (isAlive)
             {
                 //g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
-
-                g.DrawImage(bmp, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
+                g.DrawImage(background, form.Bounds, form.Bounds, GraphicsUnit.Pixel);
 
                 foreach (myObj_000 obj in list)
                 {
@@ -147,6 +115,84 @@ namespace my
 
             return;
         }
+
+        // -------------------------------------------------------------------------
+
+        // Build random Galaxy background
+        private Bitmap buildGalaxy()
+        {
+            Bitmap bmp = new Bitmap(Width, Height);
+            int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+
+            using (var gr = Graphics.FromImage(bmp))
+            {
+                gr.FillRectangle(Brushes.Black, 0, 0, Width, Height);
+
+                // Low opacity colored spots
+                for (int i = 0; i < 10; i++)
+                {
+                    int opacity = rand.Next(7) + 1;
+
+                    x1 = rand.Next(Width);
+                    y1 = rand.Next(Height);
+
+                    x2 = rand.Next(333) + 100 * opacity;
+                    y2 = rand.Next(333) + 100 * opacity;
+
+                    br.Color = Color.FromArgb(1, rand.Next(256), rand.Next(256), rand.Next(256));
+
+                    while (opacity != 0)
+                    {
+                        gr.FillRectangle(br, x1, y1, x2, y2);
+
+                        x1 += rand.Next(25) + 25;
+                        y1 += rand.Next(25) + 25;
+                        x2 -= rand.Next(50) + 50;
+                        y2 -= rand.Next(50) + 50;
+                        opacity--;
+                    }
+                }
+
+                //return bmp;
+
+                for (int k = 0; k < 111; k++)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        x1 = rand.Next(Width);
+                        y1 = rand.Next(Height);
+
+                        int masterOpacity = rand.Next(100) + 100;
+                        int radius1 = rand.Next(250) + 100;
+                        int radius2 = rand.Next(250) + 100;
+                        colorPicker.getColor(br, x1, y1, masterOpacity);
+
+                        gr.FillRectangle(br, x1, y1, 1, 1);
+
+                        for (int j = 0; j < 100; j++)
+                        {
+                            x2 = x1 + rand.Next(radius1) - radius1 / 2;
+                            y2 = y1 + rand.Next(radius2) - radius2 / 2;
+
+                            int maxSlaveOpacity = 50 + rand.Next(50);
+                            int slaveOpacity = rand.Next(maxSlaveOpacity);
+
+                            br.Color = Color.FromArgb(slaveOpacity, br.Color.R, br.Color.G, br.Color.B);
+                            gr.FillRectangle(br, x2, y2, 1, 1);
+
+                            int r = rand.Next(2) + 3;
+
+                            br.Color = Color.FromArgb(3, br.Color.R, br.Color.G, br.Color.B);
+                            gr.FillRectangle(br, x2 - r, y2 - r, 2 * r, 2 * r);
+                        }
+                    }
+                }
+            }
+
+            return bmp;
+        }
+
+        // -------------------------------------------------------------------------
     }
 
 
