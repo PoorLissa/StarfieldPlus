@@ -96,6 +96,7 @@
     <Compile Include="myObj_150.cs" />
     <Compile Include="myObj_160.cs" />
     <Compile Include="myObj_170.cs" />
+    <Compile Include="myObj_180.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="__distributionTester.cs" />
