@@ -38,12 +38,16 @@ namespace my
                 colorPicker = new myColorPicker(Width, Height);
                 list = new List<myObject>();
 
-                moveMode = rand.Next(7);
+                moveMode = rand.Next(9);
                 shape = rand.Next(7);
                 A_Filling = rand.Next(11) + 1;
 
                 Log($"myObj_130: colorPicker({colorPicker.getMode()}), moveMode({moveMode}), shape({shape}), A_Filling({A_Filling})");
             }
+
+
+            moveMode = 8;
+            shape = -1;
 
 #if false
             // #pmv override
@@ -89,6 +93,7 @@ namespace my
                 case 5: move5(); break;
                 case 6: move6(); break;
                 case 7: move7(); break;
+                case 8: move8(); break;
 
                 default: move_test(); break;
             }
@@ -243,6 +248,28 @@ namespace my
 
             X += (int)(Math.Sin(counter + moveParam3) * moveParam1);
             Y += (int)(Math.Cos(counter + moveParam4) * moveParam1);
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void move8()
+        {
+            if (moveSetUp == 0)
+            {
+                moveParam1 = rand.Next(11) - 5;
+                moveParam2 = rand.Next(11) - 5;
+                moveParam3 = rand.Next(6);
+                moveSetUp = 1;
+
+                moveParam2 = moveParam1;
+            }
+
+            A += dA / 3;
+
+            g.DrawEllipse(p, X + Size * moveParam1, Y + Size * moveParam2, Size * moveParam3, Size * moveParam3);
+
+            //X += rand.Next(11) - 5;
+            //Y += rand.Next(11) - 5;
         }
 
         // -------------------------------------------------------------------------
