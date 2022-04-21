@@ -13,8 +13,8 @@ namespace my
         bool doDraw = false;
 
         static int drawMode = 0, moveMode = 0, t = 0, size = 0, dimRate = 0;
-        static int step = 0, startX = 0, startY = 0;
-        static bool doUseCells = false;
+        static int step = 0, startX = 0, startY = 0, cellMargin = 0;
+        static bool doUseCells = false, doDrawCellBorder = false;
         static List<myObject> list = null;
         static Rectangle rect;
 
@@ -30,16 +30,15 @@ namespace my
                 f = new Font("Segoe UI", 8, FontStyle.Regular, GraphicsUnit.Point);
                 list = new List<myObject>();
 
-                t = rand.Next(10) + 1;
-
-                // Solid color is ('0') the default mode
-                drawMode = 0;
+                // Solid color ('0') or Solid color Border ('1') is the default mode
+                drawMode = rand.Next(2);
 
                 // But when colorPicker has an image, the mode is set to '1' with the probability of 2/3
                 if (colorPicker.getMode() < 2)
                     if (rand.Next(3) > 0)
-                        drawMode = 1;
+                        drawMode = 2;
 
+                t = rand.Next(20) + (drawMode == 10 ? 1 : 1);
                 moveMode = rand.Next(2);
 
                 rect.Width  = 50;
@@ -47,6 +46,7 @@ namespace my
                 size = rand.Next(66) + 5;
 
                 dimRate = rand.Next(11) + 2;
+                doDrawCellBorder = rand.Next(2) == 0;
 
                 // Grid-based set-up
                 {
@@ -54,6 +54,9 @@ namespace my
                     step = 50 + rand.Next(151);
                     startX = (Width  % step) / 2;
                     startY = (Height % step) / 2;
+
+                    // Distance between cells in a grid-based mode
+                    cellMargin = doUseCells ? rand.Next(25) + 1 : 1;
                 }
 
                 Log($"myObj_160: colorPicker({colorPicker.getMode()})");
@@ -130,6 +133,8 @@ namespace my
 
         protected override void Show()
         {
+            int x, y, z;
+
             // Draw only once per cell's life time
             if (doDraw)
             {
@@ -137,16 +142,49 @@ namespace my
                 {
                     // Solid color from color picker
                     case 0:
-                        colorPicker.getColor(p, X, Y);
                         colorPicker.getColor(br, X, Y, 150 + rand.Next(50));
 
-                        g.FillRectangle(br, X - size/2, Y - size/2, size, size);
-                        g.DrawRectangle( p, X - size/2, Y - size/2, size, size);
+                        z = size / 2;
+                        x = X - z;
+                        y = Y - z;
+                        z = size - cellMargin;
+
+                        g.FillRectangle(br, x, y, z, z);
+
+                        if (doDrawCellBorder)
+                        {
+                            colorPicker.getColor(p, X, Y);
+                            g.DrawRectangle(p, x, y, z, z);
+                        }
+                        break;
+
+                    case 1:
+                        colorPicker.getColor(p, X, Y);
+
+                        z = size / 2;
+                        x = X - z;
+                        y = Y - z;
+                        z = size - cellMargin;
+
+                        g.DrawRectangle(p, x, y, z, z);
                         break;
 
                     // Piece of an image
-                    case 1:
+                    case 2:
+
+                        if (doUseCells)
+                        {
+                            rect.Width  -= cellMargin;
+                            rect.Height -= cellMargin;
+                        }
+
                         g.DrawImage(colorPicker.getImg(), rect, rect, GraphicsUnit.Pixel);
+
+                        if (doDrawCellBorder)
+                        {
+                            colorPicker.getColor(p, X, Y);
+                            g.DrawRectangle(p, rect);
+                        }
                         break;
                 }
             }
@@ -183,7 +221,7 @@ namespace my
                 {
                     if (strInfo.Length == 0)
                     {
-                        strInfo = $" obj = myObj_160\n drawMode = {drawMode}\n moveMode = {moveMode}\n colorMode = {colorPicker.getMode()}\n";
+                        strInfo = $" obj = myObj_160\n drawMode = {drawMode}\n moveMode = {moveMode}\n colorMode = {colorPicker.getMode()}\n doUseCells = {doUseCells}\n cellMargin = {cellMargin}\n t = {t}";
                     }
 
                     if (cnt % 3 == 0)

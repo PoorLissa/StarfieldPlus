@@ -139,6 +139,7 @@ namespace my
 
                     if (_img != null)
                     {
+                        fixCoordinates(ref x, ref y);
                         var pixel = _img.GetPixel(x, y);
 
                         R = pixel.R;
@@ -176,6 +177,7 @@ namespace my
                 case 4:
                     if (_img != null)
                     {
+                        fixCoordinates(ref x, ref y);
                         var pixel = _img.GetPixel(x, y);
 
                         R = pixel.R;
@@ -615,6 +617,25 @@ namespace my
                 br.Color = Color.FromArgb(a, r, g, b);
                 _g.FillRectangle(br, x, y, w, h);
             }
+        }
+
+        // -------------------------------------------------------------------------
+
+        private void fixCoordinates(ref int x, ref int y)
+        {
+            if (x < 0)
+                x = 0;
+
+            if (y < 0)
+                y = 0;
+
+            if (x >= _img.Width)
+                x = _img.Width - 1;
+
+            if (x >= _img.Height)
+                y = _img.Height - 1;
+
+            return;
         }
 
         // -------------------------------------------------------------------------
