@@ -121,7 +121,7 @@ namespace StarfieldPlus
 #if DEBUG
             id = 23;
             id = 19;
-            id = 17;
+            id = 5;
 
 #if false
             _obj = new my.distributionTester();
@@ -258,8 +258,13 @@ start:
                     _obj = new my.myObj_170();
                     break;
 
+                // Points generator
+                case 24:
+                    _obj = new my.myObj_180();
+                    break;
+
                 default:
-                    id = new Random((int)DateTime.Now.Ticks).Next(1 + 23);
+                    id = new Random((int)DateTime.Now.Ticks).Next(1 + 24);
                     goto start;
             }
 

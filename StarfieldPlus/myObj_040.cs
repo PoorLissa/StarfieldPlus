@@ -79,6 +79,7 @@ namespace my
                 p = new Pen(Color.White);
                 br = new SolidBrush(Color.White);
                 f = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
+                colorPicker = new myColorPicker(Width, Height);
                 dimBrush = new SolidBrush(Color.FromArgb(dimAlpha, 0, 0, 0));
                 list = new List<myObject>();
                 shape = rand.Next(4);

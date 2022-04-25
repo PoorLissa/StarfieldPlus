@@ -40,14 +40,16 @@ namespace my
 
                 moveMode = rand.Next(9);
                 shape = rand.Next(7);
+
+                if (moveMode == 8)
+                {
+                    shape = -1;
+                }
+
                 A_Filling = rand.Next(11) + 1;
 
                 Log($"myObj_130: colorPicker({colorPicker.getMode()}), moveMode({moveMode}), shape({shape}), A_Filling({A_Filling})");
             }
-
-
-            moveMode = 8;
-            shape = -1;
 
 #if false
             // #pmv override

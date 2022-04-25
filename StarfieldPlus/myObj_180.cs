@@ -120,8 +120,6 @@ namespace my
         {
             int n = 50, cnt = 0, Cnt = 20, deadCnt = 0;
 
-            int nnn = 0;
-
             for (int i = 0; i < 1000; i++)
             {
                 listDead.Add(new myObj_180());
@@ -135,6 +133,9 @@ namespace my
                 deadCnt = 0;
 
                 g.FillRectangle(br, 0, 0, Width, Height);
+
+                //g.DrawRectangle(Pens.Yellow, 2000, 1000, 111, 111);
+                //g.DrawRectangle(Pens.Yellow, 2005, 1005, 3, 3);
 
                 foreach (myObj_180 obj in listLive)
                 {
@@ -192,17 +193,7 @@ namespace my
                     }
                 }
 
-                form.Invoke(new MethodInvoker(delegate
-                {
-                    form.Update();
-                    form.Refresh();
-                }));
-
-
-
-                //form.Update();
-                //form.Refresh();
-                //form.Invalidate();
+                form.Invalidate();
                 System.Threading.Thread.Sleep(33);
 
                 cnt++;
