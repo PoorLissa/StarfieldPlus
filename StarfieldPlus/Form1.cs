@@ -113,6 +113,7 @@ namespace StarfieldPlus
         // - bouncing ball, but its trajctory is not straight line, but curved like in obj_040
         // - moving ponts generator, where the moment of generation depends on sin(time)
         // - battle ships
+        // - grid over an image. grid pulses, increasing and decreasing its cells size. each cell is displaying average img color
 
         private void getScreenSaverObject()
         {
