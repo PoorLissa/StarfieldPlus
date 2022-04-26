@@ -114,6 +114,7 @@ namespace StarfieldPlus
         // - moving ponts generator, where the moment of generation depends on sin(time)
         // - battle ships
         // - grid over an image. grid pulses, increasing and decreasing its cells size. each cell is displaying average img color
+        // - bouncing ball and lots of triangles rotating to point to it
 
         private void getScreenSaverObject()
         {
