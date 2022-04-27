@@ -124,7 +124,7 @@ namespace StarfieldPlus
 
         // -------------------------------------------------------------------
 
-        static void ShowScreenSaver()
+        private static void ShowScreenSaver()
         {
             SetDpiAwareness();
 
