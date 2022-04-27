@@ -115,6 +115,7 @@ namespace StarfieldPlus
         // - battle ships
         // - grid over an image. grid pulses, increasing and decreasing its cells size. each cell is displaying average img color
         // - bouncing ball and lots of triangles rotating to point to it
+        // - mandlebrot
 
         private void getScreenSaverObject()
         {
@@ -123,7 +124,7 @@ namespace StarfieldPlus
 #if DEBUG
             id = 23;
             id = 19;
-            id = 5;
+            id = 18;
 
 #if false
             _obj = new my.distributionTester();
