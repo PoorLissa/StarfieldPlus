@@ -632,7 +632,7 @@ namespace my
             if (x >= _img.Width)
                 x = _img.Width - 1;
 
-            if (x >= _img.Height)
+            if (y >= _img.Height)
                 y = _img.Height - 1;
 
             return;
